@@ -1,0 +1,65 @@
+{
+  "name": "typefs",
+  "version": "1.0.0",
+  "description": "A file storage package that provides a single interface to many types of filesystems.",
+  "author": "Daniel Samson <12231216+daniel-samson@users.noreply.github.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daniel-samson/typefs"
+  },
+  "keywords": [
+    "filesystem",
+    "stream",
+    "buffer",
+    "s3"
+  ],
+  "bugs": {
+    "url": "https://github.com/daniel-samson/typefs/issues"
+  },
+  "homepage": "https://daniel-samson.github.io/typefs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "prepublish": "tsc",
+  "scripts": {
+    "pr": "npm run build && npm run lint && npm run test-all",
+    "clean": "tsc --build --clean",
+    "build": "tsc --build",
+    "watch": "tsc --watch",
+    "test": "npm run mocha test/*.test.ts",
+    "mocha": "mocha --parallel --config .mocharc.json",
+    "lint": "eslint . --ext .ts",
+    "fix": "eslint --fix --ext .ts .",
+    "eslint": "eslint",
+    "coverage": "npx nyc --reporter=lcov --reporter=html --reporter=text-summary npm test",
+    "coverage-ci": "nyc --reporter=text-summary mocha --config .mocharc.json test/*.test.ts",
+    "audit": "npx audit-ci --moderate"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.19",
+    "@types/mocha": "^8.2.2",
+    "@types/mock-fs": "^4.13.0",
+    "@types/node": "^15.12.4",
+    "@types/sinon": "^10.0.2",
+    "@typescript-eslint/eslint-plugin": "^4.28.0",
+    "@typescript-eslint/parser": "^4.28.0",
+    "audit-ci": "^4.1.0",
+    "chai": "^4.3.4",
+    "eslint": "^7.29.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jsdoc": "^35.4.0",
+    "eslint-plugin-mocha": "^9.0.0",
+    "eslint-plugin-sonarjs": "^0.8.0-125",
+    "install": "^0.13.0",
+    "mocha": "^9.0.1",
+    "mock-fs": "^5.0.0",
+    "nyc": "^15.1.0",
+    "sinon": "^11.1.1",
+    "source-map-support": "^0.5.19",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.4"
+  },
+  "dependencies": {}
+}

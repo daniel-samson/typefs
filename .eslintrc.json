@@ -1,0 +1,46 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "airbnb-base",
+        "plugin:sonarjs/recommended",
+        "plugin:mocha/recommended",
+        "plugin:jsdoc/recommended"
+    ],
+    "ignorePatterns": ["*.d.ts", "*.js"],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "@typescript-eslint",
+        "sonarjs",
+        "import",
+        "mocha",
+        "jsdoc"
+    ],
+    "rules": {
+        "mocha/no-mocha-arrows": "off",
+        "mocha/no-setup-in-describe": "off",
+        "mocha/no-skipped-test": "off",
+        "no-console": "error",
+        "jsdoc/require-param-description": "error",
+        "jsdoc/require-param-type": "warn",
+        "import/prefer-default-export": "off",
+        "import/extensions": "off",
+        "import/no-unresolved": "error"
+    },
+    "settings": {
+        "import/parsers": {
+          "@typescript-eslint/parser": [".ts", ".tsx"]
+        },
+        "import/resolver": {
+            "typescript": {
+                "project": "./tsconfig.json"
+            }
+        }
+    }
+}

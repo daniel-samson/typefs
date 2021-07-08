@@ -1,0 +1,6 @@
+test/
+.nycrc/
+.nyc_output/
+coverage/
+lib/
+src/

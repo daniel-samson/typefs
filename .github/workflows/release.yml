@@ -1,0 +1,63 @@
+name: Release
+
+on:
+  pull_request:
+    types: closed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged
+    steps:
+      - uses: actions/checkout@master
+      - name: Tag and prepare release
+        id: tag_and_prepare_release
+        uses: K-Phoen/semver-release-action@master
+        with:
+          release_branch: main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload release notes
+        if: steps.tag_and_prepare_release.outputs.tag
+        uses: Roang-zero1/github-create-release-action@master
+        with:
+          version_regex: ^v[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+
+          prerelease_regex: "^v2\\.[[:digit:]]+\\.[[:digit:]]+"
+          created_tag: ${{ steps.tag_and_prepare_release.outputs.tag }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Node.js
+        if: steps.tag_and_prepare_release.outputs.tag
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+          # Specifies the registry, this field is required!
+          registry-url: https://registry.npmjs.org/
+      - name: npm ci
+        if: steps.tag_and_prepare_release.outputs.tag
+        run: npm ci
+      - name: config git
+          # set up git since we will later push to the repo
+        if: steps.tag_and_prepare_release.outputs.tag
+        run: |
+          git config --global user.name "GitHub CD bot"
+          git config --global user.email "github-cd-bot@example.com"
+      - name: build and test
+        if: steps.tag_and_prepare_release.outputs.tag
+        run: |
+          npm run build --if-present
+          npm run lint
+          npm test
+      - name: bump version
+        if: steps.tag_and_prepare_release.outputs.tag
+        run: npm version ${{ steps.tag_and_prepare_release.outputs.tag }}
+      - name: publish package
+        if: steps.tag_and_prepare_release.outputs.tag
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+      - name: Push version changes back to github
+        if: steps.tag_and_prepare_release.outputs.tag
+        run: git push
+        env:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
