@@ -6,5 +6,4 @@ Initial Release
 
 Added:
 
-- File Driver
-- S3 Driver
+- File Driver with support to restrict access to parts of the file system

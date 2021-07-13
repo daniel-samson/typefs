@@ -1,6 +1,15 @@
-test/
-.nycrc/
+.DS_Store
+.eslintrc.json
+.github
+.mocharc
 .nyc_output/
+.nycrc/
+CHANGELOG.md
+CONTRIBUTING.md
+config/
 coverage/
+index.ts
 lib/
 src/
+test/
+tsconfig.json
