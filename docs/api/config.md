@@ -29,7 +29,7 @@ this can be either a JSON file or a JavaScript file:
 
 ```javascript
 // config/filesystem.js
-modules.export = {
+module.exports = {
     default: 'assets',
     disks: {
         assets: {
