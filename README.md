@@ -23,7 +23,7 @@ Please refer to our [projects](https://github.com/daniel-samson/typefs/projects?
 
 ## Documentation
 
-Please refer to our [documentation](https://daniel-samson.github.io/typefs/docs/) learn how to use Type FS.
+Please refer to our [documentation](https://daniel-samson.github.io/typefs/docs/) to learn how to use Type FS.
 
 ## Contributions
 
