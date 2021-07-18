@@ -19,6 +19,7 @@ Please follow our process:
 - make sure that changes passes our test suite `npm run pr`
 - provide automated tests (if applicable)
 - provide documentation (if applicable)
+- Create a PR referencing the Bug Report or Feature Request
 
 ### Contributing Documentation
 
