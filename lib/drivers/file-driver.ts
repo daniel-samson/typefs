@@ -5,6 +5,15 @@ import {
   sep,
 } from 'path';
 import {
+  Dirent,
+  Stats,
+  readdirSync,
+  promises,
+} from 'fs';
+import { FileDisk } from 'lib/config';
+import { DiskDriver, ListDirectoryOptions } from './disk-driver';
+
+const {
   readFile,
   writeFile,
   rm,
@@ -13,10 +22,7 @@ import {
   copyFile,
   rename,
   mkdir,
-} from 'fs/promises';
-import { Dirent, Stats, readdirSync } from 'fs';
-import { FileDisk } from 'lib/config';
-import { DiskDriver, ListDirectoryOptions } from './disk-driver';
+} = promises;
 
 /**
  * Filesystem storage driver
