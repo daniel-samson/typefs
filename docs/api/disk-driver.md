@@ -256,7 +256,7 @@ try {
 import { Storage } from 'typefs';
 
 try {
-    const lastModified: Number = await Storage.disk().fileSize('/profiles'));
+    const fileSize: Number = await Storage.disk().fileSize('/profiles'));
     // ...
 } catch (e) {
     // handle the error
