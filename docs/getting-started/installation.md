@@ -9,11 +9,12 @@ A file storage package that provides a single interface to many types of filesys
 
 ## Why Type FS
 
-- Keeps your code readable
-- Restrict access to directories in your filesystem.
+- Keeps your code readable.
+- Restricts access to directories in your filesystem.
 - You only have to learn one set of methods for each type of storage.
+- Supports JSON or JavaScript files.
 - Can be configured via environment variables to change the storage configuration.
-- Can be configured useing JSON or JavaScript
+
 
 ## Setting up your environment
 
