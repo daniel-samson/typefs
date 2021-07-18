@@ -12,7 +12,7 @@ const features = [
     imageUrl: '',
     description: (
       <>
-        Type FS makes it easy to access different file systems using the same interface
+        Type FS makes it easy to access different file systems using the same interface.
       </>
     ),
   },
