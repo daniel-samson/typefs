@@ -8,11 +8,11 @@ module.exports = {
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'daniel-samson', // Usually your GitHub org/user name.
-  projectName: 't', // Usually your repo name.
+  projectName: 'typefs', // Usually your repo name.
   themeConfig: {
     navbar: {
       logo: {
-        alt: 'T',
+        alt: 'TypeFS',
         src: 'img/logo.svg',
       },
       items: [
@@ -24,7 +24,7 @@ module.exports = {
         },
         // {to: 'blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/daniel-samson/t',
+          href: 'https://github.com/daniel-samson/typefs',
           label: 'GitHub',
           position: 'right',
         },
@@ -59,7 +59,7 @@ module.exports = {
             // },
             {
               label: 'GitHub',
-              href: 'https://github.com/daniel-samson/t',
+              href: 'https://github.com/daniel-samson/typefs',
             },
           ],
         },
@@ -75,7 +75,7 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/daniel-samson/t/edit/documentation/',
+            'https://github.com/daniel-samson/typefs/edit/documentation/',
         },
         // blog: {
         //   showReadingTime: true,
