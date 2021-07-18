@@ -31,9 +31,10 @@
     "lint": "eslint . --ext .ts",
     "fix": "eslint --fix --ext .ts .",
     "eslint": "eslint",
-    "coverage": "npx nyc --reporter=lcov --reporter=html --reporter=text-summary npm test",
-    "coverage-ci": "nyc --reporter=text-summary mocha --config .mocharc.json test/*.test.ts",
-    "audit": "npx audit-ci --moderate"
+    "coverage": "npx nyc --reporter=html --reporter=text-summary npm test",
+    "coverage-ci": "nyc --reporter=lcov mocha --config .mocharc.json test/*.test.ts",
+    "audit": "npx audit-ci --moderate",
+    "codecov": "codecov"
   },
   "devDependencies": {
     "@types/chai": "^4.2.19",
@@ -45,6 +46,7 @@
     "@typescript-eslint/parser": "^4.28.0",
     "audit-ci": "^4.1.0",
     "chai": "^4.3.4",
+    "codecov": "^3.8.2",
     "eslint": "^7.29.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-import-resolver-typescript": "^2.4.0",
