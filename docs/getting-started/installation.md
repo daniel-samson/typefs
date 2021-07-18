@@ -25,7 +25,7 @@ Configure the Storage manger by editing your project entry file eg. index.js, in
 // index.ts
 import { Storage, Configuration } from 'typefs;
 
-Storage.getInstance().config: Configuration = {
+Storage.config: Configuration = {
     default: 'assets',
     disks: {
         app: {
