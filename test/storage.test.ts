@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { Storage } from '..';
-import {Configuration} from '../lib';
+import { Configuration } from '../lib';
 
 describe('storage', () => {
   describe('getInstance', () => {

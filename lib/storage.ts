@@ -40,9 +40,9 @@ export class Storage {
   /**
    * Access disk
    *
-   * @param {sting|undefined} disk to select. leaving undefined will result in
+   * @param {string|undefined} disk to select. leaving undefined will result in
    * default disk being selected
-   * @returns {DiskDriver}
+   * @returns {DiskDriver} common interface for all drivers
    */
   static disk(disk?: string): DiskDriver {
     const inst = Storage.getInstance();
