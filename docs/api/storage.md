@@ -18,7 +18,7 @@ The storage manager holds the configuration of your disks and which disk is the 
     }
 }
 ```
-### Use Default Disk
+### Select Disk
 
 Storage manager lets you select the disk you are interested in.
 
