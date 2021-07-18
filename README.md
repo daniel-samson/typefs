@@ -6,6 +6,7 @@ A file storage package that provides a single interface to many types of filesys
 ## Project Status
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/daniel-samson/typefs)
+![npm (tag)](https://img.shields.io/npm/v/typefs/latest)
 [![GitHub license](https://img.shields.io/github/license/daniel-samson/typefs)](https://github.com/daniel-samson/typefs/blob/main/LICENSE)
 [![Node.js CI](https://github.com/daniel-samson/typefs/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/daniel-samson/typefs/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/daniel-samson/typefs/branch/main/graph/badge.svg?token=RYZSMgtASL)](https://codecov.io/gh/daniel-samson/typefs)
