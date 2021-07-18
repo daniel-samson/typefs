@@ -4,10 +4,14 @@
 name: coverage
 
 on:
-  workflow_run:
-    workflows: ["Node.js CI"]
-    types:
-      - completed
+  push:
+    branches:
+      - 'main'
+      - 'patch/**'
+      - 'minor/**'
+      - 'major/**'
+      - 'feature/**'
+
 jobs:
   build:
 
