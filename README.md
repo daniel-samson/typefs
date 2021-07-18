@@ -12,17 +12,16 @@ A file storage package that provides a single interface to many types of filesys
 
 Please refer to our [projects](https://github.com/daniel-samson/typefs/projects) page to see the projects roadmap
 
-## Installation
+## Why Type FS
 
-Type FS uses npm:
-
-```
-npm install typefs
-```
+- Restrict access to directories in your filesystem.
+- You only have to learn one set of methods for each type of storage.
+- Can be configured via environment variables to change the storage configuration.
+- Can be configured useing JSON or JavaScript
 
 ## Documentation
 
-Please refer to our [documentation](https://daniel-samson.github.io/typefs/docs/) for configuration and help.
+Please refer to our [documentation](https://daniel-samson.github.io/typefs/docs/) learn how to use Type FS.
 
 ## Contributions
 
