@@ -22,7 +22,7 @@
   "types": "dist/index.d.ts",
   "prepublish": "tsc",
   "scripts": {
-    "pr": "npm run build && npm run lint && npm run test-all",
+    "pr": "npm run build && npm run lint && npm run test",
     "clean": "tsc --build --clean",
     "build": "tsc --build",
     "watch": "tsc --watch",
