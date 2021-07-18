@@ -2,10 +2,13 @@
 .eslintrc.json
 .github
 .mocharc
+.mocharc.json
 .nyc_output/
 .nycrc/
 CHANGELOG.md
 CONTRIBUTING.md
+SECURITY.md
+README.md
 config/
 coverage/
 index.ts
@@ -13,3 +16,4 @@ lib/
 src/
 test/
 tsconfig.json
+
