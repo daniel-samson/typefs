@@ -58,13 +58,17 @@ module.exports = {
             //   to: 'blog/',
             // },
             {
+              label: 'NPM',
+              href: 'https://www.npmjs.com/package/typefs',
+            },
+            {
               label: 'GitHub',
               href: 'https://github.com/daniel-samson/typefs',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} T. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Type FS. Built with Docusaurus.`,
     },
   },
   presets: [
