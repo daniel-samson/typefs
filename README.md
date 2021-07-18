@@ -11,7 +11,7 @@ A file storage package that provides a single interface to many types of filesys
 [![Node.js CI](https://github.com/daniel-samson/typefs/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/daniel-samson/typefs/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/daniel-samson/typefs/branch/main/graph/badge.svg?token=RYZSMgtASL)](https://codecov.io/gh/daniel-samson/typefs)
 
-Please refer to our [projects](https://github.com/daniel-samson/typefs/projects) page to see the projects roadmap
+Please refer to our [projects](https://github.com/daniel-samson/typefs/projects?query=is%3Aopen+sort%3Acreated-asc) page to see the projects roadmap
 
 ## Why Type FS
 
