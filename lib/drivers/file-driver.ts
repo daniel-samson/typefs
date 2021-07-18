@@ -16,7 +16,7 @@ import { DiskDriver, ListDirectoryOptions } from './disk-driver';
 const {
   readFile,
   writeFile,
-  rm,
+  unlink,
   rmdir,
   stat,
   copyFile,
@@ -71,7 +71,7 @@ export class FileDriver extends DiskDriver {
    * configuration.jail is set to true
    */
   deleteFile(path: string): Promise<void> {
-    return rm(this.jail(path));
+    return unlink(this.jail(path));
   }
 
   /**
