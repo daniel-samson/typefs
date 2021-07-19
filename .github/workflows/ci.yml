@@ -11,6 +11,7 @@ on:
       - 'minor/**'
       - 'major/**'
       - 'feature/**'
+      - 'renovate/**'
 
 jobs:
   build:
