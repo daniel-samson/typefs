@@ -1,8 +1,6 @@
 import {
   join,
   resolve,
-  relative,
-  sep,
 } from 'path';
 import {
   Dirent,
@@ -11,6 +9,7 @@ import {
   promises,
 } from 'fs';
 import { FileDisk } from 'lib/config';
+import { Util } from './util';
 import { DiskDriver, ListDirectoryOptions } from './disk-driver';
 
 const {
@@ -226,40 +225,7 @@ export class FileDriver extends DiskDriver {
    * configuration.jail is set to true
    */
   protected jail(path: string): string {
-    const absolutePath = this.rootPath(path);
-
-    if (
-      this.configuration.jail === true
-      && !this.isPathInsideRoot(absolutePath)
-      && resolve(absolutePath) !== this.configuration.root
-    ) {
-      const e = new Error(`no such file or directory '${path}'`);
-      e.name = 'ENOENT';
-      throw e;
-    }
-
-    return absolutePath;
-  }
-
-  /**
-   * Resolves path relative to roots absolute path
-   *
-   * @param {string} path relative to root path
-   * @returns {string} absolute path
-   */
-  protected rootPath(path: string): string {
-    return join(resolve(this.configuration.root), path);
-  }
-
-  protected isPathInsideRoot(childPath: string): boolean {
-    const relation = relative(this.configuration.root, childPath);
-
-    return Boolean(
-      relation
-        && relation !== '..'
-        && !relation.startsWith(`..${sep}`)
-        && relation !== resolve(childPath),
-    );
+    return Util.jail(path, this.configuration.root, this.configuration.jail);
   }
 
   protected recursiveReadDir(path: string): Array<string> {

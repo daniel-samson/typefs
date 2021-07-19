@@ -68,6 +68,10 @@ export interface S3Disk {
    */
   root: string,
   /**
+   * Dont allow paths outside root
+   */
+  jail: boolean
+  /**
    * The name of the bucket eg. "my-bucket-name"
    */
   bucket: string,
@@ -83,6 +87,10 @@ export interface S3Disk {
    * Security Key
    */
   secretKey: string,
+  /**
+   * if endpoint uses SSL, defaults to true
+   */
+  useSSL?: boolean,
 }
 
 export type DiskConfiguration =
