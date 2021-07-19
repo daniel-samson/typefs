@@ -16,7 +16,7 @@
 ### Checklist
 <!--- Please check all the boxes that apply. --->
 - [ ] My change requires a change to the documentation.
-- [ ] I have read the [**Contributing**](https://daniel-samson.github.io/typefs/contributing) guidelines.
+- [ ] I have read the [**Contributing**](https://daniel-samson.github.io/typefs/docs/contributing/join) guidelines.
 - [ ] I have provided automated tests to verify that these changes are correct.
 
 
