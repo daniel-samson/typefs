@@ -12,7 +12,7 @@ Type FS is a package that provides a single way to access and manipulate many ty
 - Keeps your code readable.
 - Restricts access to directories in your filesystem.
 - You only have to learn one set of methods for each type of storage.
-- Prevents vendor lockin
+- Prevents vendor lock in
 - Supports JSON or JavaScript configuration files.
 - Can be configured via environment variables to change the storage configuration.
 
