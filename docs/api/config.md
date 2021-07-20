@@ -34,8 +34,8 @@ module.exports = {
     disks: {
         assets: {
             driver: 'file',
-            root: '/app/public/assets'
-            jail: true
+            root: '/app/public/assets',
+            jail: true,
         }
     }
 }
