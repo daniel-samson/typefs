@@ -27,7 +27,7 @@ To install type fs into your projects run the following command:
 npm install typefs
 ```
 
-### Configure
+### Configuration example
 Type FS has a concept called **"disks"**, which lets you configure many directory locations with a storage driver. You can configure the [storage manager](https://daniel-samson.github.io/typefs/docs/api/storage) by editing your project's entry file:
 
 ```typescript
