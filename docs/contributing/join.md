@@ -16,10 +16,10 @@ Please follow our process:
 
 - [Report a bug](https://github.com/digitonic/perform-application/issues/new?assignees=&labels=bug&template=bug_report.md&title=Bug+Report%3A+) or [Request a new feature](https://github.com/digitonic/perform-application/issues/new?assignees=&labels=&template=feature_request.md&title=)
 - write your changes in typescript instead of javascript (if applicable)
-- make sure that changes passes our test suite `npm run pr`
+- make sure that your changes pass the test suite provided (run the command `npm run pr`)
 - provide automated tests (if applicable)
 - provide documentation (if applicable)
-- Create a PR referencing the Bug Report or Feature Request
+- Create a PR referencing the Bug Report or Feature Request eg "Closes #1"
 
 ### Contributing Documentation
 
