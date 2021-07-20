@@ -1,6 +1,6 @@
 ---
-title: Storage
-sidebar_label: Storage
+title: Storage Manager
+sidebar_label: Storage Manager
 ---
 
 The storage manager holds the configuration of your disks and which disk is the default one.
