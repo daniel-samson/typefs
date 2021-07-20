@@ -13,7 +13,7 @@ Disk Driver is the common interface between all disks. This means that you only 
 import { Storage } from 'typefs';
 
 try {
-    const contents = "hello"
+    const contents = "hello";
     await Storage.disk().write('/manifest.json', contents);
 } catch (e) {
     // handle the error
