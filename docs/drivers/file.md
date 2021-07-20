@@ -1,6 +1,6 @@
 ---
-title: Drivers
-sidebar_label: File
+title: File Driver
+sidebar_label: File / Local
 ---
 
 The file driver lets you access the local file system.
