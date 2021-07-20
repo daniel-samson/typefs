@@ -13,7 +13,7 @@ A file storage package that provides a single interface to many types of filesys
 ![npms.io (quality)](https://img.shields.io/npms-io/quality-score/typefs)
 ![npms.io (quality)](https://img.shields.io/npms-io/maintenance-score/typefs)
 
-Please refer to our [projects](https://github.com/daniel-samson/typefs/projects?query=is%3Aopen+sort%3Acreated-asc) page to see the projects roadmap
+Please refer to our [roadmap](https://github.com/daniel-samson/typefs/projects?query=is%3Aopen+sort%3Acreated-asc) to get the current progress of feature requests and bug fixes.
 
 ## Why Type FS
 
