@@ -9,6 +9,7 @@ Type FS is a package that provides a single way to access and manipulate many ty
 [![npm (tag)](https://img.shields.io/npm/v/typefs/latest)](https://www.npmjs.com/package/typefs)
 [![GitHub license](https://img.shields.io/github/license/daniel-samson/typefs)](https://github.com/daniel-samson/typefs/blob/main/LICENSE)
 [![Node.js CI](https://github.com/daniel-samson/typefs/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/daniel-samson/typefs/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/daniel-samson/typefs/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/daniel-samson/typefs/actions/workflows/codeql-analysis.yml)
 [![codecov](https://codecov.io/gh/daniel-samson/typefs/branch/main/graph/badge.svg?token=RYZSMgtASL)](https://codecov.io/gh/daniel-samson/typefs)
 ![npms.io (quality)](https://img.shields.io/npms-io/quality-score/typefs)
 ![npms.io (quality)](https://img.shields.io/npms-io/maintenance-score/typefs)
