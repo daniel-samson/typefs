@@ -1,7 +1,7 @@
 Type FS
 ====
 
-A file storage package that provides a single interface to many types of filesystems. Type FS is a package for NodeJs and Typescript projects.
+A file storage package that provides a single way to manipulate many types of filesystems. Type FS is a package for NodeJs and Typescript projects.
 
 ## Project Status
 
