@@ -40,3 +40,10 @@ const driver = Storage.disk();
 
 ### Disk Configuration
 The "driver" specifies which driver will be used to access the file system. This is followed by configuration for said driver.
+
+```typescript
+
+import { Storage, config } from 'typefs';
+
+Storage.config = config();
+```
