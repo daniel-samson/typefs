@@ -11,7 +11,6 @@ Type FS is a package that provides a single way to access and manipulate many ty
 [![codecov](https://codecov.io/gh/daniel-samson/typefs/branch/main/graph/badge.svg?token=RYZSMgtASL)](https://codecov.io/gh/daniel-samson/typefs)
 ![npms.io (quality)](https://img.shields.io/npms-io/quality-score/typefs)
 ![npms.io (quality)](https://img.shields.io/npms-io/maintenance-score/typefs)
-![npm](https://img.shields.io/npm/dw/typefs)
 
 Please refer to our [roadmap](https://github.com/daniel-samson/typefs/projects?query=is%3Aopen+sort%3Acreated-asc) to get the current progress of feature requests and bug fixes.
 
