@@ -80,6 +80,10 @@ export interface S3Disk {
    */
   endPoint: string,
   /**
+   * TCP/IP port number. This input is optional. Default value set to 80 for HTTP and 443 for HTTPs.
+   */
+  port?: number,
+  /**
    * Access Key
    */
   accessKey: string,
