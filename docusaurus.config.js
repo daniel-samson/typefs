@@ -2,8 +2,8 @@
 module.exports = {
   title: 'Type FS',
   tagline: 'A file storage package that provides a single interface to many types of filesystems.',
-  url: 'https://daniel-samson.github.io/',
-  baseUrl: '/typefs/',
+  url: 'https://typefs.io/',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
