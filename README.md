@@ -12,7 +12,7 @@ Type FS is a package that provides a single way to access and manipulate many ty
 ![npms.io (quality)](https://img.shields.io/npms-io/quality-score/typefs)
 ![npms.io (quality)](https://img.shields.io/npms-io/maintenance-score/typefs)
 
-Please refer to our [roadmap](https://github.com/daniel-samson/typefs/projects?query=is%3Aopen+sort%3Acreated-asc) to get the current progress of feature requests and bug fixes.
+Please refer to our [roadmaps](https://github.com/daniel-samson/typefs/projects?query=is%3Aopen+sort%3Acreated-asc) to get the current progress of feature requests and bug fixes.
 
 ## Why Type FS
 
