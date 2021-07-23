@@ -12,7 +12,7 @@
 
 ### Checklist
 <!--- Please check all the boxes that apply. --->
-- [ ] I have read the [**Contributing**](https://daniel-samson.github.io/typefs/docs/contributing/join) guidelines.
+- [ ] This change complies with the [**contributing**](https://daniel-samson.github.io/typefs/docs/contributing/join) guidelines.
 - [ ] I have provided automated tests to verify that these changes are correct.
 
 
