@@ -2,9 +2,16 @@ module.exports = {
   docs: [
     {
       type: 'category',
+      label: 'Introduction',
+      items: ['introduction'],
+    },
+    {
+      type: 'category',
       label: 'Getting Started',
       items: [
         "getting-started/installation",
+        "getting-started/configuration",
+        "getting-started/usage",
       ],
     },
     {
