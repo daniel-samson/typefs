@@ -7,8 +7,8 @@
 <!-- Please reference the issue tracking number that this pull request relates to -->
 
 
-
-<!--- What types of changes does your code introduce? Please label this change with bug fix or enhancement: -->
+<!-- Which ticket does this pull request close? -->
+<!--- eg. "Closes #1" -->
 
 ### Checklist
 <!--- Please check all the boxes that apply. --->
