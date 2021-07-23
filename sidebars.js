@@ -36,6 +36,7 @@ module.exports = {
       label: 'Contributing',
       items: [
         "contributing/join",
+        "contributing/processes",
       ],
     },
 
