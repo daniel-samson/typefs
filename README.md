@@ -25,7 +25,7 @@ Please refer to our [roadmaps](https://github.com/daniel-samson/typefs/projects?
 
 ## Documentation
 
-Please refer to our [documentation](https://daniel-samson.github.io/typefs/docs/) to learn how to get started with Type FS.
+Please refer to our [documentation](https://typefs.io/docs/getting-started/installation) to learn how to get started with Type FS.
 
 ## Contributions
 
