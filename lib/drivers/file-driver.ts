@@ -121,7 +121,7 @@ export class FileDriver extends DiskDriver {
 
     let absolutePaths = [];
     if (options?.recursive) {
-      absolutePaths = this.recursiveReadDir(path);
+      absolutePaths = this.recursiveReadDir(p);
     } else {
       absolutePaths = readdirSync(p, { withFileTypes: true })
         .map((e: Dirent) => join(path, e.name));
