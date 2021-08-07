@@ -1,6 +1,7 @@
 import {
   join,
   resolve,
+  dirname,
 } from 'path';
 import {
   Dirent,
@@ -45,7 +46,11 @@ export class FileDriver extends DiskDriver {
    * configuration.jail is set to true
    */
   read(path: string): Promise<Buffer> {
-    return readFile(this.jail(path));
+    try {
+      return readFile(this.jail(path));
+    } catch (e) {
+      return Promise.reject(e);
+    }
   }
 
   /**
@@ -57,8 +62,18 @@ export class FileDriver extends DiskDriver {
    * @throws Error when path is outside root directory and
    * configuration.jail is set to true
    */
-  write(path: string, data: Buffer): Promise<void> {
-    return writeFile(this.jail(path), data);
+  async write(path: string, data: Buffer): Promise<void> {
+    try {
+      const p = this.jail(path);
+
+      const dir = dirname(path);
+      if (!await this.exists(dir)) {
+        await this.createDirectory(dir);
+      }
+      return writeFile(p, data);
+    } catch (e) {
+      return Promise.reject(e);
+    }
   }
 
   /**
@@ -70,7 +85,11 @@ export class FileDriver extends DiskDriver {
    * configuration.jail is set to true
    */
   deleteFile(path: string): Promise<void> {
-    return unlink(this.jail(path));
+    try {
+      return unlink(this.jail(path));
+    } catch (e) {
+      return Promise.reject(e);
+    }
   }
 
   /**
@@ -82,7 +101,11 @@ export class FileDriver extends DiskDriver {
    * configuration.jail is set to true
    */
   deleteDirectory(path: string): Promise<void> {
-    return rmdir(this.jail(path));
+    try {
+      return rmdir(this.jail(path), { recursive: true });
+    } catch (e) {
+      return Promise.reject(e);
+    }
   }
 
   /**
@@ -117,23 +140,26 @@ export class FileDriver extends DiskDriver {
     path: string,
     options?: ListDirectoryOptions,
   ): Promise<string[]> {
-    const p = this.jail(path);
+    try {
+      const p = this.jail(path);
 
-    let absolutePaths = [];
-    if (options?.recursive) {
-      absolutePaths = this.recursiveReadDir(p);
-    } else {
-      absolutePaths = readdirSync(p, { withFileTypes: true })
-        .map((e: Dirent) => join(path, e.name));
+      let absolutePaths = [];
+      if (options?.recursive) {
+        absolutePaths = this.recursiveReadDir(p);
+      } else {
+        absolutePaths = this.filterFiles(p, readdirSync(p, { withFileTypes: true }));
+      }
+
+      const relativePaths = absolutePaths.map((f) => f.replace(this.configuration.root, ''));
+
+      return Promise.resolve(relativePaths.sort());
+    } catch (e) {
+      return Promise.reject(e);
     }
-
-    const relativePaths = absolutePaths.map((f) => f.replace(this.configuration.root, ''));
-
-    return Promise.resolve(relativePaths.sort());
   }
 
   /**
-   * checks if file or directory exists.
+   * Checks if file or directory exists.
    *
    * @param {string} path relative to root of disk
    * @returns {Promise<boolean>} true when path exists
@@ -184,9 +210,14 @@ export class FileDriver extends DiskDriver {
    */
   fileSize(path: string): Promise<number> {
     return new Promise((_resolve, reject) => {
-      stat(this.jail(path))
-        .then((s: Stats) => _resolve(s.size))
-        .catch((e) => reject(e));
+      try {
+        const p = this.jail(path);
+        stat(p)
+          .then((s: Stats) => _resolve(s.size))
+          .catch((e) => reject(e));
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 
@@ -200,7 +231,13 @@ export class FileDriver extends DiskDriver {
    * configuration.jail is set to true
    */
   move(source: string, destination: string): Promise<void> {
-    return rename(this.jail(source), this.jail(destination));
+    try {
+      // TODO: handle directories so that they are consistent with s3
+      // TODO: make directory if not exists
+      return rename(this.jail(source), this.jail(destination));
+    } catch (e) {
+      return Promise.reject(e);
+    }
   }
 
   /**
@@ -213,7 +250,13 @@ export class FileDriver extends DiskDriver {
    * configuration.jail is set to true
    */
   copy(source: string, destination: string): Promise<void> {
-    return copyFile(this.jail(source), this.jail(destination));
+    try {
+      // TODO: handle directories so that they are consistent with s3
+      // TODO: make directory if not exists
+      return copyFile(this.jail(source), this.jail(destination));
+    } catch (e) {
+      return Promise.reject(e);
+    }
   }
 
   /**
@@ -230,10 +273,7 @@ export class FileDriver extends DiskDriver {
 
   protected recursiveReadDir(path: string): Array<string> {
     const dir = readdirSync(path, { withFileTypes: true });
-
-    let files: Array<string> = dir
-      .filter((e: Dirent) => e.isFile())
-      .map((e: Dirent) => join(path, e.name));
+    let files: Array<string> = this.filterFiles(path, dir);
 
     dir
       .filter((e: Dirent) => e.isDirectory())
@@ -243,5 +283,12 @@ export class FileDriver extends DiskDriver {
       });
 
     return files;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  protected filterFiles(path: string, directoryEntities: Dirent[]): Array<string> {
+    return directoryEntities
+      .filter((e: Dirent) => e.isFile())
+      .map((e: Dirent) => join(path, e.name));
   }
 }

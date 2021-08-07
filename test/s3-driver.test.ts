@@ -3,17 +3,18 @@ import mock from 'mock-fs';
 import { S3Disk, S3Driver } from '..';
 
 describe('S3Driver', () => {
+  const configuration: S3Disk = {
+    root: '/',
+    jail: true,
+    bucket: 'test-bucket',
+    endPoint: '127.0.0.1',
+    port: 9000,
+    accessKey: 'private',
+    secretKey: 'secret',
+  };
+
   describe('configuration', () => {
     it('must set DiskDriver.configuration on construction', () => {
-      const configuration: S3Disk = {
-        root: '/',
-        jail: true,
-        bucket: 'test-bucket',
-        endPoint: '127.0.0.1:9000',
-        accessKey: 'private',
-        secretKey: 'secret',
-      };
-
       const driver = new S3Driver(configuration);
       const expected: S3Disk = configuration;
       // configuration is a protected property
@@ -26,11 +27,6 @@ describe('S3Driver', () => {
   });
 
   describe('read', () => {
-    const configuration: S3Disk = {
-      root: '/app',
-      jail: true,
-    };
-
     const driver = new S3Driver(configuration);
 
     beforeEach(() => {
@@ -57,11 +53,6 @@ describe('S3Driver', () => {
   });
 
   describe('write', () => {
-    const configuration: S3Disk = {
-      root: '/app',
-      jail: true,
-    };
-
     const driver = new S3Driver(configuration);
 
     beforeEach(() => {
@@ -86,11 +77,6 @@ describe('S3Driver', () => {
   });
 
   describe('deleteFile', () => {
-    const configuration: S3Disk = {
-      root: '/app',
-      jail: true,
-    };
-
     const driver = new S3Driver(configuration);
 
     beforeEach(() => {
@@ -115,11 +101,6 @@ describe('S3Driver', () => {
   });
 
   describe('deleteDirectory', () => {
-    const configuration: S3Disk = {
-      root: '/app',
-      jail: true,
-    };
-
     const driver = new S3Driver(configuration);
 
     beforeEach(() => {
@@ -144,11 +125,6 @@ describe('S3Driver', () => {
   });
 
   describe('createDirectory', () => {
-    const configuration: S3Disk = {
-      root: '/app',
-      jail: true,
-    };
-
     const driver = new S3Driver(configuration);
 
     beforeEach(() => {
@@ -174,11 +150,6 @@ describe('S3Driver', () => {
   });
 
   describe('listContents', () => {
-    const configuration: S3Disk = {
-      root: '/app',
-      jail: true,
-    };
-
     const driver = new S3Driver(configuration);
 
     beforeEach(() => {
@@ -226,11 +197,6 @@ describe('S3Driver', () => {
   });
 
   describe('exists', () => {
-    const configuration: S3Disk = {
-      root: '/app',
-      jail: true,
-    };
-
     const driver = new S3Driver(configuration);
 
     beforeEach(() => {
@@ -260,11 +226,6 @@ describe('S3Driver', () => {
   });
 
   describe('lastModified', () => {
-    const configuration: S3Disk = {
-      root: '/app',
-      jail: true,
-    };
-
     const driver = new S3Driver(configuration);
 
     beforeEach(() => {
@@ -297,11 +258,6 @@ describe('S3Driver', () => {
   });
 
   describe('fileSize', () => {
-    const configuration: S3Disk = {
-      root: '/app',
-      jail: true,
-    };
-
     const driver = new S3Driver(configuration);
 
     beforeEach(() => {
@@ -315,7 +271,7 @@ describe('S3Driver', () => {
       mock.restore();
     });
 
-    it('should return file zize in bytes', async () => {
+    it('should return file size in bytes', async () => {
       const actual = await driver.fileSize('baz.xml');
       const expected = 3; // bytes
       assert.typeOf(actual, 'number');
@@ -336,11 +292,6 @@ describe('S3Driver', () => {
   });
 
   describe('move', () => {
-    const configuration: S3Disk = {
-      root: '/app',
-      jail: true,
-    };
-
     const driver = new S3Driver(configuration);
 
     beforeEach(() => {
@@ -371,11 +322,6 @@ describe('S3Driver', () => {
   });
 
   describe('copy', () => {
-    const configuration: S3Disk = {
-      root: '/app',
-      jail: true,
-    };
-
     const driver = new S3Driver(configuration);
 
     beforeEach(() => {

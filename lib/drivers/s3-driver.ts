@@ -2,7 +2,7 @@ import {
   Client,
   CopyConditions,
 } from 'minio';
-import {Readable} from 'stream';
+import { Readable } from 'stream';
 import { S3Disk } from 'lib/config';
 import { Util } from './util';
 import { DiskDriver, ListDirectoryOptions } from './disk-driver';
@@ -98,7 +98,7 @@ export class S3Driver extends DiskDriver {
     return new Promise((resolve, reject) => {
       // fake delete directory
       const fileName = this.jail(path);
-      this.listContents(fileName, { recursive: true })
+      this.minioListContents(fileName)
         .then((objects) => {
           this.client.removeObjects(
             this.configuration.bucket,
@@ -141,24 +141,34 @@ export class S3Driver extends DiskDriver {
 
   listContents(path: string, options?: ListDirectoryOptions): Promise<string[]> {
     return new Promise((resolve, reject) => {
-      const fileName = this.jail(path);
+      const p = this.jail(path);
+      const mapPrefixRoot = (s: string) => (s.startsWith('/') ? s : `/${s}`);
+
+      this.minioListContents(p, options?.recursive === true)
+        .then((objects) => {
+          const list: string[] = objects
+            .filter((s) => !s.endsWith('.typefs'))
+            .filter((s) => !s.endsWith('/'))
+            .map(mapPrefixRoot);
+          resolve(list);
+        })
+        .catch(reject);
+    });
+  }
+
+  private minioListContents(path: string, recursive: boolean = false): Promise<string[]> {
+    return new Promise((resolve, reject) => {
       const list: string[] = [];
 
-      const stream = this.client.listObjects(
+      const stream = this.client.listObjectsV2(
         this.configuration.bucket,
-        fileName,
-        true, // fake recursive
+        path,
+        recursive,
       );
 
       stream.on('data', (obj) => {
-        if ((obj.name.match(/\//g) || []).length > 0 && options?.recursive !== true) {
-          return; // fake recusive
-        }
-
-        if (obj.name.endsWith('.typefs')) {
-          // fake empty directory
-          // so it should display as directory
-          list.push(obj.name.replace('.typefs', ''));
+        if (obj.name === undefined && obj.prefix) {
+          list.push(obj.prefix);
           return;
         }
 
@@ -170,9 +180,18 @@ export class S3Driver extends DiskDriver {
   }
 
   exists(path: string): Promise<boolean> {
-    // todo: automatically detect is directory and append .typefs to path
     return new Promise((resolve) => {
       const fileName = this.jail(path);
+      // fake directory support
+      if (path.endsWith('/')) {
+        this.minioListContents(fileName, true)
+          .then((entries: string[]) => {
+            resolve(entries.length > 0);
+          })
+          .catch(() => resolve(false));
+        return;
+      }
+
       this.client.statObject(
         this.configuration.bucket,
         fileName,
@@ -225,6 +244,8 @@ export class S3Driver extends DiskDriver {
   }
 
   move(source: string, destination: string): Promise<void> {
+    // TODO: handle directories so that they are consistent with s3
+    // TODO: make directory if not exists
     const conds = new CopyConditions();
     return new Promise((resolve, reject) => {
       const from = this.jail(source);
@@ -251,6 +272,8 @@ export class S3Driver extends DiskDriver {
   }
 
   copy(source: string, destination: string): Promise<void> {
+    // TODO: handle directories so that they are consistent with s3
+    // TODO: make directory if not exists
     const conds = new CopyConditions();
     return new Promise((resolve, reject) => {
       const from = this.jail(source);

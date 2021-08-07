@@ -19,7 +19,7 @@ describe('storage', () => {
       assert.instanceOf(instance, Storage);
     });
 
-    it('return meomoized instance', () => {
+    it('return memoized instance', () => {
       const instance = Storage.getInstance();
       assert.instanceOf(instance, Storage);
     });
