@@ -2,12 +2,15 @@ import {
   join,
   resolve,
   dirname,
+  sep,
 } from 'path';
 import {
   Dirent,
   Stats,
   readdirSync,
   promises,
+  existsSync,
+  mkdirSync
 } from 'fs';
 import { FileDisk } from 'lib/config';
 import { Util } from './util';
@@ -232,9 +235,10 @@ export class FileDriver extends DiskDriver {
    */
   move(source: string, destination: string): Promise<void> {
     try {
-      // TODO: handle directories so that they are consistent with s3
-      // TODO: make directory if not exists
-      return rename(this.jail(source), this.jail(destination));
+      const jailedSource = this.jail(source);
+      const jailedDestination = this.jail(destination);
+
+      return rename(jailedSource, jailedDestination);
     } catch (e) {
       return Promise.reject(e);
     }
@@ -251,9 +255,10 @@ export class FileDriver extends DiskDriver {
    */
   copy(source: string, destination: string): Promise<void> {
     try {
-      // TODO: handle directories so that they are consistent with s3
-      // TODO: make directory if not exists
-      return copyFile(this.jail(source), this.jail(destination));
+      const jailedSource = this.jail(source);
+      const jailedDestination = this.jail(destination);
+
+      return copyFile(jailedSource, jailedDestination);
     } catch (e) {
       return Promise.reject(e);
     }

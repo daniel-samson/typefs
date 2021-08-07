@@ -27,6 +27,10 @@ function itShouldBehaveLikeADiskDriver(disk: DiskDriver) {
   const subEmptyDirectory = '/empty/';
   const fromFile = '/from.txt';
   const toFile = '/to.txt';
+  const fromDirectory = '/from/';
+  const fromDirectoryFile = `${fromDirectory}/baz.txt`;
+  const toDirectory = '/to/';
+  const toDirectoryFile = `${toDirectory}/baz.txt`;
 
   describe('DiskDriver', () => {
     // eslint-disable-next-line mocha/no-hooks-for-single-case
@@ -36,6 +40,8 @@ function itShouldBehaveLikeADiskDriver(disk: DiskDriver) {
       await disk.deleteFile(fromFile).catch(() => false);
       await disk.deleteDirectory(subDirectory).catch(() => false);
       await disk.deleteDirectory(subEmptyDirectory).catch(() => false);
+      await disk.deleteDirectory(fromDirectory).catch(() => false);
+      await disk.deleteDirectory(toDirectory).catch(() => false);
     });
 
     it('should behave like a DiskDriver', async () => {
@@ -45,11 +51,16 @@ function itShouldBehaveLikeADiskDriver(disk: DiskDriver) {
       assert.isNotOk(await disk.exists(fromFile));
       assert.isNotOk(await disk.exists(toFile));
       assert.isNotOk(await disk.exists(subEmptyDirectory));
+      assert.isNotOk(await disk.exists(fromDirectory));
 
       // create file structure
       await disk.write(rootFile, data);
       await disk.write(fromFile, data);
+      await disk.createDirectory(subDirectory);
       await disk.write(subFile, data);
+      await disk.createDirectory(fromDirectory);
+      await disk.createDirectory(toDirectory);
+      await disk.write(fromDirectoryFile, data);
       /* directory paths must end in '/' */
       await disk.createDirectory(subEmptyDirectory);
 
@@ -73,6 +84,7 @@ function itShouldBehaveLikeADiskDriver(disk: DiskDriver) {
         '/foo.txt',
         '/from.txt',
         '/sub/bar.txt',
+        '/from/baz.txt',
       ]);
       assert.sameDeepMembers(await disk.listContents('/sub/', { recursive: true }), ['/sub/bar.txt']);
       assert.sameDeepMembers(await disk.listContents('/empty/', { recursive: true }), []);
@@ -98,7 +110,21 @@ function itShouldBehaveLikeADiskDriver(disk: DiskDriver) {
       assert.isOk(await disk.exists(toFile));
       assert.equal((await disk.read(toFile)).toString(), data.toString());
 
-      // TODO: copy / move directories - tests
+      //  copy directories should throw error
+      try {
+        await disk.copy(fromDirectoryFile, toDirectoryFile);
+        assert.fail();
+      } catch (e) {
+        assert.ok(true);
+      }
+
+      // Move Directory should throw an error if the destination is not empty
+      try {
+        await disk.move(fromDirectory, toDirectory);
+        assert.fail();
+      } catch (e) {
+        assert.ok(true);
+      }
 
       // delete / cleanup - tests
       await disk.deleteFile(rootFile);

@@ -244,52 +244,88 @@ export class S3Driver extends DiskDriver {
   }
 
   move(source: string, destination: string): Promise<void> {
-    // TODO: handle directories so that they are consistent with s3
-    // TODO: make directory if not exists
-    const conds = new CopyConditions();
-    return new Promise((resolve, reject) => {
+    const conditions = new CopyConditions();
+    return new Promise((_resolve, _reject) => {
       const from = this.jail(source);
-      const to = this.jail(destination);
-      // minio doesn't have a move object
+      let to = this.jail(destination);
+
+      if (source.endsWith('/') && destination.endsWith('/')) {
+        // eg. move('/from/', '/to/')
+        this.minioListContents(to, true).then((objects) => {
+          const list: string[] = objects
+            .filter((s) => !s.endsWith('.typefs'))
+            .filter((s) => !s.endsWith('/'));
+          if (list.length > 0) {
+            _reject(new Error(`ENOTEMPTY: directory not empty, move '${from}' -> '${to}'`));
+          }
+
+          // rename directory (slow)
+          this.listContents(from, { recursive: true })
+            .then((entries) => {
+              // foreach -> move
+              const moving: any[] = [];
+              entries.forEach((entry) => moving.push(this.move(entry, to)));
+              Promise.all(moving)
+                .then(() => _resolve())
+                .catch(_reject);
+            })
+            .catch(_reject);
+        });
+
+        return;
+      }
+
+      if (destination.endsWith('/')) {
+        // eg. move('foo.txt', '/sub/')
+        const toFile = from.substr(from.lastIndexOf('/'));
+        to += toFile;
+        to = to.replace('//', '/');
+      }
+
+      // minio/s3 doesn't have a move function
       // so we will copy and then delete the source file instead
       this.client.copyObject(
         this.configuration.bucket,
         to,
         `${this.configuration.bucket}/${from}`,
-        conds,
+        conditions,
         (e: any) => {
           if (e) {
-            reject(e);
+            _reject(e);
             return;
           }
 
           this.deleteFile(from)
-            .then(resolve)
-            .catch(reject);
+            .then(_resolve)
+            .catch(_reject);
         },
       );
     });
   }
 
   copy(source: string, destination: string): Promise<void> {
-    // TODO: handle directories so that they are consistent with s3
-    // TODO: make directory if not exists
-    const conds = new CopyConditions();
-    return new Promise((resolve, reject) => {
+    const conditions = new CopyConditions();
+    return new Promise((_resolve, _reject) => {
       const from = this.jail(source);
       const to = this.jail(destination);
+
+      if (source.endsWith('/') || destination.endsWith('/')) {
+        _reject(new Error(`EISDIR: illegal operation on a directory, copy '${from}' -> '${to}'`));
+        return;
+      }
+
       this.client.copyObject(
         this.configuration.bucket,
         to,
         `${this.configuration.bucket}/${from}`,
-        conds,
+        conditions,
         (e: any) => {
           if (e) {
-            reject(e);
+            _reject(e);
             return;
           }
 
-          resolve();
+          _resolve();
         },
       );
     });
