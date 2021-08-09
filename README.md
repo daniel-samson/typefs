@@ -18,7 +18,7 @@ Please refer to our [roadmaps](https://github.com/daniel-samson/typefs/projects?
 
 - Keeps your code readable.
 - Restricts access to directories in your filesystem.
-- You only have to learn one set of methods for each type of storage.
+- You only have to learn one set of methods.
 - Prevents vendor lock in
 - Supports JSON, TypeScript, or JavaScript configuration files.
 - Can be configured via environment variables to change the storage configuration.
