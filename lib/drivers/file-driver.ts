@@ -2,23 +2,21 @@ import {
   join,
   resolve,
   dirname,
-  sep,
 } from 'path';
 import {
   Dirent,
   Stats,
   readdirSync,
   promises,
-  existsSync,
-  mkdirSync
+  createReadStream,
+  createWriteStream,
 } from 'fs';
 import { FileDisk } from 'lib/config';
+import { Readable } from 'stream';
 import { Util } from './util';
 import { DiskDriver, ListDirectoryOptions } from './disk-driver';
 
 const {
-  readFile,
-  writeFile,
   unlink,
   rmdir,
   stat,
@@ -49,8 +47,29 @@ export class FileDriver extends DiskDriver {
    * configuration.jail is set to true
    */
   read(path: string): Promise<Buffer> {
+    return new Promise((_resolve, _reject) => {
+      this.readStream(path)
+        .then((stream: Readable) => {
+          const buffer: any[] = [];
+          stream.on('data', (d: any) => buffer.push(d));
+          stream.on('error', _reject);
+          stream.on('end', () => _resolve(Buffer.concat(buffer)));
+        })
+        .catch(_reject);
+    });
+  }
+
+  /**
+   * Opens file and reads the contents of file in chunks.
+   *
+   * @param {string} path relative to root of disk
+   * @returns {Promise<Readable>} contents of file
+   * @throws Error when path is outside root directory and
+   * configuration.jail is set to true
+   */
+  readStream(path: string): Promise<Readable> {
     try {
-      return readFile(this.jail(path));
+      return Promise.resolve(createReadStream(this.jail(path)));
     } catch (e) {
       return Promise.reject(e);
     }
@@ -66,6 +85,19 @@ export class FileDriver extends DiskDriver {
    * configuration.jail is set to true
    */
   async write(path: string, data: Buffer): Promise<void> {
+    return this.writeStream(path, Readable.from(data));
+  }
+
+  /**
+   * Opens file and writes the contents of file in chunks.
+   *
+   * @param {string} path relative to root of disk
+   * @param {Readable} data contents of file
+   * @returns {Promise<void>}
+   * @throws Error when path is outside root directory and
+   * configuration.jail is set to true
+   */
+  async writeStream(path: string, data: Readable): Promise<void> {
     try {
       const p = this.jail(path);
 
@@ -73,7 +105,11 @@ export class FileDriver extends DiskDriver {
       if (!await this.exists(dir)) {
         await this.createDirectory(dir);
       }
-      return writeFile(p, data);
+
+      const stream = createWriteStream(p);
+      data.pipe(stream);
+
+      return Promise.resolve();
     } catch (e) {
       return Promise.reject(e);
     }

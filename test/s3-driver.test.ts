@@ -1,10 +1,11 @@
 import { assert } from 'chai';
 import mock from 'mock-fs';
+import { MockMinio } from './stub/mock-minio';
 import { S3Disk, S3Driver } from '..';
 
 describe('S3Driver', () => {
   const configuration: S3Disk = {
-    root: '/',
+    root: '/app',
     jail: true,
     bucket: 'test-bucket',
     endPoint: '127.0.0.1',
@@ -28,6 +29,9 @@ describe('S3Driver', () => {
 
   describe('read', () => {
     const driver = new S3Driver(configuration);
+    const mockedMinio = new MockMinio(configuration);
+    // @ts-ignore
+    driver.client = mockedMinio;
 
     beforeEach(() => {
       mock({
@@ -46,14 +50,25 @@ describe('S3Driver', () => {
       assert.equal(actual.toString('utf-8'), expected);
     });
 
-    it('must not read file outside root when jail is set to true', async () => {
+    it('must not read file outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../etc/hosts'";
-      assert.throws(() => driver.read('../etc/hosts'), e);
+      // assert.throws(() => driver.read('../etc/hosts'), e);
+      driver.read('../etc/hosts')
+        .then(() => {
+          done('should throw error');
+        })
+        .catch((error: Error) => {
+          assert.equal(error.message, e);
+          done();
+        });
     });
   });
 
   describe('write', () => {
     const driver = new S3Driver(configuration);
+    const mockedMinio = new MockMinio(configuration);
+    // @ts-ignore
+    driver.client = mockedMinio;
 
     beforeEach(() => {
       mock({
@@ -66,18 +81,35 @@ describe('S3Driver', () => {
       mock.restore();
     });
 
-    it('should write file when it exists', async () => {
-      assert.doesNotThrow(() => driver.write('foo.txt', Buffer.from('...')));
+    it('should write file when it exists', (done) => {
+      // assert.doesNotThrow(() => driver.write('foo.txt', Buffer.from('...')));
+      driver.write('foo.txt', Buffer.from('...'))
+        .then(() => {
+          done();
+        })
+        .catch(() => {
+          done('should not throw error when file exists');
+        });
     });
 
-    it('must not write to file outside root when jail is set to true', async () => {
+    it('must not write to file outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../etc/passwd'";
-      assert.throws(() => driver.write('../etc/passwd', Buffer.from('...')), e);
+      driver.write('../etc/passwd', Buffer.from('...'))
+        .then(() => {
+          done('should throw error');
+        })
+        .catch((error: Error) => {
+          assert.equal(error.message, e);
+          done();
+        });
     });
   });
 
   describe('deleteFile', () => {
     const driver = new S3Driver(configuration);
+    const mockedMinio = new MockMinio(configuration);
+    // @ts-ignore
+    driver.client = mockedMinio;
 
     beforeEach(() => {
       mock({
@@ -90,22 +122,42 @@ describe('S3Driver', () => {
       mock.restore();
     });
 
-    it('should delete file when it exists', async () => {
-      assert.doesNotThrow(() => driver.deleteFile('foo.txt'));
+    it('should delete file when it exists', (done) => {
+      const e = "no such file or directory 'foo.txt'";
+      driver.deleteFile('foo.txt')
+        .then(() => {
+          done();
+        })
+        .catch((error: Error) => {
+          assert.equal(error.message, e);
+          done(`should not throw error ${error}`);
+        });
     });
 
-    it('must not delete file outside root when jail is set to true', async () => {
+    it('must not delete file outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../etc/passwd'";
-      assert.throws(() => driver.deleteFile('../etc/passwd'), e);
+      // assert.throws(() => driver.deleteFile('../etc/passwd'), e);
+      driver.deleteFile('../etc/passwd')
+        .then(() => {
+          // eslint-disable-next-line sonarjs/no-duplicate-string
+          done('must throw error');
+        })
+        .catch((error: Error) => {
+          assert.equal(error.message, e);
+          done();
+        });
     });
   });
 
   describe('deleteDirectory', () => {
     const driver = new S3Driver(configuration);
+    const mockedMinio = new MockMinio(configuration);
+    // @ts-ignore
+    driver.client = mockedMinio;
 
     beforeEach(() => {
       mock({
-        '/app/foo': {},
+        '/app/foo/.typefs': '',
         '/var': {},
       });
     });
@@ -114,18 +166,36 @@ describe('S3Driver', () => {
       mock.restore();
     });
 
-    it('should delete directory when it exists', async () => {
-      assert.doesNotThrow(() => driver.deleteDirectory('foo'));
+    it('should delete directory when it exists', (done) => {
+      // assert.doesNotThrow(() => driver.deleteDirectory('foo'));
+      driver.deleteDirectory('foo')
+        .then(() => {
+          done();
+        })
+        .catch((e) => {
+          done(e);
+        });
     });
 
-    it('must not delete directory outside root when jail is set to true', async () => {
+    it('must not delete directory outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../var'";
-      assert.throws(() => driver.deleteDirectory('../var'), e);
+      // assert.throws(() => driver.deleteDirectory('../var'), e);
+      driver.deleteDirectory('../var')
+        .then(() => {
+          done('must throw error');
+        })
+        .catch((error: Error) => {
+          assert.equal(error.message, e);
+          done();
+        });
     });
   });
 
   describe('createDirectory', () => {
     const driver = new S3Driver(configuration);
+    const mockedMinio = new MockMinio(configuration);
+    // @ts-ignore
+    driver.client = mockedMinio;
 
     beforeEach(() => {
       mock({
@@ -137,9 +207,16 @@ describe('S3Driver', () => {
       mock.restore();
     });
 
-    it('should create a directory', async () => {
-      assert.doesNotThrow(() => driver.createDirectory('foo'));
-      assert.exists('/app/foo');
+    it('should create a directory', (done) => {
+      // assert.doesNotThrow(() => driver.createDirectory('foo'));
+      driver.createDirectory('foo')
+        .then(() => {
+          assert.exists('/app/foo');
+          done();
+        })
+        .catch(() => {
+          done('should not throw error when creating a directory');
+        });
     });
 
     it('must not create directory outside root when jail is set to true', (done) => {
@@ -151,6 +228,9 @@ describe('S3Driver', () => {
 
   describe('listContents', () => {
     const driver = new S3Driver(configuration);
+    const mockedMinio = new MockMinio(configuration);
+    // @ts-ignore
+    driver.client = mockedMinio;
 
     beforeEach(() => {
       mock({
@@ -164,40 +244,59 @@ describe('S3Driver', () => {
       mock.restore();
     });
 
-    it('should list contents of directory', async () => {
-      assert.doesNotThrow(() => driver.listContents('/'));
+    it('should list contents of directory', (done) => {
+      // assert.doesNotThrow(() => driver.listContents('/'));
+      driver.listContents('/')
+        .then((actual) => {
+          const expected = [
+            '/bar.json',
+            '/foo.json',
+          ];
 
-      const expected = [
-        '/bar.json',
-        '/baz',
-        '/foo.json',
-      ];
-
-      const actual = await driver.listContents('/');
-      assert.deepEqual(actual, expected);
+          assert.deepEqual(actual, expected);
+          done();
+        })
+        .catch((e) => {
+          done(e);
+        });
     });
 
-    it('should list sub-directories when recursive is set to true', async () => {
-      assert.doesNotThrow(() => driver.listContents(''));
+    it('should list sub-directories when recursive is set to true', (done) => {
+      // assert.doesNotThrow(() => driver.listContents(''));
+      driver.listContents('/', { recursive: true })
+        .then((actual) => {
+          const expected = [
+            '/bar.json',
+            '/baz/foo.json',
+            '/foo.json',
+          ];
 
-      const expected = [
-        '/bar.json',
-        '/baz/foo.json',
-        '/foo.json',
-      ];
-
-      const actual = await driver.listContents('/', { recursive: true });
-      assert.deepEqual(actual, expected);
+          assert.deepEqual(actual, expected);
+          done();
+        })
+        .catch((e) => {
+          done(e);
+        });
     });
-
-    it('must not list contents of directory outside root when jail is set to true', async () => {
+    it('must not list contents of directory outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../etc'";
-      assert.throws(() => driver.listContents('../etc'), e);
+      // assert.throws(() => driver.listContents('../etc'), e);
+      driver.listContents('../etc')
+        .then(() => {
+          done('must throw error');
+        })
+        .catch((error: Error) => {
+          assert.equal(error.message, e);
+          done();
+        });
     });
   });
 
   describe('exists', () => {
     const driver = new S3Driver(configuration);
+    const mockedMinio = new MockMinio(configuration);
+    // @ts-ignore
+    driver.client = mockedMinio;
 
     beforeEach(() => {
       mock({
@@ -227,6 +326,9 @@ describe('S3Driver', () => {
 
   describe('lastModified', () => {
     const driver = new S3Driver(configuration);
+    const mockedMinio = new MockMinio(configuration);
+    // @ts-ignore
+    driver.client = mockedMinio;
 
     beforeEach(() => {
       mock({
@@ -259,6 +361,9 @@ describe('S3Driver', () => {
 
   describe('fileSize', () => {
     const driver = new S3Driver(configuration);
+    const mockedMinio = new MockMinio(configuration);
+    // @ts-ignore
+    driver.client = mockedMinio;
 
     beforeEach(() => {
       mock({
@@ -293,6 +398,9 @@ describe('S3Driver', () => {
 
   describe('move', () => {
     const driver = new S3Driver(configuration);
+    const mockedMinio = new MockMinio(configuration);
+    // @ts-ignore
+    driver.client = mockedMinio;
 
     beforeEach(() => {
       mock({
@@ -310,19 +418,38 @@ describe('S3Driver', () => {
       assert.exists('/app/hope.xml');
     });
 
-    it('must not get file outside root when jail is set to true', async () => {
+    it('must not get file outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../etc/foo.xml'";
-      assert.throws(() => driver.move('../etc/foo.xml', 'secret.xml'), e);
+      // assert.throws(() => driver.move('../etc/foo.xml', 'secret.xml'), e);
+      driver.move('../etc/foo.xml', 'secret.xml')
+        .then(() => {
+          done('must throw error');
+        })
+        .catch((error: Error) => {
+          assert.equal(error.message, e);
+          done();
+        });
     });
 
-    it('must not move file outside root when jail is set to true', async () => {
+    it('must not move file outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../etc/foo.xml'";
-      assert.throws(() => driver.move('baz.xml', '../etc/foo.xml'), e);
+      // assert.throws(() => driver.move('baz.xml', '../etc/foo.xml'), e);
+      driver.move('baz.xml', '../etc/foo.xml')
+        .then(() => {
+          done('must throw error');
+        })
+        .catch((error: Error) => {
+          assert.equal(error.message, e);
+          done();
+        });
     });
   });
 
   describe('copy', () => {
     const driver = new S3Driver(configuration);
+    const mockedMinio = new MockMinio(configuration);
+    // @ts-ignore
+    driver.client = mockedMinio;
 
     beforeEach(() => {
       mock({
@@ -340,14 +467,30 @@ describe('S3Driver', () => {
       assert.exists('/app/hope.xml');
     });
 
-    it('must not get file outside root when jail is set to true', async () => {
+    it('must not get file outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../etc/baz.xml'";
-      assert.throws(() => driver.copy('../etc/baz.xml', 'secret.xml'), e);
+      // assert.throws(() => driver.copy('../etc/baz.xml', 'secret.xml'), e);
+      driver.copy('../etc/baz.xml', 'secret.xml')
+        .then(() => {
+          done('must throw error');
+        })
+        .catch((error: Error) => {
+          assert.equal(error.message, e);
+          done();
+        });
     });
 
-    it('must not copy file outside root when jail is set to true', async () => {
+    it('must not copy file outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../etc/baz.xml'";
-      assert.throws(() => driver.copy('bar.xml', '../etc/baz.xml'), e);
+      // assert.throws(() => driver.copy('bar.xml', '../etc/baz.xml'), e);
+      driver.copy('bar.xml', '../etc/baz.xml')
+        .then(() => {
+          done('must throw error');
+        })
+        .catch((error: Error) => {
+          assert.equal(error.message, e);
+          done();
+        });
     });
   });
 });

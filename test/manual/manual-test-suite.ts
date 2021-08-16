@@ -7,6 +7,10 @@ import { DiskDriver } from '../..';
  * Users should feel confident that they can switch drivers without
  * re-writing code.
  *
+ * However it is important that we document
+ * the differences in behavior, performance between each drivers,
+ * and provide good recommendations.
+ *
  * @param {DiskDriver} disk driver currently being tested
  */
 function itShouldBehaveLikeADiskDriver(disk: DiskDriver) {

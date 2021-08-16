@@ -86,7 +86,7 @@ describe('FileDriver', () => {
           done();
         })
         .catch(() => {
-          done('should not throw error');
+          done('should not throw error when file exists');
         });
     });
 
@@ -97,7 +97,7 @@ describe('FileDriver', () => {
           done();
         })
         .catch(() => {
-          done('should not throw error');
+          done('should not throw error when subdirectory doesn\'t exists');
         });
     });
 
@@ -186,7 +186,7 @@ describe('FileDriver', () => {
           done();
         })
         .catch(() => {
-          done('should not throw error');
+          done('should not throw error when directory exists');
         });
     });
 
@@ -230,7 +230,7 @@ describe('FileDriver', () => {
           done();
         })
         .catch(() => {
-          done('should not throw error');
+          done('should not throw error when creating a directory');
         });
     });
 
@@ -264,13 +264,12 @@ describe('FileDriver', () => {
     it('should list contents of directory', (done) => {
       // assert.doesNotThrow(() => driver.listContents('/'));
       driver.listContents('/')
-        .then(async () => {
+        .then((actual) => {
           const expected = [
             '/bar.json',
             '/foo.json',
           ];
 
-          const actual = await driver.listContents('/');
           assert.deepEqual(actual, expected);
           done();
         })
@@ -281,15 +280,14 @@ describe('FileDriver', () => {
 
     it('should list sub-directories when recursive is set to true', (done) => {
       // assert.doesNotThrow(() => driver.listContents(''));
-      driver.listContents('')
-        .then(async () => {
+      driver.listContents('/', { recursive: true })
+        .then((actual) => {
           const expected = [
             '/bar.json',
             '/baz/foo.json',
             '/foo.json',
           ];
 
-          const actual = await driver.listContents('/', { recursive: true });
           assert.deepEqual(actual, expected);
           done();
         })

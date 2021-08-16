@@ -1,3 +1,5 @@
+import { Readable } from 'stream';
+
 export interface ListDirectoryOptions {
   recursive?: boolean
 }
@@ -18,6 +20,17 @@ export abstract class DiskDriver {
   abstract read(path: string): Promise<Buffer>;
 
   /**
+   * Opens file and chunks the contents of file.
+   *
+   * @param {string} path relative to root of disk
+   * @returns {Promise<Readable>} contents of file
+   * @throws Error when path is outside root directory and
+   * configuration.jail is set to true
+   */
+  // eslint-disable-next-line no-unused-vars
+  abstract readStream(path: string): Promise<Readable>;
+
+  /**
    * Opens file and writes full contents to file.
    *
    * @param {string} path relative to root of disk
@@ -28,6 +41,18 @@ export abstract class DiskDriver {
    */
   // eslint-disable-next-line no-unused-vars
   abstract write(path: string, data: Buffer): Promise<void>;
+
+  /**
+   * Opens file and writes full contents to file.
+   *
+   * @param {string} path relative to root of disk
+   * @param {Readable} data contents of file
+   * @returns {Promise<void>}
+   * @throws Error when path is outside root directory and
+   * configuration.jail is set to true
+   */
+  // eslint-disable-next-line no-unused-vars
+  abstract writeStream(path: string, data: Readable): Promise<void>;
 
   /**
    * Deletes file.

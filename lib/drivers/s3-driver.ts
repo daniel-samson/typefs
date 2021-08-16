@@ -7,6 +7,9 @@ import { S3Disk } from 'lib/config';
 import { Util } from './util';
 import { DiskDriver, ListDirectoryOptions } from './disk-driver';
 
+// TODO: write 100% coverage for S3Driver
+// TODO: rewrite calls to client so that they return promises instead of using a callback
+// TODO: consider swapping promises for async await
 export class S3Driver extends DiskDriver {
   protected configuration: S3Disk;
 
@@ -37,83 +40,98 @@ export class S3Driver extends DiskDriver {
 
   readStream(path: string): Promise<Readable> {
     return new Promise((resolve, reject) => {
-      const fileName = this.jail(path);
-      this.client.getObject(
-        this.configuration.bucket,
-        fileName,
-        (err, stream) => {
-          if (err) {
-            reject(err);
-            return;
-          }
-
-          resolve(stream);
-        },
-      );
+      try {
+        const fileName = this.jail(path);
+        this.client.getObject(
+          this.configuration.bucket,
+          fileName,
+          (err, stream) => {
+            if (err) {
+              reject(err);
+              return;
+            }
+            resolve(stream);
+          },
+        );
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 
   write(path: string, data: Buffer): Promise<void> {
-    return this.writeStream(path, data);
+    return this.writeStream(path, Readable.from(data));
   }
 
-  writeStream(path: string, data: Readable | Buffer): Promise<void> {
+  writeStream(path: string, data: Readable): Promise<void> {
     return new Promise((resolve, reject) => {
-      const fileName = this.jail(path);
-      this.client.putObject(
-        this.configuration.bucket,
-        fileName,
-        data,
-        (err: any) => {
-          if (err) {
-            reject(err);
-            return;
-          }
+      try {
+        const fileName = this.jail(path);
+        this.client.putObject(
+          this.configuration.bucket,
+          fileName,
+          data,
+          (err: any) => {
+            if (err) {
+              reject(err);
+              return;
+            }
 
-          resolve();
-        },
-      );
+            resolve();
+          },
+        );
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 
   deleteFile(path: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      const fileName = this.jail(path);
-      this.client.removeObject(
-        this.configuration.bucket,
-        fileName,
-        (er: any) => {
-          if (er) {
-            reject(er);
-            return;
-          }
+      try {
+        const fileName = this.jail(path);
+        this.client.removeObject(
+          this.configuration.bucket,
+          fileName,
+          (er: any) => {
+            if (er) {
+              reject(er);
+              return;
+            }
 
-          resolve();
-        },
-      );
+            resolve();
+          },
+        );
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 
   deleteDirectory(path: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      // fake delete directory
-      const fileName = this.jail(path);
-      this.minioListContents(fileName)
-        .then((objects) => {
-          this.client.removeObjects(
-            this.configuration.bucket,
-            objects,
-            (erro: any) => {
-              if (erro) {
-                reject(erro);
-                return;
-              }
+      try {
+        // fake delete directory
+        const fileName = this.jail(path);
+        this.minioListContents(fileName)
+          .then((objects) => {
+            this.client.removeObjects(
+              this.configuration.bucket,
+              objects,
+              (erro: any) => {
+                if (erro) {
+                  reject(erro);
+                  return;
+                }
 
-              resolve();
-            },
-          );
-        })
-        .catch(reject);
+                resolve();
+              },
+            );
+          })
+          .catch(reject);
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 
@@ -122,37 +140,45 @@ export class S3Driver extends DiskDriver {
     // so instead we need to create an empty file.
     // the alternative would be to just ignore this command
     return new Promise((resolve, reject) => {
-      const fileName = this.jail(`${path}/.typefs`);
-      this.client.putObject(
-        this.configuration.bucket,
-        fileName,
-        Buffer.from(''),
-        (error) => {
-          if (error) {
-            reject(error);
-            return;
-          }
+      try {
+        const fileName = this.jail(`${path}/.typefs`);
+        this.client.putObject(
+          this.configuration.bucket,
+          fileName,
+          Buffer.from(''),
+          (error) => {
+            if (error) {
+              reject(error);
+              return;
+            }
 
-          resolve();
-        },
-      );
+            resolve();
+          },
+        );
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 
   listContents(path: string, options?: ListDirectoryOptions): Promise<string[]> {
     return new Promise((resolve, reject) => {
-      const p = this.jail(path);
-      const mapPrefixRoot = (s: string) => (s.startsWith('/') ? s : `/${s}`);
+      try {
+        const p = this.jail(path);
+        const mapPrefixRoot = (s: string) => (s.startsWith('/') ? s : `/${s}`);
 
-      this.minioListContents(p, options?.recursive === true)
-        .then((objects) => {
-          const list: string[] = objects
-            .filter((s) => !s.endsWith('.typefs'))
-            .filter((s) => !s.endsWith('/'))
-            .map(mapPrefixRoot);
-          resolve(list);
-        })
-        .catch(reject);
+        this.minioListContents(p, options?.recursive === true)
+          .then((objects) => {
+            const list: string[] = objects
+              .filter((s) => !s.endsWith('.typefs'))
+              .filter((s) => !s.endsWith('/'))
+              .map(mapPrefixRoot);
+            resolve(list);
+          })
+          .catch(reject);
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 
@@ -168,6 +194,7 @@ export class S3Driver extends DiskDriver {
 
       stream.on('data', (obj) => {
         if (obj.name === undefined && obj.prefix) {
+          // its a directory
           list.push(obj.prefix);
           return;
         }
@@ -181,153 +208,173 @@ export class S3Driver extends DiskDriver {
 
   exists(path: string): Promise<boolean> {
     return new Promise((resolve) => {
-      const fileName = this.jail(path);
-      // fake directory support
-      if (path.endsWith('/')) {
-        this.minioListContents(fileName, true)
-          .then((entries: string[]) => {
-            resolve(entries.length > 0);
-          })
-          .catch(() => resolve(false));
-        return;
+      try {
+        const fileName = this.jail(path);
+        // fake directory support
+        if (path.endsWith('/')) {
+          this.minioListContents(fileName, true)
+            .then((entries: string[]) => {
+              resolve(entries.length > 0);
+            })
+            .catch(() => resolve(false));
+          return;
+        }
+
+        this.client.statObject(
+          this.configuration.bucket,
+          fileName,
+          (err: any) => {
+            if (err) {
+              resolve(false);
+              return;
+            }
+
+            resolve(true);
+          },
+        );
+      } catch (e) {
+        resolve(false);
       }
-
-      this.client.statObject(
-        this.configuration.bucket,
-        fileName,
-        (err: any) => {
-          if (err) {
-            resolve(false);
-            return;
-          }
-
-          resolve(true);
-        },
-      );
     });
   }
 
   lastModified(path: string): Promise<Date> {
     return new Promise((resolve, reject) => {
-      const fileName = this.jail(path);
-      this.client.statObject(
-        this.configuration.bucket,
-        fileName,
-        (err: any, s) => {
-          if (err) {
-            reject(err);
-            return;
-          }
+      try {
+        const fileName = this.jail(path);
+        this.client.statObject(
+          this.configuration.bucket,
+          fileName,
+          (err: any, s) => {
+            if (err) {
+              reject(err);
+              return;
+            }
 
-          resolve(s.lastModified);
-        },
-      );
+            resolve(s.lastModified);
+          },
+        );
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 
   fileSize(path: string): Promise<Number> {
     return new Promise((resolve, reject) => {
-      const fileName = this.jail(path);
-      this.client.statObject(
-        this.configuration.bucket,
-        fileName,
-        (err: any, s) => {
-          if (err) {
-            reject(err);
-            return;
-          }
+      try {
+        const fileName = this.jail(path);
+        this.client.statObject(
+          this.configuration.bucket,
+          fileName,
+          (err: any, s) => {
+            if (err) {
+              reject(err);
+              return;
+            }
 
-          resolve(s.size);
-        },
-      );
+            resolve(s.size);
+          },
+        );
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 
   move(source: string, destination: string): Promise<void> {
     const conditions = new CopyConditions();
     return new Promise((_resolve, _reject) => {
-      const from = this.jail(source);
-      let to = this.jail(destination);
+      try {
+        const from = this.jail(source);
+        let to = this.jail(destination);
 
-      if (source.endsWith('/') && destination.endsWith('/')) {
+        if (source.endsWith('/') && destination.endsWith('/')) {
         // eg. move('/from/', '/to/')
-        this.minioListContents(to, true).then((objects) => {
-          const list: string[] = objects
-            .filter((s) => !s.endsWith('.typefs'))
-            .filter((s) => !s.endsWith('/'));
-          if (list.length > 0) {
-            _reject(new Error(`ENOTEMPTY: directory not empty, move '${from}' -> '${to}'`));
-          }
+          this.minioListContents(to, true).then((objects) => {
+            const list: string[] = objects
+              .filter((s) => !s.endsWith('.typefs'))
+              .filter((s) => !s.endsWith('/'));
+            if (list.length > 0) {
+              _reject(new Error(`ENOTEMPTY: directory not empty, move '${from}' -> '${to}'`));
+            }
 
-          // rename directory (slow)
-          this.listContents(from, { recursive: true })
-            .then((entries) => {
+            // rename directory (slow)
+            this.listContents(from, { recursive: true })
+              .then((entries) => {
               // foreach -> move
-              const moving: any[] = [];
-              entries.forEach((entry) => moving.push(this.move(entry, to)));
-              Promise.all(moving)
-                .then(() => _resolve())
-                .catch(_reject);
-            })
-            .catch(_reject);
-        });
+                const moving: any[] = [];
+                entries.forEach((entry) => moving.push(this.move(entry, to)));
+                Promise.all(moving)
+                  .then(() => _resolve())
+                  .catch(_reject);
+              })
+              .catch(_reject);
+          });
 
-        return;
-      }
+          return;
+        }
 
-      if (destination.endsWith('/')) {
+        if (destination.endsWith('/')) {
         // eg. move('foo.txt', '/sub/')
-        const toFile = from.substr(from.lastIndexOf('/'));
-        to += toFile;
-        to = to.replace('//', '/');
+          const toFile = from.substr(from.lastIndexOf('/'));
+          to += toFile;
+          to = to.replace('//', '/');
+        }
+
+        // minio/s3 doesn't have a move function
+        // so we will copy and then delete the source file instead
+        this.client.copyObject(
+          this.configuration.bucket,
+          to,
+          `${this.configuration.bucket}/${from}`,
+          conditions,
+          (e: any) => {
+            if (e) {
+              _reject(e);
+              return;
+            }
+
+            this.deleteFile(from.replace(this.configuration.root, ''))
+              .then(_resolve)
+              .catch(_reject);
+          },
+        );
+      } catch (e) {
+        _reject(e);
       }
-
-      // minio/s3 doesn't have a move function
-      // so we will copy and then delete the source file instead
-      this.client.copyObject(
-        this.configuration.bucket,
-        to,
-        `${this.configuration.bucket}/${from}`,
-        conditions,
-        (e: any) => {
-          if (e) {
-            _reject(e);
-            return;
-          }
-
-          this.deleteFile(from)
-            .then(_resolve)
-            .catch(_reject);
-        },
-      );
     });
   }
 
   copy(source: string, destination: string): Promise<void> {
     const conditions = new CopyConditions();
     return new Promise((_resolve, _reject) => {
-      const from = this.jail(source);
-      const to = this.jail(destination);
+      try {
+        const from = this.jail(source);
+        const to = this.jail(destination);
 
-      if (source.endsWith('/') || destination.endsWith('/')) {
-        _reject(new Error(`EISDIR: illegal operation on a directory, copy '${from}' -> '${to}'`));
-        return;
+        if (source.endsWith('/') || destination.endsWith('/')) {
+          _reject(new Error(`EISDIR: illegal operation on a directory, copy '${from}' -> '${to}'`));
+          return;
+        }
+
+        this.client.copyObject(
+          this.configuration.bucket,
+          to,
+          `${this.configuration.bucket}/${from}`,
+          conditions,
+          (e: any) => {
+            if (e) {
+              _reject(e);
+              return;
+            }
+
+            _resolve();
+          },
+        );
+      } catch (e) {
+        _reject(e);
       }
-
-      this.client.copyObject(
-        this.configuration.bucket,
-        to,
-        `${this.configuration.bucket}/${from}`,
-        conditions,
-        (e: any) => {
-          if (e) {
-            _reject(e);
-            return;
-          }
-
-          _resolve();
-        },
-      );
     });
   }
 
