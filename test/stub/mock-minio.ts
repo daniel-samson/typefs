@@ -8,9 +8,6 @@ import {
   mkdirSync,
   existsSync,
   unlinkSync,
-  WriteStream,
-  ReadStream,
-  read,
   statSync,
 } from 'fs';
 import { join, dirname } from 'path';
@@ -23,7 +20,7 @@ import {
   BucketItemCopy,
   BucketItemStat,
 } from 'minio';
-import { Readable, Writable } from 'stream';
+import { Readable } from 'stream';
 import { S3Disk } from '../../lib';
 
 const {
@@ -41,8 +38,11 @@ const {
 export class MockMinio {
   private configuration: S3Disk;
 
+  forceError;
+
   constructor(config: S3Disk) {
     this.configuration = config;
+    this.forceError = false;
   }
 
   getObject(
@@ -52,6 +52,10 @@ export class MockMinio {
   ): void {
     if (this.configuration.bucket !== bucketName) {
       return callback(new Error('getObject Bucket not found'), new Readable());
+    }
+
+    if (this.forceError) {
+      return callback(new Error('error forced'), new Readable());
     }
 
     const readable = createReadStream(objectName);
@@ -67,6 +71,11 @@ export class MockMinio {
   ): void {
     if (this.configuration.bucket !== bucketName) {
       callback(new Error('putObject Bucket not found'), '');
+      return;
+    }
+
+    if (this.forceError) {
+      callback(new Error('error forced'), '');
       return;
     }
 
@@ -89,12 +98,23 @@ export class MockMinio {
       callback(new Error('putObject Bucket not found'));
       return;
     }
+
+    if (this.forceError) {
+      callback(new Error('error forced'));
+      return;
+    }
+
     unlink(objectName)
       .then(() => callback(null))
       .catch((e) => callback(e));
   }
 
   removeObjects(bucketName: string, objectNames: string[], callback: NoResultCallback): void {
+    if (this.forceError) {
+      callback(new Error('error forced'));
+      return;
+    }
+
     // eslint-disable-next-line no-restricted-syntax
     for (const objectName of objectNames) {
       unlinkSync(this.configuration.root + objectName);
@@ -162,6 +182,11 @@ export class MockMinio {
       metaData: {},
     };
 
+    if (this.forceError) {
+      callback(new Error('error forced'), errorItemStat);
+      return;
+    }
+
     if (this.configuration.bucket !== bucketName) {
       callback(new Error('Bucket not found'), errorItemStat);
       return;
@@ -191,6 +216,11 @@ export class MockMinio {
       etag: 'mocked',
       lastModified: new Date(),
     };
+
+    if (this.forceError) {
+      callback(new Error('error forced'), errorItem);
+      return;
+    }
 
     if (this.configuration.bucket !== bucketName) {
       callback(new Error('Bucket not found'), errorItem);

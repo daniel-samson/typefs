@@ -12,6 +12,7 @@ describe('S3Driver', () => {
     port: 9000,
     accessKey: 'private',
     secretKey: 'secret',
+    useSSL: true,
   };
 
   describe('configuration', () => {
@@ -24,6 +25,7 @@ describe('S3Driver', () => {
       assert.equal(actual, expected);
       assert.equal(actual.jail, configuration.jail);
       assert.equal(actual.root, configuration.root);
+      assert.equal(actual.useSSL, true);
     });
   });
 
@@ -42,6 +44,8 @@ describe('S3Driver', () => {
 
     afterEach(() => {
       mock.restore();
+      // @ts-ignore
+      driver.client.forceError = false;
     });
 
     it('should read file when it exists', async () => {
@@ -52,8 +56,21 @@ describe('S3Driver', () => {
 
     it('must not read file outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../etc/hosts'";
-      // assert.throws(() => driver.read('../etc/hosts'), e);
       driver.read('../etc/hosts')
+        .then(() => {
+          done('should throw error');
+        })
+        .catch((error: Error) => {
+          assert.equal(error.message, e);
+          done();
+        });
+    });
+
+    it('must handle errors', (done) => {
+      const e = "error forced";
+      // @ts-ignore
+      driver.client.forceError = true;
+      driver.read('/foo.txt')
         .then(() => {
           done('should throw error');
         })
@@ -79,6 +96,8 @@ describe('S3Driver', () => {
 
     afterEach(() => {
       mock.restore();
+      // @ts-ignore
+      driver.client.forceError = false;
     });
 
     it('should write file when it exists', (done) => {
@@ -95,6 +114,20 @@ describe('S3Driver', () => {
     it('must not write to file outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../etc/passwd'";
       driver.write('../etc/passwd', Buffer.from('...'))
+        .then(() => {
+          done('should throw error');
+        })
+        .catch((error: Error) => {
+          assert.equal(error.message, e);
+          done();
+        });
+    });
+
+    it('must handle errors', (done) => {
+      const e = "error forced";
+      // @ts-ignore
+      driver.client.forceError = true;
+      driver.write('foo.txt', Buffer.from('...'))
         .then(() => {
           done('should throw error');
         })
@@ -120,6 +153,8 @@ describe('S3Driver', () => {
 
     afterEach(() => {
       mock.restore();
+      // @ts-ignore
+      driver.client.forceError = false;
     });
 
     it('should delete file when it exists', (done) => {
@@ -147,6 +182,20 @@ describe('S3Driver', () => {
           done();
         });
     });
+
+    it('must handle errors', (done) => {
+      const e = "error forced";
+      // @ts-ignore
+      driver.client.forceError = true;
+      driver.deleteFile('foo.txt')
+        .then(() => {
+          done('should throw error');
+        })
+        .catch((error: Error) => {
+          assert.equal(error.message, e);
+          done();
+        });
+    });
   });
 
   describe('deleteDirectory', () => {
@@ -164,6 +213,8 @@ describe('S3Driver', () => {
 
     afterEach(() => {
       mock.restore();
+      // @ts-ignore
+      driver.client.forceError = false;
     });
 
     it('should delete directory when it exists', (done) => {
@@ -189,6 +240,20 @@ describe('S3Driver', () => {
           done();
         });
     });
+
+    it('must handle errors', (done) => {
+      const e = "error forced";
+      // @ts-ignore
+      driver.client.forceError = true;
+      driver.deleteDirectory('foo')
+        .then(() => {
+          done('should throw error');
+        })
+        .catch((error: Error) => {
+          assert.equal(error.message, e);
+          done();
+        });
+    });
   });
 
   describe('createDirectory', () => {
@@ -205,6 +270,8 @@ describe('S3Driver', () => {
 
     afterEach(() => {
       mock.restore();
+      // @ts-ignore
+      driver.client.forceError = false;
     });
 
     it('should create a directory', (done) => {
@@ -223,6 +290,20 @@ describe('S3Driver', () => {
       driver.createDirectory('../etc')
         .then(() => done('failed to jail createDirectory'))
         .catch(() => done());
+    });
+
+    it('must handle errors', (done) => {
+      const e = "error forced";
+      // @ts-ignore
+      driver.client.forceError = true;
+      driver.createDirectory('foo')
+        .then(() => {
+          done('should throw error');
+        })
+        .catch((error: Error) => {
+          assert.equal(error.message, e);
+          done();
+        });
     });
   });
 
@@ -301,11 +382,15 @@ describe('S3Driver', () => {
     beforeEach(() => {
       mock({
         '/app/baz.html': '...',
+        '/app/empty': {},
+        '/app/full/baz.html': '...',
       });
     });
 
     afterEach(() => {
       mock.restore();
+      // @ts-ignore
+      driver.client.forceError = false;
     });
 
     it('should return true when file exists', async () => {
@@ -320,6 +405,27 @@ describe('S3Driver', () => {
 
     it('must return false when path is outside root and jail is set to true', async () => {
       const actual = await driver.exists('../etc');
+      assert.isNotOk(actual);
+    });
+
+    it('must return false if file not found', async () => {
+      // @ts-ignore
+      driver.client.forceError = true;
+      const actual = await driver.exists('baz.html');
+      assert.isNotOk(actual);
+    });
+
+    it('must return false if directory not found', async () => {
+      // @ts-ignore
+      driver.client.forceError = true;
+      const actual = await driver.exists('baz/');
+      assert.isNotOk(actual);
+    });
+
+    it('must return false if directory is empty', async () => {
+      // @ts-ignore
+      driver.client.forceError = true;
+      const actual = await driver.exists('empty/');
       assert.isNotOk(actual);
     });
   });
@@ -406,11 +512,16 @@ describe('S3Driver', () => {
       mock({
         '/app/baz.xml': '...',
         '/etc/foo.xml': '...',
+        '/app/fae/bar.xml': '...',
+        '/app/full/bar.xml': '...',
+        '/app/full/baz.xml': '...',
       });
     });
 
     afterEach(() => {
       mock.restore();
+      // @ts-ignore
+      driver.client.forceError = false;
     });
 
     it('should move file', async () => {
@@ -443,6 +554,33 @@ describe('S3Driver', () => {
           done();
         });
     });
+
+    it('must handle errors', (done) => {
+      const e = "error forced";
+      // @ts-ignore
+      driver.client.forceError = true;
+      driver.move('bar.xml', 'hope.xml')
+        .then(() => {
+          done('should throw error');
+        })
+        .catch((error: Error) => {
+          assert.equal(error.message, e);
+          done();
+        });
+    });
+
+    it('must not move files into folder that is full', (done) => {
+      const e = "ENOTEMPTY: directory not empty, move '/fae/' -> '/full/'";
+      // @ts-ignore
+      driver.move('/fae/', '/full/')
+        .then(() => {
+          done('should throw error');
+        })
+        .catch((error: Error) => {
+          assert.equal(error.message, e);
+          done();
+        });
+    });
   });
 
   describe('copy', () => {
@@ -460,6 +598,8 @@ describe('S3Driver', () => {
 
     afterEach(() => {
       mock.restore();
+      // @ts-ignore
+      driver.client.forceError = false;
     });
 
     it('should copy file', async () => {
@@ -486,6 +626,33 @@ describe('S3Driver', () => {
       driver.copy('bar.xml', '../etc/baz.xml')
         .then(() => {
           done('must throw error');
+        })
+        .catch((error: Error) => {
+          assert.equal(error.message, e);
+          done();
+        });
+    });
+
+    it('must handle errors', (done) => {
+      const e = "error forced";
+      // @ts-ignore
+      driver.client.forceError = true;
+      driver.copy('bar.xml', 'hope.xml')
+        .then(() => {
+          done('should throw error');
+        })
+        .catch((error: Error) => {
+          assert.equal(error.message, e);
+          done();
+        });
+    });
+
+    it('must not copy directory', (done) => {
+      const e = "EISDIR: illegal operation on a directory, copy 'bar/' -> 'hope/'";
+      // @ts-ignore
+      driver.copy('bar/', 'hope/')
+        .then(() => {
+          done('should throw error');
         })
         .catch((error: Error) => {
           assert.equal(error.message, e);

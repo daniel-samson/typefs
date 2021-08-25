@@ -19,10 +19,6 @@ export class S3Driver extends DiskDriver {
     super();
     this.configuration = c;
     this.client = new Client(this.configuration);
-
-    if (this.configuration.useSSL === undefined) {
-      this.configuration.useSSL = true;
-    }
   }
 
   read(path: string): Promise<Buffer> {
@@ -296,7 +292,7 @@ export class S3Driver extends DiskDriver {
               .filter((s) => !s.endsWith('.typefs'))
               .filter((s) => !s.endsWith('/'));
             if (list.length > 0) {
-              _reject(new Error(`ENOTEMPTY: directory not empty, move '${from}' -> '${to}'`));
+              _reject(new Error(`ENOTEMPTY: directory not empty, move '${source}' -> '${destination}'`));
             }
 
             // rename directory (slow)
@@ -354,7 +350,7 @@ export class S3Driver extends DiskDriver {
         const to = this.jail(destination);
 
         if (source.endsWith('/') || destination.endsWith('/')) {
-          _reject(new Error(`EISDIR: illegal operation on a directory, copy '${from}' -> '${to}'`));
+          _reject(new Error(`EISDIR: illegal operation on a directory, copy '${source}' -> '${destination}'`));
           return;
         }
 
