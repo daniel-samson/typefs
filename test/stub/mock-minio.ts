@@ -232,6 +232,10 @@ export class MockMinio {
     const from = sourceObject.replace(`${this.configuration.bucket}/`, '');
     const to = objectName.replace(`${this.configuration.bucket}/`, '');
 
+    if (!existsSync(dirname(to))) {
+      mkdirSync(dirname(to), { recursive: true });
+    }
+
     copyFile(from, to)
       .then(() => callback(null, {
         etag: 'mocked',
