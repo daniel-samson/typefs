@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 /* eslint-disable class-methods-use-this */
 import {
   createReadStream,
@@ -131,7 +132,7 @@ export class MockMinio {
     const p = prefix || '/';
 
     let absolutePaths: string[] = [];
-    if(existsSync(p)) {
+    if (existsSync(p)) {
       if (recursive === true) {
         absolutePaths = this.recursiveReadDir(p).sort();
       } else {
