@@ -1,6 +1,6 @@
 {
   "name": "typefs",
-  "version": "1.2.1",
+  "version": "1.1.1",
   "description": "A file storage package that provides a single interface to many types of filesystems.",
   "author": "Daniel Samson <12231216+daniel-samson@users.noreply.github.com>",
   "license": "MIT",
