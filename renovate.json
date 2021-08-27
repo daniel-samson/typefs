@@ -1,0 +1,25 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "groupName": "all dependencies",
+  "separateMajorMinor": false,
+  "groupSlug": "all",
+  "packageRules": [
+    {
+      "matchPackagePatterns": [
+        "*"
+      ],
+      "groupName": "all dependencies",
+      "groupSlug": "all",
+      "automerge": true
+    }
+  ],
+  "lockFileMaintenance": {
+    "enabled": false,
+    "automerge": true
+  },
+  "schedule": [
+    "every weekend"
+  ]
+}
