@@ -1,9 +1,13 @@
+/* eslint-disable sonarjs/no-identical-functions */
+/* eslint-disable sonarjs/no-duplicate-string */
 import { assert } from 'chai';
 import mock from 'mock-fs';
 import { MockMinio } from './stub/mock-minio';
 import { S3Disk, S3Driver } from '..';
 
 describe('S3Driver', () => {
+  const shouldThrowError = 'should throw error';
+  const forcedError = 'error forced';
   const configuration: S3Disk = {
     root: '/app',
     jail: true,
@@ -58,7 +62,7 @@ describe('S3Driver', () => {
       const e = "no such file or directory '../etc/hosts'";
       driver.read('../etc/hosts')
         .then(() => {
-          done('should throw error');
+          done(shouldThrowError);
         })
         .catch((error: Error) => {
           assert.equal(error.message, e);
@@ -67,15 +71,14 @@ describe('S3Driver', () => {
     });
 
     it('must handle errors', (done) => {
-      const e = "error forced";
       // @ts-ignore
       driver.client.forceError = true;
       driver.read('/foo.txt')
         .then(() => {
-          done('should throw error');
+          done(shouldThrowError);
         })
         .catch((error: Error) => {
-          assert.equal(error.message, e);
+          assert.equal(error.message, forcedError);
           done();
         });
     });
@@ -115,7 +118,7 @@ describe('S3Driver', () => {
       const e = "no such file or directory '../etc/passwd'";
       driver.write('../etc/passwd', Buffer.from('...'))
         .then(() => {
-          done('should throw error');
+          done(shouldThrowError);
         })
         .catch((error: Error) => {
           assert.equal(error.message, e);
@@ -124,15 +127,14 @@ describe('S3Driver', () => {
     });
 
     it('must handle errors', (done) => {
-      const e = "error forced";
       // @ts-ignore
       driver.client.forceError = true;
       driver.write('foo.txt', Buffer.from('...'))
         .then(() => {
-          done('should throw error');
+          done(shouldThrowError);
         })
         .catch((error: Error) => {
-          assert.equal(error.message, e);
+          assert.equal(error.message, forcedError);
           done();
         });
     });
@@ -184,15 +186,14 @@ describe('S3Driver', () => {
     });
 
     it('must handle errors', (done) => {
-      const e = "error forced";
       // @ts-ignore
       driver.client.forceError = true;
       driver.deleteFile('foo.txt')
         .then(() => {
-          done('should throw error');
+          done(shouldThrowError);
         })
         .catch((error: Error) => {
-          assert.equal(error.message, e);
+          assert.equal(error.message, forcedError);
           done();
         });
     });
@@ -242,15 +243,14 @@ describe('S3Driver', () => {
     });
 
     it('must handle errors', (done) => {
-      const e = "error forced";
       // @ts-ignore
       driver.client.forceError = true;
       driver.deleteDirectory('foo')
         .then(() => {
-          done('should throw error');
+          done(shouldThrowError);
         })
         .catch((error: Error) => {
-          assert.equal(error.message, e);
+          assert.equal(error.message, forcedError);
           done();
         });
     });
@@ -293,15 +293,14 @@ describe('S3Driver', () => {
     });
 
     it('must handle errors', (done) => {
-      const e = "error forced";
       // @ts-ignore
       driver.client.forceError = true;
       driver.createDirectory('foo')
         .then(() => {
-          done('should throw error');
+          done(shouldThrowError);
         })
         .catch((error: Error) => {
-          assert.equal(error.message, e);
+          assert.equal(error.message, forcedError);
           done();
         });
     });
@@ -359,6 +358,23 @@ describe('S3Driver', () => {
           done(e);
         });
     });
+
+    it('should prefix /', (done) => {
+      // assert.doesNotThrow(() => driver.listContents(''));
+      driver.listContents('baz', { recursive: true })
+        .then((actual) => {
+          const expected = [
+            '/baz/foo.json',
+          ];
+
+          assert.deepEqual(actual, expected);
+          done();
+        })
+        .catch((e) => {
+          done(e);
+        });
+    });
+
     it('must not list contents of directory outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../etc'";
       // assert.throws(() => driver.listContents('../etc'), e);
@@ -515,6 +531,7 @@ describe('S3Driver', () => {
         '/app/fae/bar.xml': '...',
         '/app/full/bar.xml': '...',
         '/app/full/baz.xml': '...',
+        '/app/zoo/': {},
       });
     });
 
@@ -527,6 +544,21 @@ describe('S3Driver', () => {
     it('should move file', async () => {
       await driver.move('baz.xml', 'hope.xml');
       assert.exists('/app/hope.xml');
+    });
+
+    it('should move folder', async () => {
+      await driver.move('fae/', 'tae/');
+      assert.exists('/app/tae/bar.xml');
+    });
+
+    it('should move file into folder', async () => {
+      await driver.move('baz.xml', 'zoo/');
+      assert.exists('/app/zoo/baz.xml');
+    });
+
+    it('should rename directory', async () => {
+      await driver.move('full/', 'zoo/');
+      assert.exists('/app/renamed/baz.xml');
     });
 
     it('must not get file outside root when jail is set to true', (done) => {
@@ -556,15 +588,14 @@ describe('S3Driver', () => {
     });
 
     it('must handle errors', (done) => {
-      const e = "error forced";
       // @ts-ignore
       driver.client.forceError = true;
       driver.move('bar.xml', 'hope.xml')
         .then(() => {
-          done('should throw error');
+          done(shouldThrowError);
         })
         .catch((error: Error) => {
-          assert.equal(error.message, e);
+          assert.equal(error.message, forcedError);
           done();
         });
     });
@@ -574,7 +605,7 @@ describe('S3Driver', () => {
       // @ts-ignore
       driver.move('/fae/', '/full/')
         .then(() => {
-          done('should throw error');
+          done(shouldThrowError);
         })
         .catch((error: Error) => {
           assert.equal(error.message, e);
@@ -634,15 +665,14 @@ describe('S3Driver', () => {
     });
 
     it('must handle errors', (done) => {
-      const e = "error forced";
       // @ts-ignore
       driver.client.forceError = true;
       driver.copy('bar.xml', 'hope.xml')
         .then(() => {
-          done('should throw error');
+          done(shouldThrowError);
         })
         .catch((error: Error) => {
-          assert.equal(error.message, e);
+          assert.equal(error.message, forcedError);
           done();
         });
     });
@@ -652,7 +682,7 @@ describe('S3Driver', () => {
       // @ts-ignore
       driver.copy('bar/', 'hope/')
         .then(() => {
-          done('should throw error');
+          done(shouldThrowError);
         })
         .catch((error: Error) => {
           assert.equal(error.message, e);

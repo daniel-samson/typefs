@@ -131,10 +131,12 @@ export class MockMinio {
     const p = prefix || '/';
 
     let absolutePaths: string[] = [];
-    if (recursive === true) {
-      absolutePaths = this.recursiveReadDir(p).sort();
-    } else {
-      absolutePaths = this.filterFiles(p, readdirSync(p, { withFileTypes: true })).sort();
+    if(existsSync(p)) {
+      if (recursive === true) {
+        absolutePaths = this.recursiveReadDir(p).sort();
+      } else {
+        absolutePaths = this.filterFiles(p, readdirSync(p, { withFileTypes: true })).sort();
+      }
     }
 
     const { root } = this.configuration;
@@ -192,7 +194,6 @@ export class MockMinio {
       return;
     }
 
-    // TODO: implement
     stat(objectName)
       .then((s) => {
         callback(null, {

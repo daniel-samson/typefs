@@ -291,22 +291,23 @@ export class S3Driver extends DiskDriver {
             const list: string[] = objects
               .filter((s) => !s.endsWith('.typefs'))
               .filter((s) => !s.endsWith('/'));
+
             if (list.length > 0) {
               _reject(new Error(`ENOTEMPTY: directory not empty, move '${source}' -> '${destination}'`));
             }
 
             // rename directory (slow)
-            this.listContents(from, { recursive: true })
+            this.minioListContents(from, true)
               .then((entries) => {
               // foreach -> move
                 const moving: any[] = [];
-                entries.forEach((entry) => moving.push(this.move(entry, to)));
+                entries.forEach((entry) => moving.push(this.move(entry, destination)));
                 Promise.all(moving)
                   .then(() => _resolve())
                   .catch(_reject);
               })
               .catch(_reject);
-          });
+          }).catch(_reject);
 
           return;
         }
