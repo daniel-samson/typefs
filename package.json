@@ -27,6 +27,11 @@
     "build": "tsc --build",
     "watch": "tsc --watch",
     "test": "npm run mocha test/*.test.ts",
+    "test-file-driver": "npm run mocha test/file-driver.test.ts",
+    "test-s3-driver": "npm run mocha test/s3-driver.test.ts",
+    "test-manual-file-driver": "mocha --config .mocharc.json test/manual/file-driver.test.ts",
+    "test-manual-s3-driver": "mocha --config .mocharc.json test/manual/s3-driver.test.ts",
+    "test-manual": "mocha --config .mocharc.json test/manual/*.test.ts",
     "mocha": "mocha --parallel --config .mocharc.json",
     "lint": "eslint . --ext .ts",
     "fix": "eslint --fix --ext .ts .",
@@ -62,5 +67,9 @@
     "source-map-support": "0.5.19",
     "ts-node": "10.2.1",
     "typescript": "4.4.2"
+  },
+  "dependencies": {
+    "@types/minio": "^7.0.8",
+    "minio": "^7.0.18"
   }
 }

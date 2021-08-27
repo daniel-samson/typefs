@@ -8,7 +8,7 @@ import {
 /**
  * Supported Disk Drivers
  */
-export type DiskDriver = FileDriver;
+export type TDiskDriver = FileDriver;
 
 /**
  * Storage access
@@ -42,9 +42,9 @@ export class Storage {
    *
    * @param {string|undefined} disk to select. leaving undefined will result in
    * default disk being selected
-   * @returns {DiskDriver} common interface for all drivers
+   * @returns {TDiskDriver} common interface for all drivers
    */
-  static disk(disk?: string): DiskDriver {
+  static disk(disk?: string): TDiskDriver {
     const inst = Storage.getInstance();
 
     if (inst.conf === undefined) {
