@@ -1,14 +1,15 @@
-import { FileDriver } from './drivers';
+import { FileDriver, S3Driver } from './drivers';
 import {
   Configuration,
   DiskConfiguration,
   FileDisk,
+  S3Disk,
 } from './config';
 
 /**
  * Supported Disk Drivers
  */
-export type TDiskDriver = FileDriver;
+export type TDiskDriver = FileDriver | S3Driver;
 
 /**
  * Storage access
@@ -59,7 +60,8 @@ export class Storage {
     switch (driver) {
       case 'file':
         return new FileDriver(selected as FileDisk);
-        // TODO: add more drivers
+      case 's3':
+        return new S3Driver(selected as S3Disk);
       default:
         throw new Error(`Disk driver "${disk}" is not implemented`);
     }
