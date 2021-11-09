@@ -59,7 +59,7 @@ export class MockMinio {
       return callback(new Error('error forced'), new Readable());
     }
 
-    const readable = createReadStream(objectName);
+    const readable = createReadStream(MockMinio.toPath(objectName));
 
     return callback(null, readable);
   }
@@ -80,13 +80,13 @@ export class MockMinio {
       return;
     }
 
-    const dir = dirname(objectName);
+    const dir = dirname(MockMinio.toPath(objectName));
 
     if (!existsSync(dir)) {
       mkdirSync(dir, { recursive: true });
     }
 
-    const writable = createWriteStream(objectName);
+    const writable = createWriteStream(MockMinio.toPath(objectName));
     if (stream.readable) {
       stream.pipe(writable);
     }
@@ -105,7 +105,7 @@ export class MockMinio {
       return;
     }
 
-    unlink(objectName)
+    unlink(MockMinio.toPath(objectName))
       .then(() => callback(null))
       .catch((e) => callback(e));
   }
@@ -118,7 +118,7 @@ export class MockMinio {
 
     // eslint-disable-next-line no-restricted-syntax
     for (const objectName of objectNames) {
-      unlinkSync(this.configuration.root + objectName);
+      unlinkSync(this.configuration.root + MockMinio.toPath(objectName));
     }
 
     callback(null);
@@ -129,7 +129,7 @@ export class MockMinio {
     prefix?: string,
     recursive?: boolean,
   ): BucketStream<BucketItem> {
-    const p = prefix || '/';
+    const p = MockMinio.toPath(prefix || '/');
 
     let absolutePaths: string[] = [];
     if (existsSync(p)) {
@@ -195,7 +195,7 @@ export class MockMinio {
       return;
     }
 
-    stat(objectName)
+    stat(MockMinio.toPath(objectName))
       .then((s) => {
         callback(null, {
           etag: 'mocked',
@@ -229,8 +229,8 @@ export class MockMinio {
       return;
     }
 
-    const from = sourceObject.replace(`${this.configuration.bucket}/`, '');
-    const to = objectName.replace(`${this.configuration.bucket}/`, '');
+    const from = MockMinio.toPath(sourceObject).replace(`${this.configuration.bucket}/`, '');
+    const to = MockMinio.toPath(objectName).replace(`${this.configuration.bucket}/`, '');
 
     if (!existsSync(dirname(to))) {
       mkdirSync(dirname(to), { recursive: true });
@@ -263,5 +263,15 @@ export class MockMinio {
     return directoryEntities
       .filter((e: Dirent) => e.isFile())
       .map((e: Dirent) => join(path, e.name));
+  }
+
+  /**
+   * Converts s3 key back into file path
+   *
+   * @param {string} key s3 key
+   * @returns {string} path
+   */
+  protected static toPath(key: string): string {
+    return key.startsWith('/') ? key : `/${key}`;
   }
 }
