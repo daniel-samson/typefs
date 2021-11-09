@@ -28,6 +28,7 @@ module.exports = {
       label: 'Drivers',
       items: [
         "drivers/file",
+        "drivers/s3",
       ],
     },
 
