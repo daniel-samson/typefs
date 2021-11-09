@@ -37,7 +37,7 @@ export class S3Driver extends DiskDriver {
   readStream(path: string): Promise<Readable> {
     return new Promise((resolve, reject) => {
       try {
-        const fileName = this.jail(path);
+        const fileName = S3Driver.toKey(this.jail(path));
         this.client.getObject(
           this.configuration.bucket,
           fileName,
@@ -62,7 +62,7 @@ export class S3Driver extends DiskDriver {
   writeStream(path: string, data: Readable): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
-        const fileName = this.jail(path);
+        const fileName = S3Driver.toKey(this.jail(path));
         this.client.putObject(
           this.configuration.bucket,
           fileName,
@@ -85,7 +85,7 @@ export class S3Driver extends DiskDriver {
   deleteFile(path: string): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
-        const fileName = this.jail(path);
+        const fileName = S3Driver.toKey(this.jail(path));
         this.client.removeObject(
           this.configuration.bucket,
           fileName,
@@ -108,7 +108,7 @@ export class S3Driver extends DiskDriver {
     return new Promise((resolve, reject) => {
       try {
         // fake delete directory
-        const fileName = this.jail(path);
+        const fileName = S3Driver.toKey(this.jail(path));
         this.minioListContents(fileName)
           .then((objects) => {
             this.client.removeObjects(
@@ -137,7 +137,7 @@ export class S3Driver extends DiskDriver {
     // the alternative would be to just ignore this command
     return new Promise((resolve, reject) => {
       try {
-        const fileName = this.jail(`${path}/.typefs`);
+        const fileName = S3Driver.toKey(this.jail(`${path}/.typefs`));
         this.client.putObject(
           this.configuration.bucket,
           fileName,
@@ -160,7 +160,7 @@ export class S3Driver extends DiskDriver {
   listContents(path: string, options?: ListDirectoryOptions): Promise<string[]> {
     return new Promise((resolve, reject) => {
       try {
-        const p = this.jail(path);
+        const p = S3Driver.toKey(this.jail(path));
         const mapPrefixRoot = (s: string) => (s.startsWith('/') ? s : `/${s}`);
 
         this.minioListContents(p, options?.recursive === true)
@@ -205,7 +205,7 @@ export class S3Driver extends DiskDriver {
   exists(path: string): Promise<boolean> {
     return new Promise((resolve) => {
       try {
-        const fileName = this.jail(path);
+        const fileName = S3Driver.toKey(this.jail(path));
         // fake directory support
         if (path.endsWith('/')) {
           this.minioListContents(fileName, true)
@@ -237,7 +237,7 @@ export class S3Driver extends DiskDriver {
   lastModified(path: string): Promise<Date> {
     return new Promise((resolve, reject) => {
       try {
-        const fileName = this.jail(path);
+        const fileName = S3Driver.toKey(this.jail(path));
         this.client.statObject(
           this.configuration.bucket,
           fileName,
@@ -259,7 +259,7 @@ export class S3Driver extends DiskDriver {
   fileSize(path: string): Promise<Number> {
     return new Promise((resolve, reject) => {
       try {
-        const fileName = this.jail(path);
+        const fileName = S3Driver.toKey(this.jail(path));
         this.client.statObject(
           this.configuration.bucket,
           fileName,
@@ -347,8 +347,8 @@ export class S3Driver extends DiskDriver {
     const conditions = new CopyConditions();
     return new Promise((_resolve, _reject) => {
       try {
-        const from = this.jail(source);
-        const to = this.jail(destination);
+        const from = S3Driver.toKey(this.jail(source));
+        const to = S3Driver.toKey(this.jail(destination));
 
         if (source.endsWith('/') || destination.endsWith('/')) {
           _reject(new Error(`EISDIR: illegal operation on a directory, copy '${source}' -> '${destination}'`));
@@ -385,5 +385,15 @@ export class S3Driver extends DiskDriver {
    */
   protected jail(path: string): string {
     return Util.jail(path, this.configuration.root, this.configuration.jail);
+  }
+
+  /**
+   * Converts path to S3 Key
+   *
+   * @param {string} path absolute path
+   * @returns {string} S3 key
+   */
+  protected static toKey(path: string): string {
+    return path.startsWith('/') ? path.substr(1) : path;
   }
 }
