@@ -24,12 +24,22 @@ try {
 }
 ```
 
-### Paramaters
+### write()
+#### Paramaters
 
 | Param | Type   | Description                 |
 | ----- | ------ | --------------------------- |
 | path  | string | path relative to disks root |
 | data  | Buffer | contents of file            |
+
+
+### writeStream()
+#### Paramaters
+
+| Param | Type   | Description                 |
+| ----- | ------ | --------------------------- |
+| path  | string | path relative to disks root |
+| data  | Stream | contents of file            |
 
 :::info
 **Returns:** `Promise<void>`
