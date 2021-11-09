@@ -7,24 +7,29 @@ Disk Driver is the common interface between all disks. This means that you only 
 
 ## Writing Files
 
+TypeFS offers two methods for reading files: **write()** and **writeStream()**. The **write()** method is ideal for writing small files (less than 10KB). The **writeStream()** method is a more memory efficient, as it can write large files in chunks.
+
 ### Example
 
 ```typescript
-import { Storage } from 'typefs';
+import { Storage } from "typefs";
 
 try {
-    const contents = "hello";
-    await Storage.disk().write('/manifest.json', contents);
+  const contents = "hello";
+  await Storage.disk().write("/manifest.json", contents);
+
+  await Storage.disk().writeStream("/vlog.mp4", Storage.disk('tmp').readStream('03cdsedc'));
 } catch (e) {
-    // handle the error
+  // handle the error
 }
 ```
 
 ### Paramaters
-| Param | Type            | Description           |
-|-------|-----------------|-----------------------|
+
+| Param | Type   | Description                 |
+| ----- | ------ | --------------------------- |
 | path  | string | path relative to disks root |
-| data  | Buffer | contents of file |
+| data  | Buffer | contents of file            |
 
 :::info
 **Returns:** `Promise<void>`
@@ -36,22 +41,37 @@ try {
 
 ## Reading Files
 
+TypeFS offers two methods for reading files: **read()** and **readStream()**. The **read()** method is ideal for retrieving small files (less than 10KB). The **readStream()** method is a more memory efficient, as it can read large files in chunks.
+
 ### Example
 
 ```typescript
-import { Storage } from 'typefs';
+import { Storage } from "typefs";
 
 try {
-    const contents: Buffer = await Storage.disk().read('/manifest.json');
-    console.log(console.toString());
+  // small files
+  const contents: Buffer = await Storage.disk().read("/manifest.json");
+  console.log(contents.toString());
+
+  // large files
+  const stream: Readable = await Storage.disk().readStream("/podcast.mp3");
+  const buffer: any[] = [];
+  stream.on("data", (part: any) => {
+    // do something with part
+  });
+  stream.on("error", reject);
+  stream.on("end", () => {
+    console.log("stream has ended, there is no more data to fetch");
+  });
 } catch (e) {
-    // handle the error
+  // handle the error
 }
 ```
 
 ### Paramaters
-| Param | Type            | Description           |
-|-------|-----------------|-----------------------|
+
+| Param | Type   | Description                 |
+| ----- | ------ | --------------------------- |
 | path  | string | path relative to disks root |
 
 :::info
@@ -67,18 +87,19 @@ try {
 ### Example
 
 ```typescript
-import { Storage } from 'typefs';
+import { Storage } from "typefs";
 
 try {
-    await Storage.disk().deleteFile('/manifest.json');
+  await Storage.disk().deleteFile("/manifest.json");
 } catch (e) {
-    // handle the error
+  // handle the error
 }
 ```
 
 ### Paramaters
-| Param | Type            | Description           |
-|-------|-----------------|-----------------------|
+
+| Param | Type   | Description                 |
+| ----- | ------ | --------------------------- |
 | path  | string | path relative to disks root |
 
 :::info
@@ -96,18 +117,19 @@ Removes directory
 ### Example
 
 ```typescript
-import { Storage } from 'typefs';
+import { Storage } from "typefs";
 
 try {
-    await Storage.disk().deleteDirectory('/profiles');
+  await Storage.disk().deleteDirectory("/profiles");
 } catch (e) {
-    // handle the error
+  // handle the error
 }
 ```
 
 ### Paramaters
-| Param | Type            | Description           |
-|-------|-----------------|-----------------------|
+
+| Param | Type   | Description                 |
+| ----- | ------ | --------------------------- |
 | path  | string | path relative to disks root |
 
 :::info
@@ -125,18 +147,19 @@ Creates directory
 ### Example
 
 ```typescript
-import { Storage } from 'typefs';
+import { Storage } from "typefs";
 
 try {
-    await Storage.disk().createDirectory('/profiles');
+  await Storage.disk().createDirectory("/profiles");
 } catch (e) {
-    // handle the error
+  // handle the error
 }
 ```
 
 ### Paramaters
-| Param | Type            | Description           |
-|-------|-----------------|-----------------------|
+
+| Param | Type   | Description                 |
+| ----- | ------ | --------------------------- |
 | path  | string | path relative to disks root |
 
 :::info
@@ -149,36 +172,40 @@ try {
 
 ## List Contents of Directory
 
-There are two ways to list the contents of a directory. You can list the contents of the directory or you can list the contents of the directory including the subdirectories and files as well. 
+There are two ways to list the contents of a directory. You can list the contents of the directory or you can list the contents of the directory including the subdirectories and files as well.
 
 ### Example
+
 **List Contents**
+
 ```typescript
-import { Storage } from 'typefs';
+import { Storage } from "typefs";
 
 try {
-    await Storage.disk().listContents('/profiles');
+  await Storage.disk().listContents("/profiles");
 } catch (e) {
-    // handle the error
+  // handle the error
 }
 ```
 
 **List Contents of Directory including subdirectories and files**
+
 ```typescript
-import { Storage } from 'typefs';
+import { Storage } from "typefs";
 
 try {
-    await Storage.disk().listContents('/profiles', { recursive: true });
+  await Storage.disk().listContents("/profiles", { recursive: true });
 } catch (e) {
-    // handle the error
+  // handle the error
 }
 ```
 
 ### Paramaters
-| Param | Type            | Description           |
-|-------|-----------------|-----------------------|
-| path  | string | path relative to disks root |
-| options  | ListDirectoryOptions |  when recursive is set to true all subdirectories and files are returned |
+
+| Param   | Type                 | Description                                                             |
+| ------- | -------------------- | ----------------------------------------------------------------------- |
+| path    | string               | path relative to disks root                                             |
+| options | ListDirectoryOptions | when recursive is set to true all subdirectories and files are returned |
 
 :::info
 **Returns:** `Promise<string[]>` An array of paths relative to the disks root directory.
@@ -188,28 +215,26 @@ try {
 **Throws:** Error when path is outside the disks root directory and configuration.jail is set to true
 :::
 
-
-
-
 ## Path Exists
 
 ### Example
 
 ```typescript
-import { Storage } from 'typefs';
+import { Storage } from "typefs";
 
 try {
-    if (await Storage.disk().exists('/profiles')) {
-        // do some other fs operation
-    }
+  if (await Storage.disk().exists("/profiles")) {
+    // do some other fs operation
+  }
 } catch (e) {
-    // handle the error
+  // handle the error
 }
 ```
 
 ### Paramaters
-| Param | Type            | Description           |
-|-------|-----------------|-----------------------|
+
+| Param | Type   | Description                 |
+| ----- | ------ | --------------------------- |
 | path  | string | path relative to disks root |
 
 :::info
@@ -236,8 +261,9 @@ try {
 ```
 
 ### Paramaters
-| Param | Type            | Description           |
-|-------|-----------------|-----------------------|
+
+| Param | Type   | Description                 |
+| ----- | ------ | --------------------------- |
 | path  | string | path relative to disks root |
 
 :::info
@@ -264,8 +290,9 @@ try {
 ```
 
 ### Paramaters
-| Param | Type            | Description           |
-|-------|-----------------|-----------------------|
+
+| Param | Type   | Description                 |
+| ----- | ------ | --------------------------- |
 | path  | string | path relative to disks root |
 
 :::info
@@ -292,10 +319,11 @@ try {
 ```
 
 ### Paramaters
-| Param | Type            | Description           |
-|-------|-----------------|-----------------------|
-| source  | string | from path relative to disks root |
-| destination  | string | to path relative to disks root |
+
+| Param       | Type   | Description                      |
+| ----------- | ------ | -------------------------------- |
+| source      | string | from path relative to disks root |
+| destination | string | to path relative to disks root   |
 
 :::info
 **Returns:** `Promise<void>`.
@@ -321,10 +349,11 @@ try {
 ```
 
 ### Paramaters
-| Param | Type            | Description           |
-|-------|-----------------|-----------------------|
-| source  | string | from path relative to disks root |
-| destination  | string | to path relative to disks root |
+
+| Param       | Type   | Description                      |
+| ----------- | ------ | -------------------------------- |
+| source      | string | from path relative to disks root |
+| destination | string | to path relative to disks root   |
 
 :::info
 **Returns:** `Promise<void>`.
@@ -333,4 +362,3 @@ try {
 :::danger
 **Throws:** Error when path is outside the disks root directory and configuration.jail is set to true
 :::
-
