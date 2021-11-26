@@ -57,7 +57,7 @@ export default function Home() {
   return (
     <Layout
       title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      description="The single way to manipulate files in NodeJS/TypeScript">
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className="container">
           <img width="64px" src="img/logo.svg" />
