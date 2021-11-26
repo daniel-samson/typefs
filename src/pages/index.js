@@ -8,29 +8,29 @@ import styles from './styles.module.css';
 
 const features = [
   {
-    title: 'Easy to Use',
+    title: 'Easy Automation',
     imageUrl: '',
     description: (
       <>
-        Type FS makes it easy to access different file systems using the same interface.
+        Write automation scripts to files in many storage locations.
       </>
     ),
   },
   {
-    title: 'Async Support',
+    title: 'Supports Mutliple Protocols',
     imageUrl: '',
     description: (
       <>
-        Type FS uses promises which can be used with async await.
+        Manipilate files across file, s3 etc.
       </>
     ),
   },
   {
-    title: 'Strict Type Checking',
+    title: 'Secure your web application',
     imageUrl: '',
     description: (
       <>
-        Save time troubleshooting bugs with typescript definitions
+       Use jails to restrict access to directories in your filesystem.
       </>
     ),
   },
