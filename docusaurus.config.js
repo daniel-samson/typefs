@@ -1,7 +1,7 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: 'Type FS',
-  tagline: 'The single way to manipulate files in NodeJS/TypeScript',
+  tagline: 'The single way to manipulate files in NodeJS',
   url: 'https://typefs.io/',
   baseUrl: '/',
   onBrokenLinks: 'throw',
