@@ -1,7 +1,7 @@
 Type FS
 ====
 
-Type FS is a package that provides a single way for NodeJS/TypeScript projects to access and manipulate many types of file systems.
+The single way to manipulate files in NodeJS/TypeScript. With Type FS you can define multiple disk locations over common protocols such as file, s3 etc. and then use the the disk manager to manipulate files in those disks.
 
 ## Project Status
 
@@ -16,16 +16,18 @@ Please refer to our [roadmaps](https://github.com/daniel-samson/typefs/projects?
 
 ## Why Type FS
 
-- Keeps your code readable.
-- Restricts access to directories in your filesystem.
+- Write automation scripts to manage files in many storage locations.
+- In your web application, restrict access to directories in your filesystem.
+- Keep your code readable. No callback hell, No excess promises.
 - You only have to learn one set of methods.
-- Prevents vendor lock in
 - Supports JSON, TypeScript, or JavaScript configuration files.
 - Can be configured via environment variables to change the storage configuration.
 
 ## Documentation
 
-Please refer to our [documentation](https://typefs.io/docs/getting-started/installation) to learn how to get started with Type FS.
+- [Getting Started](https://typefs.io/docs/getting-started/installation)
+- [File Driver](https://typefs.io/docs/drivers/file)
+- [S3 Driver](https://typefs.io/docs/drivers/s3)
 
 ## Contributions
 
