@@ -15,9 +15,11 @@ TypeFS offers two methods for reading files: **write()** and **writeStream()**. 
 import { Storage } from "typefs";
 
 try {
+  // write small file
   const contents = "hello";
-  await Storage.disk().write("/manifest.json", contents);
+  await Storage.disk().write("manifest.json", contents);
 
+  // copy large file
   await Storage.disk().writeStream(
     "/vlog.mp4",
     Storage.disk("tmp").readStream("03cdsedc")
@@ -64,11 +66,11 @@ import { Storage } from "typefs";
 
 try {
   // small files
-  const contents: Buffer = await Storage.disk().read("/manifest.json");
+  const contents: Buffer = await Storage.disk().read("manifest.json");
   console.log(contents.toString());
 
   // large files
-  const stream: Readable = await Storage.disk().readStream("/podcast.mp3");
+  const stream: Readable = await Storage.disk().readStream("podcast.mp3");
   const buffer: any[] = [];
   stream.on("data", (part: any) => {
     // do something with part
@@ -104,7 +106,7 @@ try {
 import { Storage } from "typefs";
 
 try {
-  await Storage.disk().deleteFile("/manifest.json");
+  await Storage.disk().deleteFile("manifest.json");
 } catch (e) {
   // handle the error
 }
@@ -134,7 +136,7 @@ Removes directory
 import { Storage } from "typefs";
 
 try {
-  await Storage.disk().deleteDirectory("/profiles");
+  await Storage.disk().deleteDirectory("profiles");
 } catch (e) {
   // handle the error
 }
@@ -164,7 +166,7 @@ Creates directory
 import { Storage } from "typefs";
 
 try {
-  await Storage.disk().createDirectory("/profiles");
+  await Storage.disk().createDirectory("profiles");
 } catch (e) {
   // handle the error
 }
@@ -208,7 +210,7 @@ try {
 import { Storage } from "typefs";
 
 try {
-  await Storage.disk().listContents("/profiles", { recursive: true });
+  await Storage.disk().listContents("profiles", { recursive: true });
 } catch (e) {
   // handle the error
 }
@@ -237,7 +239,7 @@ try {
 import { Storage } from "typefs";
 
 try {
-  if (await Storage.disk().exists("/profiles")) {
+  if (await Storage.disk().exists("profiles")) {
     // do some other fs operation
   }
 } catch (e) {
@@ -267,7 +269,7 @@ try {
 import { Storage } from 'typefs';
 
 try {
-    const lastModified: Date = await Storage.disk().lastModified('/profiles'));
+    const lastModified: Date = await Storage.disk().lastModified('profiles'));
     // ...
 } catch (e) {
     // handle the error
@@ -296,7 +298,7 @@ try {
 import { Storage } from 'typefs';
 
 try {
-    const fileSize: Number = await Storage.disk().fileSize('/profiles'));
+    const fileSize: Number = await Storage.disk().fileSize('profiles'));
     // ...
 } catch (e) {
     // handle the error
@@ -325,7 +327,7 @@ try {
 import { Storage } from 'typefs';
 
 try {
-    await Storage.disk().move('/a.txt', '/b.txt'));
+    await Storage.disk().move('a.txt', 'b.txt'));
     // ...
 } catch (e) {
     // handle the error
@@ -355,7 +357,7 @@ try {
 import { Storage } from 'typefs';
 
 try {
-    await Storage.disk().copy('/a.txt', '/b.txt'));
+    await Storage.disk().copy('a.txt', 'b.txt'));
     // ...
 } catch (e) {
     // handle the error
