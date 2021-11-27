@@ -12,7 +12,7 @@ The **read()** method is ideal for reading small files (less than 10KB):
 ```typescript
 import { Storage } from 'typefs;
 
-async function makeFile() {
+async function readFile() {
     const path = 'file.txt';
     const content = Buffer.from('hello world');
     const file = await Storage.disk('assets').read(path);
@@ -27,7 +27,7 @@ async function makeFile() {
 
 ```typescript
 import { Storage } from "typefs";
-async function makeLargeFile() {
+async function readLargeFile() {
   const fileStream = await Storage.disk("tmp").readStream("video.mp4");
 }
 ```
