@@ -7,7 +7,7 @@ Disk Driver is the common interface between all disks. This means that you only 
 
 ## Writing Files
 
-TypeFS offers two methods for reading files: **write()** and **writeStream()**. The **write()** method is ideal for writing small files (less than 10KB). The **writeStream()** method is a more memory efficient, as it can write large files in chunks.
+TypeFS offers two methods for reading files: **write()** and **writeStream()**. The **write()** method is ideal for writing small files (less than 10KB). The **writeStream()** method is more memory efficient, as it can write large files in chunks.
 
 ### Example
 
@@ -18,13 +18,17 @@ try {
   const contents = "hello";
   await Storage.disk().write("/manifest.json", contents);
 
-  await Storage.disk().writeStream("/vlog.mp4", Storage.disk('tmp').readStream('03cdsedc'));
+  await Storage.disk().writeStream(
+    "/vlog.mp4",
+    Storage.disk("tmp").readStream("03cdsedc")
+  );
 } catch (e) {
   // handle the error
 }
 ```
 
 ### write()
+
 #### Paramaters
 
 | Param | Type   | Description                 |
@@ -32,8 +36,8 @@ try {
 | path  | string | path relative to disks root |
 | data  | Buffer | contents of file            |
 
-
 ### writeStream()
+
 #### Paramaters
 
 | Param | Type   | Description                 |
@@ -51,7 +55,7 @@ try {
 
 ## Reading Files
 
-TypeFS offers two methods for reading files: **read()** and **readStream()**. The **read()** method is ideal for retrieving small files (less than 10KB). The **readStream()** method is a more memory efficient, as it can read large files in chunks.
+TypeFS offers two methods for reading files: **read()** and **readStream()**. The **read()** method is ideal for retrieving small files (less than 10KB). The **readStream()** method is more memory efficient, as it can read large files in chunks.
 
 ### Example
 

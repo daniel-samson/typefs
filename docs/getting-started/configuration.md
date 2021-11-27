@@ -3,15 +3,22 @@ title: Configuration
 sidebar_label: Configuration
 ---
 
-Type FS has a concept called **"disks"**, which lets you configure many directory locations with a storage driver. You can configure the [storage manager](https://daniel-samson.github.io/typefs/docs/api/storage) by editing your project's entry file:
+Before you can use TypeFS, you will need to configure the [storage manager](https://daniel-samson.github.io/typefs/docs/api/storage). TypeFS has a concept called **"disks"**, which lets you define multiple locations with a storage driver.
+
+You can configure the by editing your project's entry file:
 
 ```typescript
-// index.ts
+// typefs.ts
 import { Storage, Configuration } from 'typefs;
 
 Storage.config: Configuration = {
     default: 'assets',
     disks: {
+        tmp: {
+            driver: 'file',
+            root: '/tmp/',
+            jail: true,
+        }
         app: {
             driver: 'file',
             root: '/app/',
@@ -22,10 +29,19 @@ Storage.config: Configuration = {
             root: '/app/public/assets/'
             jail: true,
         }
+        s3: {
+            driver: 's3',
+            root: '/'
+            jail: true,
+            "bucket": process.env.S3_BUCKET || 'my-s3-bucket',
+            "endPoint": process.env.S3_ENDPOINT || 's3.amazonaws.com',
+            "accessKey": process.env.S3_ACCESS_KEY || 'minio-access-key',
+            "secretKey": process.env.S3_SECRET_KEY || 'minio-secret-key',
+        }
     }
 }
 ```
 
 :::info
-Type FS also comes with a [config](https://daniel-samson.github.io/typefs/docs/api/config) method which enables you to store the configuration in a separate file.
+You may wish to move the configuration into a separate typescript file. Alternatively, you can use the [config](https://daniel-samson.github.io/typefs/docs/api/config) method to load a json file.
 :::

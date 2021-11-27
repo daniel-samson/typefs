@@ -11,16 +11,24 @@ module.exports = {
       items: [
         "getting-started/installation",
         "getting-started/configuration",
-        "getting-started/usage",
+      ],
+    },
+    {
+      type: 'category',
+      label: 'How to',
+      items: [
+        "how-to/write-files",
+        "how-to/read-files",
+        "how-to/bulk-rename-files",
       ],
     },
     {
       type: 'category',
       label: 'API',
       items: [
-        "api/config",
         "api/storage",
         "api/disk-driver",
+        "api/config",
       ],
     },
     {
