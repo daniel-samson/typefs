@@ -14,8 +14,7 @@ import { Storage } from 'typefs;
 
 async function readFile() {
     const path = 'file.txt';
-    const content = Buffer.from('hello world');
-    const file = await Storage.disk('assets').read(path);
+    const content = await Storage.disk('assets').read(path);
 }
 ```
 
