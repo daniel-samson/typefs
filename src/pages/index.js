@@ -21,7 +21,7 @@ const features = [
     imageUrl: '',
     description: (
       <>
-        Manipilate files across file, s3 etc.
+        Manipilate files across file://, s3:// etc.
       </>
     ),
   },
