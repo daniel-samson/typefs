@@ -8,7 +8,7 @@ Before you can use TypeFS, you will need to configure the [storage manager](http
 You can configure the by editing your project's entry file:
 
 ```typescript
-// typefs.ts
+// index.ts
 import { Storage, Configuration } from 'typefs;
 
 Storage.config: Configuration = {
