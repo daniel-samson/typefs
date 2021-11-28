@@ -27,6 +27,7 @@ async function makeFile() {
 
 ```typescript
 import { Storage } from "typefs";
+
 async function makeLargeFile() {
   await Storage.disk("assets").writeStream(
     "/vlog.mp4",
