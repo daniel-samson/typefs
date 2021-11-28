@@ -81,6 +81,9 @@ module.exports = {
           editUrl:
             'https://github.com/daniel-samson/typefs/edit/documentation/',
         },
+        theme: {
+          customCss: [require.resolve('./src/css/custom.css')],
+        },
         // blog: {
         //   showReadingTime: true,
         //   // Please change this to your repo.
