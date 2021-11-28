@@ -17,7 +17,7 @@ const features = [
     ),
   },
   {
-    title: 'Supports Mutliple Protocols',
+    title: 'Supports Multiple Protocols',
     imageUrl: '',
     description: (
       <>
