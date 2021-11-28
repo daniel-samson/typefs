@@ -29,7 +29,7 @@ Please refer to our [roadmaps](https://github.com/daniel-samson/typefs/projects?
 - [File Driver](https://typefs.io/docs/drivers/file)
 - [S3 Driver](https://typefs.io/docs/drivers/s3)
 
-## Contributions
+## Contribute
 
 - [Ask a question](https://github.com/daniel-samson/typefs/issues/new?assignees=&labels=question&template=question.md&title=Question%3A+)
 - [Report a bug](https://github.com/daniel-samson/typefs/issues/new?assignees=&labels=bug&template=bug_report.md&title=Bug+Report%3A+)
