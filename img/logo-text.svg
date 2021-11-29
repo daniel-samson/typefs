@@ -7,19 +7,25 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="64"
+   width="256"
    version="1.1"
    id="Layer_51"
    x="0px"
    y="0px"
-   viewBox="0 0 64 64"
-   style="enable-background:new 0 0 64 64;"
+   viewBox="0 0 256 64"
    xml:space="preserve"
-   sodipodi:docname="logo.svg"
+   sodipodi:docname="logo-text.svg"
    inkscape:version="1.0 (4035a4f, 2020-05-01)"><metadata
    id="metadata56"><rdf:RDF><cc:Work
        rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
-   id="defs54">
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
+   id="defs54"><rect
+   id="rect884"
+   height="54.224794"
+   width="180.89052"
+   y="5.9308369"
+   x="71.170042" />
 	
 
 		
@@ -44,9 +50,9 @@
    inkscape:window-height="1067"
    id="namedview52"
    showgrid="false"
-   inkscape:zoom="12.444701"
-   inkscape:cx="2.9697279"
-   inkscape:cy="37.346855"
+   inkscape:zoom="1"
+   inkscape:cx="119.83093"
+   inkscape:cy="47.46032"
    inkscape:window-x="0"
    inkscape:window-y="25"
    inkscape:window-maximized="0"
@@ -125,11 +131,11 @@
    id="path18"
    style="fill:#f36938;fill-opacity:1" /><polygon
    class="st24"
-   points="7,14 17,3 17,14 "
+   points="17,3 17,14 7,14 "
    id="polygon20"
    style="fill:#5fa6b6;fill-opacity:1" /><polygon
    class="st20"
-   points="17,14 17,3 49,3 49,61 7,61 7,14 "
+   points="7,61 7,14 17,14 17,3 49,3 49,61 "
    id="polygon22"
    style="fill:#1ad2fb;fill-opacity:1" /><path
    id="path26"
@@ -141,4 +147,31 @@
    id="path28"
    style="fill:#ffd442;fill-opacity:1"
    sodipodi:nodetypes="cssscsscscc" />
-</svg>
+<text
+   style="font-style:normal;font-weight:normal;font-size:53.33330000000000126px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect884);fill:#000000;fill-opacity:1;stroke:none;"
+   id="text882"
+   xml:space="preserve"><tspan
+     style="visibility:hidden"
+     x="71.169922"
+     y="108.81384"><tspan
+       dx="0 25.96875 25.875 29.8125 25.96875 24.46875"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:48px;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Bold'">TypeFS</tspan></tspan></text><text
+   xml:space="preserve"
+   style="font-style:normal;font-weight:normal;font-size:48px;line-height:1.25;font-family:'Segoe UI';fill:#000000;fill-opacity:1;stroke:none;-inkscape-font-specification:'Segoe UI';font-stretch:normal;font-variant:normal;"
+   x="72.017303"
+   y="25.841503"
+   id="text854"><tspan
+     sodipodi:role="line"
+     id="tspan852"
+     x="72.017303"
+     y="25.841503" /></text><text
+   xml:space="preserve"
+   style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.0015748;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;"
+   x="79.048874"
+   y="47.084148"
+   id="text858"><tspan
+     sodipodi:role="line"
+     id="tspan856"
+     x="79.048874"
+     y="47.084148"
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ffffff;fill-opacity:1;stroke-width:1.0015748;stroke-miterlimit:4;stroke-dasharray:none;stroke:none;stroke-opacity:1;">TypeFS</tspan></text></svg>
