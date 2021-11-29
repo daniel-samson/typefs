@@ -13,7 +13,7 @@ module.exports = {
     navbar: {
       logo: {
         alt: 'TypeFS',
-        src: 'img/logo.svg',
+        src: 'img/logo-text.svg',
       },
       items: [
         {

@@ -333,3 +333,7 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
   margin: 0 calc(-1 * var(--ifm-pre-padding));
   padding: 0 var(--ifm-pre-padding);
 }
+
+.hero {
+  background-image: url("/static/img/large-triangles2.svg");
+}
