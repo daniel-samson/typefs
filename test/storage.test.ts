@@ -1,5 +1,7 @@
 import { assert } from 'chai';
-import { Storage } from '..';
+import {
+  DiskConfiguration, FileDisk, FileDriver, Storage,
+} from '..';
 import { Configuration } from '../lib';
 
 describe('storage', () => {
@@ -58,7 +60,7 @@ describe('storage', () => {
           },
         },
       };
-      assert.throw(() => Storage.disk('test'), 'Disk driver "test" is not implemented');
+      assert.throw(() => Storage.disk('test'), 'Disk driver "null" for disk "test" is not found');
     });
 
     it('should selected default disk when not it is not specified', () => {
@@ -75,6 +77,17 @@ describe('storage', () => {
       // @ts-ignore
       const conf = Storage.disk('assets').configuration;
       assert.equal(conf.root, '/app/public/assets');
+    });
+
+    it('should register providers', () => {
+      const driverName = 'test';
+      Storage.registerDriver('test', (configuration: DiskConfiguration) => new FileDriver(configuration as FileDisk));
+      // drivers is protected
+      // @ts-ignore
+      const { drivers } = Storage.getInstance();
+      assert.include(Object.keys(drivers), driverName);
+      assert.isNotNull(drivers[driverName]);
+      assert.isFunction(drivers[driverName]);
     });
   });
 });
