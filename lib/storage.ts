@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import { FileDriver, S3Driver } from './drivers';
 import {
   Configuration,
@@ -6,7 +7,7 @@ import {
   S3Disk,
 } from './config';
 
-/**
+/*
  * Supported Disk Drivers
  */
 export type TDiskDriver = FileDriver | S3Driver;
