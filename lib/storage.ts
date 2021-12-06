@@ -73,7 +73,8 @@ export class Storage {
    * Registers a driver to the storage manager.
    *
    * Caution: this will override existing drivers
-   * @param {String} name of the driver eg, file, s3, http etc...
+   *
+   * @param {string} name of the driver eg, file, s3, http etc...
    * @param {CallableFunction} driver (DiskConfiguration) -> TDiskDriver
    *
    * (configuration: DiskConfiguration) => new MyDriver(configuration as MyDisk),

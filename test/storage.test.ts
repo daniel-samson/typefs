@@ -1,5 +1,7 @@
 import { assert } from 'chai';
-import { DiskConfiguration, FileDisk, FileDriver, Storage } from '..';
+import {
+  DiskConfiguration, FileDisk, FileDriver, Storage,
+} from '..';
 import { Configuration } from '../lib';
 
 describe('storage', () => {
