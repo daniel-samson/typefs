@@ -25,9 +25,11 @@ Please refer to our [roadmaps](https://github.com/daniel-samson/typefs/projects?
 
 ## Documentation
 
-- [Getting Started](https://typefs.io/docs/getting-started/installation)
+- [Getting Started / Installation](https://typefs.io/docs/getting-started/installation)
+- [Configuration](https://typefs.io/docs/getting-started/configuration)
 - [File Driver](https://typefs.io/docs/drivers/file)
 - [S3 Driver](https://typefs.io/docs/drivers/s3)
+- [Disk Driver API](https://typefs.io/docs/api/disk-driver)
 
 ## Contribute
 
