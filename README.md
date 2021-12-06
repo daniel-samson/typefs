@@ -12,7 +12,7 @@ The single way to manipulate files in NodeJS. With Type FS you can define multip
 ![npms.io (quality)](https://img.shields.io/npms-io/quality-score/typefs)
 ![npms.io (quality)](https://img.shields.io/npms-io/maintenance-score/typefs)
 
-Please refer to our [roadmaps](https://github.com/daniel-samson/typefs/projects?query=is%3Aopen+sort%3Acreated-asc) to get the current progress of feature requests and bug fixes.
+Please refer to the [roadmap](https://github.com/daniel-samson/typefs/projects?query=is%3Aopen+sort%3Acreated-asc) to get the current progress of feature requests and bug fixes.
 
 ## Why Type FS
 
