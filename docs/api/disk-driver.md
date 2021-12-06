@@ -19,7 +19,7 @@ try {
   const contents = "hello";
   await Storage.disk().write("manifest.json", contents);
 
-  // copy large file
+  // copy large fil
   await Storage.disk().writeStream(
     "/vlog.mp4",
     Storage.disk("tmp").readStream("03cdsedc")
@@ -31,7 +31,7 @@ try {
 
 ### write()
 
-#### Paramaters
+#### Parameters
 
 | Param | Type   | Description                 |
 | ----- | ------ | --------------------------- |
@@ -40,7 +40,7 @@ try {
 
 ### writeStream()
 
-#### Paramaters
+#### Parameters
 
 | Param | Type   | Description                 |
 | ----- | ------ | --------------------------- |
@@ -84,7 +84,7 @@ try {
 }
 ```
 
-### Paramaters
+### Parameters
 
 | Param | Type   | Description                 |
 | ----- | ------ | --------------------------- |
@@ -112,7 +112,7 @@ try {
 }
 ```
 
-### Paramaters
+### Parameters
 
 | Param | Type   | Description                 |
 | ----- | ------ | --------------------------- |
@@ -142,7 +142,7 @@ try {
 }
 ```
 
-### Paramaters
+### Parameters
 
 | Param | Type   | Description                 |
 | ----- | ------ | --------------------------- |
@@ -172,7 +172,7 @@ try {
 }
 ```
 
-### Paramaters
+### Parameters
 
 | Param | Type   | Description                 |
 | ----- | ------ | --------------------------- |
@@ -216,7 +216,7 @@ try {
 }
 ```
 
-### Paramaters
+### Parameters
 
 | Param   | Type                 | Description                                                             |
 | ------- | -------------------- | ----------------------------------------------------------------------- |
@@ -247,7 +247,7 @@ try {
 }
 ```
 
-### Paramaters
+### Parameters
 
 | Param | Type   | Description                 |
 | ----- | ------ | --------------------------- |
@@ -276,7 +276,7 @@ try {
 }
 ```
 
-### Paramaters
+### Parameters
 
 | Param | Type   | Description                 |
 | ----- | ------ | --------------------------- |
@@ -305,7 +305,7 @@ try {
 }
 ```
 
-### Paramaters
+### Parameters
 
 | Param | Type   | Description                 |
 | ----- | ------ | --------------------------- |
@@ -334,7 +334,7 @@ try {
 }
 ```
 
-### Paramaters
+### Parameters
 
 | Param       | Type   | Description                      |
 | ----------- | ------ | -------------------------------- |
@@ -364,7 +364,7 @@ try {
 }
 ```
 
-### Paramaters
+### Parameters
 
 | Param       | Type   | Description                      |
 | ----------- | ------ | -------------------------------- |
