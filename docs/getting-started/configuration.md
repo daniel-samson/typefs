@@ -5,7 +5,7 @@ sidebar_label: Configuration
 
 Before you can use TypeFS, you will need to configure the [storage manager](https://daniel-samson.github.io/typefs/docs/api/storage). TypeFS has a concept called **"disks"**, which lets you define multiple locations with a disk driver.
 
-You can configure the by editing your project's entry file:
+You can configure TypeFS by editing your project's entry file:
 
 ```typescript
 // index.ts
@@ -42,6 +42,3 @@ Storage.config: Configuration = {
 }
 ```
 
-:::info
-You may wish to move the configuration into a separate typescript file. Alternatively, you can use the [config](https://daniel-samson.github.io/typefs/docs/api/config) method to load a json file.
-:::
