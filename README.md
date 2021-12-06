@@ -1,7 +1,7 @@
 Type FS
 ====
 
-The single way to manipulate files in NodeJS/TypeScript. With Type FS you can define multiple disk locations over common protocols such as file, s3 etc. and then use the the disk manager to manipulate files in those disks.
+The single way to manipulate files in NodeJS. With Type FS you can define multiple disk locations over common protocols such as file, s3 etc. and then use the the disk manager to manipulate files in those disks.
 
 ## Project Status
 
