@@ -20,6 +20,11 @@ export class Storage {
 
   protected conf: Configuration | undefined;
 
+  protected drivers: Record<string, CallableFunction> = {
+    file: (configuration: DiskConfiguration) => new FileDriver(configuration as FileDisk),
+    s3: (configuration: DiskConfiguration) => new S3Driver(configuration as S3Disk),
+  };
+
   static getInstance(): Storage {
     if (this.instance) {
       return this.instance;
@@ -54,17 +59,27 @@ export class Storage {
     }
 
     const dkey = disk === undefined ? inst.conf.default : disk;
-    const selected: DiskConfiguration = inst.conf.disks[dkey];
-    const { driver } = selected;
+    const configuration: DiskConfiguration = inst.conf.disks[dkey];
+    const { driver } = configuration;
 
-    // eslint-disable-next-line sonarjs/no-small-switch
-    switch (driver) {
-      case 'file':
-        return new FileDriver(selected as FileDisk);
-      case 's3':
-        return new S3Driver(selected as S3Disk);
-      default:
-        throw new Error(`Disk driver "${disk}" is not implemented`);
+    if (Object.keys(inst.drivers).includes(driver)) {
+      return inst.drivers[driver](configuration);
     }
+
+    throw new Error(`Disk driver "${driver}" for disk "${disk}" is not found`);
+  }
+
+  /**
+   * Registers a driver to the storage manager.
+   *
+   * Caution: this will override existing drivers
+   * @param {String} name of the driver eg, file, s3, http etc...
+   * @param {CallableFunction} driver (DiskConfiguration) -> TDiskDriver
+   *
+   * (configuration: DiskConfiguration) => new MyDriver(configuration as MyDisk),
+   */
+  static registerDriver(name: string, driver: CallableFunction): void {
+    const inst = Storage.getInstance();
+    inst.drivers[name] = driver;
   }
 }
