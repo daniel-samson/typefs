@@ -6,7 +6,7 @@ sidebar_label: Storage Manager
 The storage manager holds the configuration of your disks and which disk is the default one.
 
 ### Example
-```JSON
+```json
 {
     "default": "assets",
     "disks": {
