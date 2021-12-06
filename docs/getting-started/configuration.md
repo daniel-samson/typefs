@@ -3,7 +3,7 @@ title: Configuration
 sidebar_label: Configuration
 ---
 
-Before you can use TypeFS, you will need to configure the [storage manager](https://daniel-samson.github.io/typefs/docs/api/storage). TypeFS has a concept called **"disks"**, which lets you define multiple locations with a disk driver.
+Before you can use TypeFS, you will need to configure the [storage manager](https://daniel-samson.github.io/typefs/docs/api/storage). TypeFS has a concept called **"disks"** which lets you define multiple locations with a disk driver.
 
 You can configure TypeFS by editing your project's entry file:
 
