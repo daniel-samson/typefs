@@ -71,6 +71,7 @@
   },
   "dependencies": {
     "@types/minio": "^7.0.8",
-    "minio": "^7.0.18"
+    "minio": "^7.0.18",
+    "webdav": "^4.7.0"
   }
 }
