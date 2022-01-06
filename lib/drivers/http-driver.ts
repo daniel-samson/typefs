@@ -1,11 +1,3 @@
-import {
-  Dirent,
-  Stats,
-  readdirSync,
-  promises,
-  createReadStream,
-  createWriteStream,
-} from 'fs';
 import { Readable } from 'stream';
 import {
   createClient, FileStat, ResponseDataDetailed, WebDAVClient,
@@ -15,15 +7,6 @@ import { join } from 'path';
 import { rejects } from 'assert';
 import { Util } from './util';
 import { DiskDriver, ListDirectoryOptions } from './disk-driver';
-
-const {
-  unlink,
-  rmdir,
-  stat,
-  copyFile,
-  rename,
-  mkdir,
-} = promises;
 
 /**
  * Filesystem storage driver
@@ -172,7 +155,7 @@ export class HttpDriver extends DiskDriver {
    *
    * @param {string} path relative to root of disk
    * @param {ListDirectoryOptions} options eg. set recursive to true
-   * @returns {Promise<void>}
+   * @returns {Promise<string>}
    * @throws Error when path is outside root directory and
    * configuration.jail is set to true
    */
@@ -182,18 +165,19 @@ export class HttpDriver extends DiskDriver {
   ): Promise<string[]> {
     try {
       const p = this.jail(path);
-
-      this.client.getDirectoryContents(p, { deep: options?.recursive });
-      let absolutePaths = [];
-      if (options?.recursive) {
-        absolutePaths = this.recursiveReadDir(p);
-      } else {
-        absolutePaths = this.filterFiles(p, readdirSync(p, { withFileTypes: true }));
-      }
-
-      const relativePaths = absolutePaths.map((f) => f.replace(this.configuration.root, ''));
-
-      return Promise.resolve(relativePaths.sort());
+      return new Promise((resolve, reject) => {
+        this.client.getDirectoryContents(p, { deep: options?.recursive })
+          .then((s: FileStat[] | ResponseDataDetailed<FileStat[]>) => {
+            if (s === undefined) {
+              reject(new Error('Not found'));
+            } else if ('data' in s) {
+              resolve(s.data.map((v) => v.filename));
+            } else {
+              resolve(s.map((v) => v.filename));
+            }
+          })
+          .catch((e) => reject(e));
+      });
     } catch (e) {
       return Promise.reject(e);
     }
@@ -329,26 +313,5 @@ export class HttpDriver extends DiskDriver {
   protected jail(path: string): string {
     // todo: prepend "/"
     return Util.jail(path, this.configuration.root, this.configuration.jail);
-  }
-
-  protected recursiveReadDir(path: string): Array<string> {
-    const dir = readdirSync(path, { withFileTypes: true });
-    let files: Array<string> = this.filterFiles(path, dir);
-
-    dir
-      .filter((e: Dirent) => e.isDirectory())
-      .map((e: Dirent) => join(path, e.name))
-      .forEach((p: string) => {
-        files = [...files, ...this.recursiveReadDir(p)];
-      });
-
-    return files;
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  protected filterFiles(path: string, directoryEntities: Dirent[]): Array<string> {
-    return directoryEntities
-      .filter((e: Dirent) => e.isFile())
-      .map((e: Dirent) => join(path, e.name));
   }
 }
