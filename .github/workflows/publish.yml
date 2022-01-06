@@ -2,7 +2,7 @@ on:
   push:
     branches:
       - 'main'
-name: Build, Test and maybe Publish
+name: Publish
 jobs:
   test:
     name: Build & Test
