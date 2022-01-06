@@ -3,8 +3,6 @@ import {
   createClient, FileStat, ResponseDataDetailed, WebDAVClient,
 } from 'webdav';
 import { HttpDisk } from 'lib/config';
-import { join } from 'path';
-import { rejects } from 'assert';
 import { Util } from './util';
 import { DiskDriver, ListDirectoryOptions } from './disk-driver';
 
