@@ -46,12 +46,12 @@ module.exports = {
 ```javascript
 // config/filesystem.json
 {
-    default: 'assets',
-    disks: {
-        assets: {
-            driver: 'file',
-            root: '/app/public/assets',
-            jail: true,
+    "default": "assets",
+    "disks": {
+        "assets": {
+            "driver": "file",
+            "root": "/app/public/assets",
+            "jail": true,
         }
     }
 }
