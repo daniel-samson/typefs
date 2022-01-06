@@ -31,12 +31,53 @@ Please refer to the [roadmap](https://github.com/daniel-samson/typefs/projects?q
 - [S3 Driver](https://typefs.io/docs/drivers/s3)
 - [Disk Driver API](https://typefs.io/docs/api/disk-driver)
 
+## Example
+
+```typescript
+// index.ts
+import { Storage, Configuration } from 'typefs;
+
+Storage.config: Configuration = {
+    default: 'assets',
+    disks: {
+        tmp: {
+            driver: 'file',
+            root: '/tmp/',
+            jail: true,
+        }
+        app: {
+            driver: 'file',
+            root: '/app/',
+            jail: true,
+        }
+        assets: {
+            driver: 'file',
+            root: '/app/public/assets/'
+            jail: true,
+        }
+        s3: {
+            driver: 's3',
+            root: '/'
+            jail: true,
+            "bucket": process.env.S3_BUCKET || 'my-s3-bucket',
+            "endPoint": process.env.S3_ENDPOINT || 's3.amazonaws.com',
+            "accessKey": process.env.S3_ACCESS_KEY || 'minio-access-key',
+            "secretKey": process.env.S3_SECRET_KEY || 'minio-secret-key',
+        }
+    }
+}
+
+
+const logoPng: Buffer = await Storage.disk().read('logo.png');
+
+```
+
 ## Contribute
 
 - [Ask a question](https://github.com/daniel-samson/typefs/issues/new?assignees=&labels=question&template=question.md&title=Question%3A+)
 - [Report a bug](https://github.com/daniel-samson/typefs/issues/new?assignees=&labels=bug&template=bug_report.md&title=Bug+Report%3A+)
 - [Request documentation](https://github.com/daniel-samson/typefs/issues/new?assignees=&labels=documentation&template=documentation.md&title=Needs+Documentation%3A+)
-- [Request a new feature](https://github.com/daniel-samson/typefs/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=)
+- [Request a new feature](https://github.com/daniel-samson/typefs/issues/new?assignees=&labels=&template=feature_request.md&title=)
 - [Write Code](https://daniel-samson.github.io/typefs/docs/contributing/join/#contributing-code)
 - [Write Documentation](https://daniel-samson.github.io/typefs/docs/contributing/join/#contributing-documentation)
 
