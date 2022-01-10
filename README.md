@@ -23,14 +23,6 @@ Please refer to the [roadmap](https://github.com/daniel-samson/typefs/projects?q
 - Supports JSON, TypeScript, or JavaScript configuration files.
 - Can be configured via environment variables to change the storage configuration.
 
-## Documentation
-
-- [Getting Started / Installation](https://typefs.io/docs/getting-started/installation)
-- [Configuration](https://typefs.io/docs/getting-started/configuration)
-- [File Driver](https://typefs.io/docs/drivers/file)
-- [S3 Driver](https://typefs.io/docs/drivers/s3)
-- [Disk Driver API](https://typefs.io/docs/api/disk-driver)
-
 ## Example
 
 ```typescript
@@ -71,6 +63,15 @@ Storage.config: Configuration = {
 const logoPng: Buffer = await Storage.disk().read('logo.png');
 
 ```
+
+## Documentation
+
+- [Getting Started / Installation](https://typefs.io/docs/getting-started/installation)
+- [Configuration](https://typefs.io/docs/getting-started/configuration)
+- [File Driver](https://typefs.io/docs/drivers/file)
+- [S3 Driver](https://typefs.io/docs/drivers/s3)
+- [Disk Driver API](https://typefs.io/docs/api/disk-driver)
+
 
 ## Contribute
 
