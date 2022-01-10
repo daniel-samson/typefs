@@ -7,7 +7,7 @@ Disk Driver is the common interface between all disks. This means that you only 
 
 ## Writing Files
 
-TypeFS offers two methods for reading files: **write()** and **writeStream()**. The **write()** method is ideal for writing small files (less than 10KB). The **writeStream()** method is more memory efficient, as it can write large files in chunks.
+TypeFS offers two methods for writing files: **write()** and **writeStream()**. The **write()** method is ideal for writing small files (less than 10KB). The **writeStream()** method is more memory efficient, as it can write large files in chunks.
 
 ### Example
 
