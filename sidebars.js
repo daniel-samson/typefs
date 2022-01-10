@@ -20,6 +20,7 @@ module.exports = {
         "how-to/write-files",
         "how-to/read-files",
         "how-to/bulk-rename-files",
+        "how-to/copy-to-disk",
       ],
     },
     {
