@@ -44,12 +44,12 @@ Storage.config: Configuration = {
         }
         assets: {
             driver: 'file',
-            root: '/app/public/assets/'
+            root: '/app/public/assets/',
             jail: true,
         }
         s3: {
             driver: 's3',
-            root: '/'
+            root: '/',
             jail: true,
             "bucket": process.env.S3_BUCKET || 'my-s3-bucket',
             "endPoint": process.env.S3_ENDPOINT || 's3.amazonaws.com',
