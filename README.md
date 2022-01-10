@@ -1,7 +1,7 @@
 Type FS
 ====
 
-The single way to manipulate files in NodeJS. With Type FS you can define multiple disk locations over common protocols such as file, s3 etc. and then use the the disk manager to manipulate files in those disks.
+The single way to manipulate files in NodeJS. With Type FS you can define multiple disk locations across common protocols such as **file://** or **s3://**. Use the disk manager to manipulate files located in disks.
 
 ## Project Status
 
@@ -23,6 +23,47 @@ Please refer to the [roadmap](https://github.com/daniel-samson/typefs/projects?q
 - Supports JSON, TypeScript, or JavaScript configuration files.
 - Can be configured via environment variables to change the storage configuration.
 
+## Example
+
+```typescript
+// index.ts
+import { Storage, Configuration } from 'typefs;
+
+Storage.config: Configuration = {
+    default: 'assets',
+    disks: {
+        tmp: {
+            driver: 'file',
+            root: '/tmp/',
+            jail: true,
+        }
+        app: {
+            driver: 'file',
+            root: '/app/',
+            jail: true,
+        }
+        assets: {
+            driver: 'file',
+            root: '/app/public/assets/',
+            jail: true,
+        }
+        s3: {
+            driver: 's3',
+            root: '/',
+            jail: true,
+            "bucket": process.env.S3_BUCKET || 'my-s3-bucket',
+            "endPoint": process.env.S3_ENDPOINT || 's3.amazonaws.com',
+            "accessKey": process.env.S3_ACCESS_KEY || 'minio-access-key',
+            "secretKey": process.env.S3_SECRET_KEY || 'minio-secret-key',
+        }
+    }
+}
+
+
+const logoPng: Buffer = await Storage.disk().read('logo.png');
+
+```
+
 ## Documentation
 
 - [Getting Started / Installation](https://typefs.io/docs/getting-started/installation)
@@ -30,6 +71,7 @@ Please refer to the [roadmap](https://github.com/daniel-samson/typefs/projects?q
 - [File Driver](https://typefs.io/docs/drivers/file)
 - [S3 Driver](https://typefs.io/docs/drivers/s3)
 - [Disk Driver API](https://typefs.io/docs/api/disk-driver)
+
 
 ## Contribute
 
