@@ -1,41 +1,23 @@
-import {
-  join,
-  resolve,
-  dirname,
-} from 'path';
-import {
-  Dirent,
-  Stats,
-  readdirSync,
-  promises,
-  createReadStream,
-  createWriteStream,
-} from 'fs';
-import { FileDisk } from 'lib/config';
 import { Readable } from 'stream';
+import {
+  createClient, FileStat, ResponseDataDetailed, WebDAVClient,
+} from 'webdav';
+import { HttpDisk } from 'lib/config';
 import { Util } from './util';
 import { DiskDriver, ListDirectoryOptions } from './disk-driver';
-
-const {
-  unlink,
-  rmdir,
-  stat,
-  copyFile,
-  rename,
-  mkdir,
-} = promises;
 
 /**
  * Filesystem storage driver
  */
-export class FileDriver extends DiskDriver {
-  protected configuration: FileDisk;
+export class HttpDriver extends DiskDriver {
+  protected configuration: HttpDisk;
 
-  constructor(c: FileDisk) {
+  private client: WebDAVClient;
+
+  constructor(c: HttpDisk) {
     super();
     this.configuration = c;
-    // root must be an absolute path
-    this.configuration.root = resolve(this.configuration.root);
+    this.client = createClient(c.root);
   }
 
   /**
@@ -69,7 +51,7 @@ export class FileDriver extends DiskDriver {
    */
   readStream(path: string): Promise<Readable> {
     try {
-      return Promise.resolve(createReadStream(this.jail(path)));
+      return Promise.resolve(this.client.createReadStream(this.jail(path)));
     } catch (e) {
       return Promise.reject(e);
     }
@@ -101,12 +83,12 @@ export class FileDriver extends DiskDriver {
     try {
       const p = this.jail(path);
 
-      const dir = dirname(path);
+      const dir = path;
       if (!await this.exists(dir)) {
         await this.createDirectory(dir);
       }
 
-      const stream = createWriteStream(p);
+      const stream = this.client.createWriteStream(p);
       data.pipe(stream);
 
       return Promise.resolve();
@@ -125,7 +107,7 @@ export class FileDriver extends DiskDriver {
    */
   deleteFile(path: string): Promise<void> {
     try {
-      return unlink(this.jail(path));
+      return this.client.deleteFile(this.jail(path));
     } catch (e) {
       return Promise.reject(e);
     }
@@ -141,7 +123,7 @@ export class FileDriver extends DiskDriver {
    */
   deleteDirectory(path: string): Promise<void> {
     try {
-      return rmdir(this.jail(path), { recursive: true });
+      return this.deleteFile(this.jail(path));
     } catch (e) {
       return Promise.reject(e);
     }
@@ -158,7 +140,7 @@ export class FileDriver extends DiskDriver {
   createDirectory(path: string): Promise<void> {
     return new Promise((_resolve, reject) => {
       try {
-        mkdir(this.jail(path), { recursive: true });
+        this.client.createDirectory(this.jail(path), { recursive: true });
         _resolve();
       } catch (e) {
         reject(e);
@@ -181,17 +163,19 @@ export class FileDriver extends DiskDriver {
   ): Promise<string[]> {
     try {
       const p = this.jail(path);
-
-      let absolutePaths = [];
-      if (options?.recursive) {
-        absolutePaths = this.recursiveReadDir(p);
-      } else {
-        absolutePaths = this.filterFiles(p, readdirSync(p, { withFileTypes: true }));
-      }
-
-      const relativePaths = absolutePaths.map((f) => f.replace(this.configuration.root, ''));
-
-      return Promise.resolve(relativePaths.sort());
+      return new Promise((resolve, reject) => {
+        this.client.getDirectoryContents(p, { deep: options?.recursive })
+          .then((s: FileStat[] | ResponseDataDetailed<FileStat[]>) => {
+            if (s === undefined) {
+              reject(new Error('Not found'));
+            } else if ('data' in s) {
+              resolve(s.data.map((v) => v.filename));
+            } else {
+              resolve(s.map((v) => v.filename));
+            }
+          })
+          .catch((e) => reject(e));
+      });
     } catch (e) {
       return Promise.reject(e);
     }
@@ -209,7 +193,7 @@ export class FileDriver extends DiskDriver {
     return new Promise((_resolve) => {
       try {
         const jailedPath = this.jail(path);
-        stat(jailedPath)
+        this.client.stat(jailedPath)
           .then(() => _resolve(true))
           .catch(() => _resolve(false));
       } catch (e) {
@@ -230,8 +214,16 @@ export class FileDriver extends DiskDriver {
     return new Promise((_resolve, reject) => {
       try {
         const jailedPath = this.jail(path);
-        stat(jailedPath)
-          .then((s: Stats) => _resolve(new Date(s.mtime)))
+        this.client.stat(jailedPath)
+          .then((s: FileStat | ResponseDataDetailed<FileStat> | undefined) => {
+            if (s === undefined) {
+              reject(new Error('Not found'));
+            } else if ('data' in s) {
+              _resolve(new Date(s.data.lastmod));
+            } else {
+              _resolve(new Date(s.lastmod));
+            }
+          })
           .catch((e) => reject(e));
       } catch (e) {
         reject(e);
@@ -251,8 +243,16 @@ export class FileDriver extends DiskDriver {
     return new Promise((_resolve, reject) => {
       try {
         const p = this.jail(path);
-        stat(p)
-          .then((s: Stats) => _resolve(s.size))
+        this.client.stat(p)
+          .then((s: FileStat | ResponseDataDetailed<FileStat> | undefined) => {
+            if (s === undefined) {
+              reject(new Error('Not found'));
+            } else if ('data' in s) {
+              _resolve(s.data.size);
+            } else {
+              _resolve(s.size);
+            }
+          })
           .catch((e) => reject(e));
       } catch (e) {
         reject(e);
@@ -274,7 +274,7 @@ export class FileDriver extends DiskDriver {
       const jailedSource = this.jail(source);
       const jailedDestination = this.jail(destination);
 
-      return rename(jailedSource, jailedDestination);
+      return this.client.moveFile(jailedSource, jailedDestination);
     } catch (e) {
       return Promise.reject(e);
     }
@@ -294,7 +294,7 @@ export class FileDriver extends DiskDriver {
       const jailedSource = this.jail(source);
       const jailedDestination = this.jail(destination);
 
-      return copyFile(jailedSource, jailedDestination);
+      return this.client.copyFile(jailedSource, jailedDestination);
     } catch (e) {
       return Promise.reject(e);
     }
@@ -309,27 +309,7 @@ export class FileDriver extends DiskDriver {
    * configuration.jail is set to true
    */
   protected jail(path: string): string {
+    // todo: prepend "/"
     return Util.jail(path, this.configuration.root, this.configuration.jail);
-  }
-
-  protected recursiveReadDir(path: string): Array<string> {
-    const dir = readdirSync(path, { withFileTypes: true });
-    let files: Array<string> = this.filterFiles(path, dir);
-
-    dir
-      .filter((e: Dirent) => e.isDirectory())
-      .map((e: Dirent) => join(path, e.name))
-      .forEach((p: string) => {
-        files = [...files, ...this.recursiveReadDir(p)];
-      });
-
-    return files;
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  protected filterFiles(path: string, directoryEntities: Dirent[]): Array<string> {
-    return directoryEntities
-      .filter((e: Dirent) => e.isFile())
-      .map((e: Dirent) => join(path, e.name));
   }
 }

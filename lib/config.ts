@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { URL } from 'url';
+import { WebDAVClientOptions } from 'webdav';
 
 /**
  * The types of available Drivers (note: some are note implemented yet)
@@ -42,11 +43,15 @@ export interface FileDisk {
 /**
  * WebDav storage
  */
-export interface HttpDisk {
+export interface HttpDisk extends WebDAVClientOptions {
   /**
-   * The URL of the http service
+   * Defines where paths are relative to
    */
-  endPoint: URL;
+  root: string,
+  /**
+   * Dont allow paths outside root
+   */
+  jail: boolean
 }
 
 /**

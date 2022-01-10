@@ -92,7 +92,7 @@ export abstract class DiskDriver {
    *
    * @param {string} path relative to root of disk
    * @param {ListDirectoryOptions} options eg. set recursive to true
-   * @returns {Promise<void>}
+   * @returns {Promise<string>}
    * @throws Error when path is outside root directory and
    * configuration.jail is set to true
    */
