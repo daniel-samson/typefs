@@ -10,5 +10,5 @@ Use the [storage manager](https://daniel-samson.github.io/typefs/docs/api/storag
 await Storage.disk('s3').writeStream('foo.jpg', Storage.disk('assets').readStream('foo.jpg'));
 
 // delete old version (move)
-await Storage.disk('s3').deleteFile('foo.jpg');
+await Storage.disk('assets').deleteFile('foo.jpg');
 ```
