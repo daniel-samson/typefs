@@ -3,7 +3,7 @@ title: How to copy file to an other disk
 sidebar_label: Copy file to an other disk
 ---
 
-Use the [storage manager](https://daniel-samson.github.io/typefs/docs/api/storage) to copy or move files from a disk to and other disk.
+Use the [storage manager](https://daniel-samson.github.io/typefs/docs/api/storage) to copy or move files from one disk to an other disk.
 
 ```typescript
 // copy
