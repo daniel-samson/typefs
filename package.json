@@ -57,7 +57,7 @@
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-import-resolver-typescript": "2.5.0",
     "eslint-plugin-import": "2.25.4",
-    "eslint-plugin-jsdoc": "37.6.1",
+    "eslint-plugin-jsdoc": "37.6.2",
     "eslint-plugin-mocha": "10.0.3",
     "eslint-plugin-sonarjs": "0.11.0",
     "install": "0.13.0",
@@ -67,7 +67,7 @@
     "sinon": "12.0.1",
     "source-map-support": "0.5.21",
     "ts-node": "10.4.0",
-    "typescript": "4.5.4"
+    "typescript": "4.5.5"
   },
   "dependencies": {
     "@types/minio": "^7.0.8",
