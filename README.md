@@ -23,6 +23,13 @@ Please refer to the [roadmap](https://github.com/daniel-samson/typefs/projects?q
 - Supports JSON, TypeScript, or JavaScript configuration files.
 - Can be configured via environment variables to change the storage configuration.
 
+## Installation
+In your project folder, run the following command:
+
+```bash
+npm install typefs
+```
+
 ## Example
 
 ```typescript
