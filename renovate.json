@@ -18,8 +18,5 @@
   "lockFileMaintenance": {
     "enabled": false,
     "automerge": true
-  },
-  "schedule": [
-    "before 2am"
-  ]
+  }
 }
