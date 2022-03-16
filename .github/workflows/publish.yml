@@ -40,9 +40,11 @@ jobs:
       with:
         path: node_modules
         key: 12.x-${{ runner.OS }}-build-${{ hashFiles('package.json') }}
-    - name: Build
+    - name: Install
       if: steps.cache-modules.outputs.cache-hit != 'true'
       run: npm install
+    - name: Build
+      run: tsc
     - name: Test
       run: npm_config_yes=true npx best-test@latest
 
