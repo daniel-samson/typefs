@@ -46,7 +46,7 @@
     "@types/chai": "4.3.3",
     "@types/mocha": "9.1.1",
     "@types/mock-fs": "4.13.1",
-    "@types/node": "16.11.55",
+    "@types/node": "16.11.56",
     "@types/sinon": "10.0.13",
     "@typescript-eslint/eslint-plugin": "5.34.0",
     "@typescript-eslint/parser": "5.34.0",
