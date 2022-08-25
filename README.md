@@ -9,7 +9,7 @@ The single way to manipulate files in NodeJS. With Type FS you can define multip
 [![Node.js CI](https://github.com/daniel-samson/typefs/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/daniel-samson/typefs/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/daniel-samson/typefs/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/daniel-samson/typefs/actions/workflows/codeql-analysis.yml)
 [![codecov](https://codecov.io/gh/daniel-samson/typefs/branch/main/graph/badge.svg?token=RYZSMgtASL)](https://codecov.io/gh/daniel-samson/typefs)
-![npms.io (quality)](https://img.shields.io/npms-io/quality-score/typefs)
+[![CodeFactor](https://www.codefactor.io/repository/github/daniel-samson/typefs/badge)](https://www.codefactor.io/repository/github/daniel-samson/typefs)
 ![npms.io (quality)](https://img.shields.io/npms-io/maintenance-score/typefs)
 
 Please refer to the [roadmap](https://github.com/daniel-samson/typefs/projects?query=is%3Aopen+sort%3Acreated-asc) to get the current progress of feature requests and bug fixes.
