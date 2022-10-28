@@ -61,7 +61,7 @@
     "eslint-plugin-sonarjs": "0.16.0",
     "install": "0.13.0",
     "mocha": "10.1.0",
-    "mock-fs": "5.1.4",
+    "mock-fs": "5.2.0",
     "nyc": "15.1.0",
     "sinon": "14.0.1",
     "source-map-support": "0.5.21",
