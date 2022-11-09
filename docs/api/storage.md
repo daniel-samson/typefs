@@ -47,3 +47,33 @@ import { Storage, config } from 'typefs';
 
 Storage.config = config();
 ```
+
+# Registering Disk Driver
+
+To register a custom disk driver,
+
+```typescript
+// index.ts
+import { Storage } from 'typefs';
+//...
+
+Storage.registerDriver(
+  'mydiskdriver',
+  (configuration: DiskConfiguration): DiskDriver => new MyDiskDriver(configuration as MyDiskConfig),
+  );
+```
+
+update your configuration to use the new driver:
+
+```json
+{
+    "default": "assets",
+    "disks": {
+        "assets": {
+            "driver": "mydiskdriver",
+            "root": "/app/public/assets",
+            "jail": true,
+        }
+    }
+}
+```
