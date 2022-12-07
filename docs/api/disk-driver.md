@@ -19,7 +19,7 @@ try {
   const contents = "hello";
   await Storage.disk().write("manifest.json", contents);
 
-  // copy large fil
+  // copy large file
   await Storage.disk().writeStream(
     "/vlog.mp4",
     Storage.disk("tmp").readStream("03cdsedc")
@@ -91,7 +91,8 @@ try {
 | path  | string | path relative to disks root |
 
 :::info
-**Returns:** `Promise<Buffer>`. The Buffer is the contents of file
+read **Returns:** `Promise<Buffer>`. The Buffer is the contents of file.
+readStream **Returns:** `Promise<Readable>`. The Readable is a stream of the contents of file.
 :::
 
 :::danger
