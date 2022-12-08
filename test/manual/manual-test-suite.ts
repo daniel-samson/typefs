@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { assert } from 'chai';
-import { DiskDriver } from '../..';
+import { DiskDriver } from 'typefs-registry';
 
 /**
  * Test to ensure that all drivers appear to behave in the same way.

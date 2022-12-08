@@ -3,9 +3,8 @@ import {
   CopyConditions,
 } from 'minio';
 import { Readable } from 'stream';
-import { S3Disk } from 'lib/config';
+import { DiskDriver, ListDirectoryOptions, S3Disk } from 'typefs-registry';
 import { Util } from './util';
-import { DiskDriver, ListDirectoryOptions } from './disk-driver';
 
 // TODO: write 100% coverage for S3Driver
 // TODO: rewrite calls to client so that they return promises instead of using a callback
