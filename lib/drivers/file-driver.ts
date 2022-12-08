@@ -12,8 +12,12 @@ import {
   createWriteStream,
 } from 'fs';
 import { Readable } from 'stream';
-import { DiskDriver, ListDirectoryOptions, FileDisk } from 'typefs-registry';
-import { Util } from './util';
+import {
+  DiskDriver,
+  ListDirectoryOptions,
+  FileDisk,
+  Util,
+} from 'typefs-registry';
 
 const {
   unlink,
