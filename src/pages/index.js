@@ -62,7 +62,7 @@ export default function Home() {
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className="container">
           <img width="64px" src="img/logo.svg" />
-         <p><small>Version 2.0.0</small></p> 
+         <p style={{marginBottom: 0}}><small>Version 2.0.0</small></p> 
           <p className="hero__subtitle">{siteConfig.tagline}</p>
           <div className={styles.buttons}>
             <Link
