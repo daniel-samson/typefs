@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/no-identical-functions */
 /* eslint-disable sonarjs/no-duplicate-string */
+// @todo  remove in version 2.0.0
 import { assert } from 'chai';
 import mock from 'mock-fs';
 import { S3Disk } from 'typefs-registry';
