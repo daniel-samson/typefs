@@ -28,6 +28,7 @@ In your project folder, run the following command:
 
 ```bash
 npm install typefs
+npm install typefs-s3-driver
 ```
 
 ## Example
@@ -35,6 +36,11 @@ npm install typefs
 ```typescript
 // index.ts
 import { Storage, Configuration } from 'typefs;
+import { S3Driver } from 'typefs-s3-driver';
+import { S3Disk } from 'typefs-registry';
+
+// As of version 2.0.0 the s3 driver was moved to a separate npm package.
+Storage.registerDriver('s3', (configuration: DiskConfiguration) => new S3Driver(configuration as S3Disk));
 
 Storage.config: Configuration = {
     default: 'assets',
