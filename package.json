@@ -69,7 +69,6 @@
     "typescript": "4.9.4"
   },
   "dependencies": {
-    "@types/minio": "^7.0.8",
-    "minio": "^7.0.18"
+    "typefs-s3-driver": "^1.0.0"
   }
 }

@@ -10,6 +10,12 @@ import { DiskDriver, ListDirectoryOptions } from './disk-driver';
 // TODO: write 100% coverage for S3Driver
 // TODO: rewrite calls to client so that they return promises instead of using a callback
 // TODO: consider swapping promises for async await
+/**
+ * S3 DiskDriver
+ *
+ * @deprecated since version 1.2.0 please `import S3Driver from 'typefs-s3-driver' instead
+ * This will be removed in version 2.0.0
+ */
 export class S3Driver extends DiskDriver {
   protected configuration: S3Disk;
 

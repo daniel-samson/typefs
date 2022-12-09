@@ -1,5 +1,6 @@
 /* eslint-disable no-use-before-define */
-import { FileDriver, S3Driver } from './drivers';
+import { S3Driver } from 'typefs-s3-driver';
+import { DiskDriver, FileDriver } from './drivers';
 import {
   Configuration,
   DiskConfiguration,
@@ -9,6 +10,8 @@ import {
 
 /*
  * Supported Disk Drivers
+ * @deprecated since version 1.2.0 please use DiskDriver instead
+ * This will be removed in version 2.0.0.
  */
 export type TDiskDriver = FileDriver | S3Driver;
 
@@ -49,9 +52,9 @@ export class Storage {
    *
    * @param {string|undefined} disk to select. leaving undefined will result in
    * default disk being selected
-   * @returns {TDiskDriver} common interface for all drivers
+   * @returns {DiskDriver} common interface for all drivers
    */
-  static disk(disk?: string): TDiskDriver {
+  static disk(disk?: string): DiskDriver {
     const inst = Storage.getInstance();
 
     if (inst.conf === undefined) {
