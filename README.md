@@ -35,7 +35,7 @@ npm install typefs
 
 ```typescript
 // index.ts
-import { Storage, Configuration, S3Disk } from 'typefs;
+import { Storage, Configuration, S3Disk } from 'typefs';
 import { S3Driver } from 'typefs-s3-driver';
 
 // As of version 2.0.0 the s3 driver was moved to a separate npm package.
