@@ -5,6 +5,10 @@ sidebar_label: File / Local
 
 The file driver lets you access the local file system.
 
+## Installation
+
+It is bundled with the typefs package.
+
 ## Configuration
 The file driver takes two configuration parameters:
 

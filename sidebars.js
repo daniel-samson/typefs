@@ -25,6 +25,14 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Upgrade Guide',
+      items: [
+        "migration/v2",
+      ],
+    },
+
+    {
+      type: 'category',
       label: 'API',
       items: [
         "api/storage",

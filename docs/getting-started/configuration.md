@@ -9,7 +9,7 @@ You can configure TypeFS by editing your project's entry file:
 
 ```typescript
 // index.ts
-import { Storage, Configuration } from 'typefs;
+import { Storage, Configuration, S3Disk } from 'typefs;
 
 Storage.config: Configuration = {
     default: 'assets',
@@ -28,15 +28,6 @@ Storage.config: Configuration = {
             driver: 'file',
             root: '/app/public/assets/'
             jail: true,
-        }
-        s3: {
-            driver: 's3',
-            root: '/'
-            jail: true,
-            "bucket": process.env.S3_BUCKET || 'my-s3-bucket',
-            "endPoint": process.env.S3_ENDPOINT || 's3.amazonaws.com',
-            "accessKey": process.env.S3_ACCESS_KEY || 'minio-access-key',
-            "secretKey": process.env.S3_SECRET_KEY || 'minio-secret-key',
         }
     }
 }
