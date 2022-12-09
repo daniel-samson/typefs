@@ -67,7 +67,7 @@ export default function Home() {
           <div className={styles.buttons}>
             <Link
               className={clsx(
-                'button button--outline button--secondary button--lg',
+                'button button--outline button--success button--lg',
                 styles.getStarted,
               )}
               to={useBaseUrl('docs/getting-started/installation')}>
@@ -75,13 +75,14 @@ export default function Home() {
             </Link>
             <Link
               className={clsx(
-                'button button--outline button--lg ml-1',
+                'button button--outline button--info button--lg ml-1',
               )}
               to={useBaseUrl('docs/migration/v2')}>
               Upgrade Guide
             </Link>
           </div>
         </div>
+      
       </header>
       <main>
         {features && features.length > 0 && (
@@ -95,14 +96,44 @@ export default function Home() {
             </div>
           </section>
         )}
-      <hr/>
           <section>
             <div className="container">
                 <h2 className='text-center'>Write cleaner code</h2>
-<CodeBlock language="jsx">
+<CodeBlock language="typescript">
 {`
 import { Storage } from 'typefs';
 const manifest = Storage.disk('config').readFile('app.manifest');
+`}
+</CodeBlock>
+            </div>
+          </section>
+          <section>
+            <div className="container">
+                <h2 className='text-center'>Easy configuration</h2>
+<CodeBlock language="typescript">
+{`
+import { Storage, Configuration } from 'typefs;
+
+Storage.config: Configuration = {
+    default: 'tmp',
+    disks: {
+        tmp: {
+            driver: 'file',
+            root: '/tmp/',
+            jail: true,
+        }
+        app: {
+            driver: 'file',
+            root: '/app/',
+            jail: true,
+        }
+        config: {
+            driver: 'file',
+            root: '/app/config',
+            jail: true,
+        }
+    }
+}
 `}
 </CodeBlock>
             </div>
