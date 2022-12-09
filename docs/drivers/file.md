@@ -13,11 +13,12 @@ It is bundled with the typefs package.
 The file driver takes two configuration parameters:
 
 ```typescript
-import { FileDriver } from 'typefs';
-
-const driver = new FileDriver({
-    "root": "/app/",
-    "jail": true
+Storage.config = {
+  disks: {
+    "assets": {
+      "root": "/app/assets",
+      "jail": true,
+    }
 }
 ```
 

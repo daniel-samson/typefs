@@ -5,6 +5,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
+import CodeBlock from '@theme/CodeBlock';
 
 const features = [
   {
@@ -21,7 +22,7 @@ const features = [
     imageUrl: '',
     description: (
       <>
-        Manipulate files over file://, s3:// etc.
+        Manipulate files over <strong>file://</strong>, <strong>s3://</strong> etc.
       </>
     ),
   },
@@ -61,6 +62,7 @@ export default function Home() {
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className="container">
           <img width="64px" src="img/logo.svg" />
+         <p><small>Version 2.0.0</small></p> 
           <p className="hero__subtitle">{siteConfig.tagline}</p>
           <div className={styles.buttons}>
             <Link
@@ -68,8 +70,15 @@ export default function Home() {
                 'button button--outline button--secondary button--lg',
                 styles.getStarted,
               )}
-              to={useBaseUrl('docs/')}>
+              to={useBaseUrl('docs/getting-started/installation')}>
               Get Started
+            </Link>
+            <Link
+              className={clsx(
+                'button button--outline button--lg ml-1',
+              )}
+              to={useBaseUrl('docs/migration/v2')}>
+              Upgrade Guide
             </Link>
           </div>
         </div>
@@ -86,6 +95,18 @@ export default function Home() {
             </div>
           </section>
         )}
+      <hr/>
+          <section>
+            <div className="container">
+                <h2 className='text-center'>Write cleaner code</h2>
+<CodeBlock language="jsx">
+{`
+import { Storage } from 'typefs';
+const manifest = Storage.disk('config').readFile('app.manifest');
+`}
+</CodeBlock>
+            </div>
+          </section>
       </main>
     </Layout>
   );

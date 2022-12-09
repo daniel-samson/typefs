@@ -337,3 +337,7 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
 .hero {
   background-image: url("/static/img/large-triangles2.svg");
 }
+
+.ml-1 {
+    margin-left: 1rem;
+}
