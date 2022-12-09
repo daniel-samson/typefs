@@ -28,7 +28,7 @@ In your project folder, run the following command:
 
 ```bash
 npm install typefs
-npm install typefs-s3-driver
+# npm install typefs-s3-driver
 ```
 
 ## Example
