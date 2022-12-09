@@ -1,20 +1,11 @@
 /* eslint-disable no-use-before-define */
-import { S3Driver } from 'typefs-s3-driver';
 import {
   Configuration,
   DiskConfiguration,
   FileDisk,
-  S3Disk,
   DiskDriver,
 } from 'typefs-registry';
 import { FileDriver } from './drivers';
-
-/*
- * Supported Disk Drivers
- * @deprecated since version 1.2.0 please use DiskDriver instead
- * This will be removed in version 2.0.0.
- */
-export type TDiskDriver = FileDriver | S3Driver;
 
 /**
  * Storage access
@@ -26,7 +17,6 @@ export class Storage {
 
   protected drivers: Record<string, CallableFunction> = {
     file: (configuration: DiskConfiguration) => new FileDriver(configuration as FileDisk),
-    s3: (configuration: DiskConfiguration) => new S3Driver(configuration as S3Disk),
   };
 
   static getInstance(): Storage {
