@@ -1,6 +1,7 @@
 import { assert } from 'chai';
 import mock from 'mock-fs';
-import { config, Configuration } from '..';
+import { Configuration } from 'typefs-registry';
+import { config } from '..';
 
 describe('config', () => {
   const c: Configuration = {

@@ -2,8 +2,9 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { assert } from 'chai';
 import mock from 'mock-fs';
+import { S3Disk } from 'typefs-registry';
 import { MockMinio } from './stub/mock-minio';
-import { S3Disk, S3Driver } from '..';
+import { S3Driver } from '..';
 
 describe('S3Driver', () => {
   const shouldThrowError = 'should throw error';

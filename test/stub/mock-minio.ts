@@ -22,7 +22,7 @@ import {
   BucketItemStat,
 } from 'minio';
 import { Readable } from 'stream';
-import { S3Disk } from '../../lib';
+import { S3Disk } from 'typefs-registry';
 
 const {
   copyFile,

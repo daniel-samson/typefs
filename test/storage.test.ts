@@ -1,8 +1,8 @@
 import { assert } from 'chai';
+import { DiskConfiguration, FileDisk, Configuration } from 'typefs-registry';
 import {
-  DiskConfiguration, FileDisk, FileDriver, Storage,
+  Storage, FileDriver,
 } from '..';
-import { Configuration } from '../lib';
 
 describe('storage', () => {
   describe('getInstance', () => {
