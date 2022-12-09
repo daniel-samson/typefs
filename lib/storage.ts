@@ -1,12 +1,13 @@
 /* eslint-disable no-use-before-define */
 import { S3Driver } from 'typefs-s3-driver';
-import { DiskDriver, FileDriver } from './drivers';
 import {
   Configuration,
   DiskConfiguration,
   FileDisk,
   S3Disk,
-} from './config';
+  DiskDriver,
+} from 'typefs-registry';
+import { FileDriver } from './drivers';
 
 /*
  * Supported Disk Drivers

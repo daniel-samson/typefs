@@ -1,6 +1,7 @@
 import { assert } from 'chai';
 import mock from 'mock-fs';
-import { FileDisk, FileDriver } from '..';
+import { FileDisk } from 'typefs-registry';
+import { FileDriver } from '..';
 
 describe('FileDriver', () => {
   describe('configuration', () => {

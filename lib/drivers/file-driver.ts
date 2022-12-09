@@ -11,10 +11,13 @@ import {
   createReadStream,
   createWriteStream,
 } from 'fs';
-import { FileDisk } from 'lib/config';
 import { Readable } from 'stream';
-import { Util } from './util';
-import { DiskDriver, ListDirectoryOptions } from './disk-driver';
+import {
+  DiskDriver,
+  ListDirectoryOptions,
+  FileDisk,
+  Util,
+} from 'typefs-registry';
 
 const {
   unlink,
