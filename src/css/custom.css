@@ -399,6 +399,11 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
   background-image: url("/static/img/protruding-squares-2.svg");
 }
 
+html[data-theme="dark"]
+ .text-white {
+     color: var(--ifm-font-color-base);
+ }
+
 .ml-1 {
     margin-left: 1rem;
 }
