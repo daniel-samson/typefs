@@ -3,14 +3,9 @@ import {
   Configuration,
   DiskConfiguration,
   FileDisk,
-  S3Disk,
+  DiskDriver,
 } from 'typefs-registry';
-import { FileDriver, S3Driver } from './drivers';
-
-/*
- * Supported Disk Drivers
- */
-export type TDiskDriver = FileDriver | S3Driver;
+import { FileDriver } from './drivers';
 
 /**
  * Storage access
@@ -22,7 +17,6 @@ export class Storage {
 
   protected drivers: Record<string, CallableFunction> = {
     file: (configuration: DiskConfiguration) => new FileDriver(configuration as FileDisk),
-    s3: (configuration: DiskConfiguration) => new S3Driver(configuration as S3Disk),
   };
 
   static getInstance(): Storage {
@@ -49,9 +43,9 @@ export class Storage {
    *
    * @param {string|undefined} disk to select. leaving undefined will result in
    * default disk being selected
-   * @returns {TDiskDriver} common interface for all drivers
+   * @returns {DiskDriver} common interface for all drivers
    */
-  static disk(disk?: string): TDiskDriver {
+  static disk(disk?: string): DiskDriver {
     const inst = Storage.getInstance();
 
     if (inst.conf === undefined) {

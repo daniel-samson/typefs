@@ -69,8 +69,6 @@
     "typescript": "4.9.4"
   },
   "dependencies": {
-    "@types/minio": "^7.0.8",
-    "minio": "^7.0.18",
-    "typefs-registry": "^2.0.0"
+    "typefs-registry": "^1.0.0"
   }
 }
