@@ -10,6 +10,11 @@ module.exports = {
   organizationName: 'daniel-samson', // Usually your GitHub org/user name.
   projectName: 'typefs', // Usually your repo name.
   themeConfig: {
+    prism: {
+        additionalLanguages: [
+            'typescript',
+        ]
+    },
     navbar: {
       logo: {
         alt: 'TypeFS',

@@ -57,10 +57,7 @@ To register a custom disk driver,
 import { Storage } from 'typefs';
 //...
 
-Storage.registerDriver(
-  'mydiskdriver',
-  (configuration: DiskConfiguration): DiskDriver => new MyDiskDriver(configuration as MyDiskConfig),
-  );
+Storage.registerDriver('mydiskdriver', (configuration: DiskConfiguration): DiskDriver => new MyDiskDriver(configuration as MyDiskConfig));
 ```
 
 update your configuration to use the new driver:

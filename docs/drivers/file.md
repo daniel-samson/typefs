@@ -5,15 +5,20 @@ sidebar_label: File / Local
 
 The file driver lets you access the local file system.
 
+## Installation
+
+It is bundled with the typefs package.
+
 ## Configuration
 The file driver takes two configuration parameters:
 
 ```typescript
-import { FileDriver } from 'typefs';
-
-const driver = new FileDriver({
-    "root": "/app/",
-    "jail": true
+Storage.config = {
+  disks: {
+    "assets": {
+      "root": "/app/assets",
+      "jail": true,
+    }
 }
 ```
 
