@@ -36,10 +36,9 @@ npm install typefs
 ```typescript
 // index.ts
 import { Storage, Configuration, S3Disk } from 'typefs';
-import { S3Factory } from 'typefs-s3-driver';
+// import { S3Factory } from 'typefs-s3-driver';
 
-// As of version 2.0.0 the s3 driver was moved to a separate npm package.
-Storage.registerDriver('s3', S3Factory)
+// Storage.registerDriver('s3', S3Factory)
 
 Storage.config: Configuration = {
     default: 'assets',
@@ -59,15 +58,15 @@ Storage.config: Configuration = {
             root: '/app/public/assets/',
             jail: true,
         },
-        s3: {
-            driver: 's3',
-            root: '/',
-            jail: true,
-            "bucket": process.env.S3_BUCKET || 'my-s3-bucket',
-            "endPoint": process.env.S3_ENDPOINT || 's3.amazonaws.com',
-            "accessKey": process.env.S3_ACCESS_KEY || 'minio-access-key',
-            "secretKey": process.env.S3_SECRET_KEY || 'minio-secret-key',
-        }
+//        s3: {
+//            driver: 's3',
+//            root: '/',
+//            jail: true,
+//            "bucket": process.env.S3_BUCKET || 'my-s3-bucket',
+//            "endPoint": process.env.S3_ENDPOINT || 's3.amazonaws.com',
+//            "accessKey": process.env.S3_ACCESS_KEY || 'minio-access-key',
+//            "secretKey": process.env.S3_SECRET_KEY || 'minio-secret-key',
+//       }
     }
 }
 
