@@ -10,7 +10,7 @@ Use the [storage manager](https://daniel-samson.github.io/typefs/docs/api/storag
 The **read()** method is ideal for reading small files (less than 10KB):
 
 ```typescript
-import { Storage } from 'typefs;
+import { Storage } from 'typefs';
 
 async function readFile() {
     const path = 'file.txt';
