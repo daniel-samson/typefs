@@ -9,7 +9,7 @@ You can configure TypeFS by editing your project's entry file:
 
 ```typescript
 // index.ts
-import { Storage, Configuration, S3Disk } from 'typefs;
+import { Storage, Configuration, S3Disk } from 'typefs';
 
 Storage.config: Configuration = {
     default: 'assets',
