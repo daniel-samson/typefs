@@ -6,7 +6,7 @@ sidebar_label: Installation
 To install TypeFS into your project, run the following command:
 
 ```bash
-npm install typefs
+npm install typefs@^2.0.0
 ```
 
 ## Additional drivers
