@@ -112,7 +112,7 @@ const manifest = Storage.disk('config').readFile('app.manifest');
                 <h2 className='text-center'>Easy configuration</h2>
 <CodeBlock language="typescript">
 {`
-import { Storage, Configuration } from 'typefs;
+import { Storage, Configuration } from 'typefs';
 
 Storage.config: Configuration = {
     default: 'tmp',
