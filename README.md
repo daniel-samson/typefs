@@ -27,7 +27,7 @@ Please refer to the [roadmap](https://github.com/daniel-samson/typefs/projects?q
 In your project folder, run the following command:
 
 ```bash
-npm install typefs
+npm install typefs@^2.0.0
 # npm install typefs-s3-driver
 ```
 
