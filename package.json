@@ -56,7 +56,7 @@
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-import-resolver-typescript": "3.6.1",
     "eslint-plugin-import": "2.29.1",
-    "eslint-plugin-jsdoc": "48.1.0",
+    "eslint-plugin-jsdoc": "48.2.0",
     "eslint-plugin-mocha": "10.3.0",
     "eslint-plugin-sonarjs": "0.24.0",
     "install": "0.13.0",
