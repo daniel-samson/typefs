@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { FileDriver } from '../..';

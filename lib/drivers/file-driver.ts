@@ -43,7 +43,6 @@ export class FileDriver extends DiskDriver {
 
   /**
    * Opens file and read full contents of file.
-   *
    * @param {string} path relative to root of disk
    * @returns {Promise<Buffer>} contents of file
    * @throws Error when path is outside root directory and
@@ -64,7 +63,6 @@ export class FileDriver extends DiskDriver {
 
   /**
    * Opens file and reads the contents of file in chunks.
-   *
    * @param {string} path relative to root of disk
    * @returns {Promise<Readable>} contents of file
    * @throws Error when path is outside root directory and
@@ -80,7 +78,6 @@ export class FileDriver extends DiskDriver {
 
   /**
    * Opens file and writes full contents to file.
-   *
    * @param {string} path relative to root of disk
    * @param {Buffer} data contents of file
    * @returns {Promise<void>}
@@ -93,7 +90,6 @@ export class FileDriver extends DiskDriver {
 
   /**
    * Opens file and writes the contents of file in chunks.
-   *
    * @param {string} path relative to root of disk
    * @param {Readable} data contents of file
    * @returns {Promise<void>}
@@ -120,7 +116,6 @@ export class FileDriver extends DiskDriver {
 
   /**
    * Deletes file.
-   *
    * @param {string} path relative to root of disk
    * @returns {Promise<void>}
    * @throws Error when path is outside root directory and
@@ -136,7 +131,6 @@ export class FileDriver extends DiskDriver {
 
   /**
    * Deletes directory.
-   *
    * @param {string} path relative to root of disk
    * @returns {Promise<void>}
    * @throws Error when path is outside root directory and
@@ -152,7 +146,6 @@ export class FileDriver extends DiskDriver {
 
   /**
    * Creates directory.
-   *
    * @param {string} path relative to root of disk
    * @returns {Promise<void>}
    * @throws Error when path is outside root directory and
@@ -171,7 +164,6 @@ export class FileDriver extends DiskDriver {
 
   /**
    * List contents of directory
-   *
    * @param {string} path relative to root of disk
    * @param {ListDirectoryOptions} options eg. set recursive to true
    * @returns {Promise<void>}
@@ -202,7 +194,6 @@ export class FileDriver extends DiskDriver {
 
   /**
    * Checks if file or directory exists.
-   *
    * @param {string} path relative to root of disk
    * @returns {Promise<boolean>} true when path exists
    * @throws Error when path is outside root directory and
@@ -215,6 +206,8 @@ export class FileDriver extends DiskDriver {
         stat(jailedPath)
           .then(() => _resolve(true))
           .catch(() => _resolve(false));
+
+        // eslint-disable-next-line sonarjs/no-ignored-exceptions
       } catch (e) {
         _resolve(false);
       }
@@ -223,7 +216,6 @@ export class FileDriver extends DiskDriver {
 
   /**
    * When was file last modified.
-   *
    * @param {string} path relative to root of disk
    * @returns {Promise<Date>} when file was last modified
    * @throws Error when path is outside root directory and
@@ -244,7 +236,6 @@ export class FileDriver extends DiskDriver {
 
   /**
    * Size of file
-   *
    * @param {string} path relative to root of disk
    * @returns {Promise<number>} The file size in bytes
    * @throws Error when path is outside root directory and
@@ -265,7 +256,6 @@ export class FileDriver extends DiskDriver {
 
   /**
    * Moves source file to destination
-   *
    * @param {string} source path relative to root of disk
    * @param {string} destination path relative to root of disk
    * @returns {Promise<void>}
@@ -285,7 +275,6 @@ export class FileDriver extends DiskDriver {
 
   /**
    * Copies source file to destination
-   *
    * @param {string} source path relative to root of disk
    * @param {string} destination path relative to root of disk
    * @returns {Promise<void>}
@@ -305,7 +294,6 @@ export class FileDriver extends DiskDriver {
 
   /**
    * Controls access to paths which are above/outside the root directory
-   *
    * @param {string} path relative path to disks root directory
    * @returns {string} absolute path
    * @throws Error when path is outside root directory and

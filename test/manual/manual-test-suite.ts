@@ -1,4 +1,4 @@
-/* eslint-disable sonarjs/no-duplicate-string */
+/* eslint-disable */
 import { assert } from 'chai';
 import { DiskDriver } from 'typefs-registry';
 
