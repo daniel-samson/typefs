@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [22.x]
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
@@ -47,7 +47,6 @@ jobs:
       run: tsc
     - name: Test
       run: npm_config_yes=true npx best-test@latest
-
     - name: Publish
       uses: mikeal/merge-release@master
       env:
