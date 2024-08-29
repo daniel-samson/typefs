@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-hardcoded-credentials */
 import { assert } from 'chai';
 import mock from 'mock-fs';
 import { FileDisk } from 'typefs-registry';
@@ -49,7 +50,6 @@ describe('FileDriver', () => {
 
     it('must not read file outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../etc/hosts'";
-      // assert.throws(() => driver.read('../etc/hosts'), e);
       driver.read('../etc/hosts')
         .then(() => {
           done('should throw error');
@@ -72,7 +72,7 @@ describe('FileDriver', () => {
     beforeEach(() => {
       mock({
         '/app/foo.txt': 'bar',
-        '/etc/passwd': '111',
+        '/etc/passwd': 'a11',
       });
     });
 
@@ -81,7 +81,6 @@ describe('FileDriver', () => {
     });
 
     it('should write file when it exists', (done) => {
-      // assert.doesNotThrow(() => driver.write('foo.txt', Buffer.from('...')));
       driver.write('foo.txt', Buffer.from('...'))
         .then(() => {
           done();
@@ -92,7 +91,6 @@ describe('FileDriver', () => {
     });
 
     it('should write file when sub directory doesn\'t exists', (done) => {
-      // assert.doesNotThrow(() => driver.write('foo.txt', Buffer.from('...')));
       driver.write('/sub/foo.txt', Buffer.from('...'))
         .then(() => {
           done();
@@ -126,7 +124,7 @@ describe('FileDriver', () => {
     beforeEach(() => {
       mock({
         '/app/foo.txt': 'bar',
-        '/etc/passwd': '222',
+        '/etc/passwd': 'a22',
       });
     });
 
@@ -148,7 +146,6 @@ describe('FileDriver', () => {
 
     it('must not delete file outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../etc/passwd'";
-      // assert.throws(() => driver.deleteFile('../etc/passwd'), e);
       driver.deleteFile('../etc/passwd')
         .then(() => {
           // eslint-disable-next-line sonarjs/no-duplicate-string
@@ -181,7 +178,6 @@ describe('FileDriver', () => {
     });
 
     it('should delete directory when it exists', (done) => {
-      // assert.doesNotThrow(() => driver.deleteDirectory('foo'));
       driver.deleteDirectory('foo')
         .then(() => {
           done();
@@ -193,7 +189,6 @@ describe('FileDriver', () => {
 
     it('must not delete directory outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../var'";
-      // assert.throws(() => driver.deleteDirectory('../var'), e);
       driver.deleteDirectory('../var')
         .then(() => {
           done('must throw error');
@@ -224,7 +219,6 @@ describe('FileDriver', () => {
     });
 
     it('should create a directory', (done) => {
-      // assert.doesNotThrow(() => driver.createDirectory('foo'));
       driver.createDirectory('foo')
         .then(() => {
           assert.exists('/app/foo');
@@ -263,7 +257,6 @@ describe('FileDriver', () => {
     });
 
     it('should list contents of directory', (done) => {
-      // assert.doesNotThrow(() => driver.listContents('/'));
       driver.listContents('/')
         .then((actual) => {
           const expected = [
@@ -280,7 +273,6 @@ describe('FileDriver', () => {
     });
 
     it('should list sub-directories when recursive is set to true', (done) => {
-      // assert.doesNotThrow(() => driver.listContents(''));
       driver.listContents('/', { recursive: true })
         .then((actual) => {
           const expected = [
@@ -299,7 +291,6 @@ describe('FileDriver', () => {
 
     it('must not list contents of directory outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../etc'";
-      // assert.throws(() => driver.listContents('../etc'), e);
       driver.listContents('../etc')
         .then(() => {
           done('must throw error');
@@ -453,7 +444,6 @@ describe('FileDriver', () => {
 
     it('must not get file outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../etc/foo.xml'";
-      // assert.throws(() => driver.move('../etc/foo.xml', 'secret.xml'), e);
       driver.move('../etc/foo.xml', 'secret.xml')
         .then(() => {
           done('must throw error');
@@ -466,7 +456,6 @@ describe('FileDriver', () => {
 
     it('must not move file outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../etc/foo.xml'";
-      // assert.throws(() => driver.move('baz.xml', '../etc/foo.xml'), e);
       driver.move('baz.xml', '../etc/foo.xml')
         .then(() => {
           done('must throw error');
@@ -504,7 +493,6 @@ describe('FileDriver', () => {
 
     it('must not get file outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../etc/baz.xml'";
-      // assert.throws(() => driver.copy('../etc/baz.xml', 'secret.xml'), e);
       driver.copy('../etc/baz.xml', 'secret.xml')
         .then(() => {
           done('must throw error');
@@ -517,7 +505,6 @@ describe('FileDriver', () => {
 
     it('must not copy file outside root when jail is set to true', (done) => {
       const e = "no such file or directory '../etc/baz.xml'";
-      // assert.throws(() => driver.copy('bar.xml', '../etc/baz.xml'), e);
       driver.copy('bar.xml', '../etc/baz.xml')
         .then(() => {
           done('must throw error');

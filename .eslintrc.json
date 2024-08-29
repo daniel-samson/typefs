@@ -5,7 +5,7 @@
     },
     "extends": [
         "airbnb-base",
-        "plugin:sonarjs/recommended",
+        "plugin:sonarjs/recommended-legacy",
         "plugin:mocha/recommended",
         "plugin:jsdoc/recommended"
     ],
@@ -31,7 +31,9 @@
         "jsdoc/require-param-type": "warn",
         "import/prefer-default-export": "off",
         "import/extensions": "off",
-        "import/no-unresolved": "error"
+        "import/no-unresolved": "error",
+        "sonarjs/assertions-in-tests": "off",
+        "sonarjs/no-empty-test-file": "off"
     },
     "settings": {
         "import/parsers": {
