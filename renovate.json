@@ -12,11 +12,11 @@
       ],
       "groupName": "all dependencies",
       "groupSlug": "all",
-      "automerge": true
+      "automerge": false,
     }
   ],
   "lockFileMaintenance": {
     "enabled": false,
-    "automerge": true
+    "automerge": false
   }
 }
