@@ -7,10 +7,7 @@
     "slow": "75",
     "timeout": "1200000",
     "ui": "bdd",
+    "spec": ["test/*.test.ts"],
     "watch-files": ["src/**/*.ts", "test/**/*.ts"],
-    "watch-ignore": ["lib/vendor"],
-    "node-option": [
-        "experimental-specifier-resolution=node",
-        "loader=ts-node/esm"
-    ]
+    "watch-ignore": ["lib/vendor"]
 }
