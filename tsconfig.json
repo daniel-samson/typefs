@@ -2,8 +2,8 @@
   "compilerOptions": {
     "baseUrl": "./",
     "target": "es6",
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "lib": ["es6"],
     "declaration": true,
     "outDir": "./dist",
