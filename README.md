@@ -93,3 +93,6 @@ const logoPng: Buffer = await Storage.disk().read('logo.png');
 - [Write Code](https://daniel-samson.github.io/typefs/docs/contributing/join/#contributing-code)
 - [Write Documentation](https://daniel-samson.github.io/typefs/docs/contributing/join/#contributing-documentation)
 
+## Honourable mentions
+
+This library is effective a port of [flysystem](https://flysystem.thephpleague.com/docs/).
