@@ -31,33 +31,30 @@ jobs:
     name: Publish
     needs: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && ( github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' )
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     permissions:
       id-token: write
-      contents: read
+      contents: write
+      issues: write
+      pull-requests: write
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     - name: Use Node.js 22.x
       uses: actions/setup-node@v4
       with:
         node-version: 22.x
-    - name: Cache node_modules
-      id: cache-modules
-      uses: actions/cache@v4
-      with:
-        path: node_modules
-        key: 22.x-${{ runner.OS }}-build-${{ hashFiles('package.json') }}
-    - name: Install
-      if: steps.cache-modules.outputs.cache-hit != 'true'
-      run: npm install
+    - name: Install dependencies
+      run: npm ci
     - name: Build
-      run: tsc
-    - name: Test
-      run: npm_config_yes=true npx best-test@latest
-    - name: Publish
-      uses: Github-Actions-Community/merge-release@main
+      run: npm run build
+    - name: Publish with semantic-release
+      uses: cycjimmy/semantic-release-action@v4
+      with:
+        extra_plugins: |
+          @semantic-release/git
+          @semantic-release/changelog
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-        # npm trusted publishing with OIDC is automatically handled by npm CLI v11.5.1+
-        # when id-token: write permission is set above
+        NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
