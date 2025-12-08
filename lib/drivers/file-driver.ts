@@ -105,10 +105,13 @@ export class FileDriver extends DiskDriver {
         await this.createDirectory(dir);
       }
 
-      const stream = createWriteStream(p);
-      data.pipe(stream);
-
-      return Promise.resolve();
+      return new Promise((res, rej) => {
+        const stream = createWriteStream(p);
+        data.on('error', rej);
+        stream.on('error', rej);
+        stream.on('finish', res);
+        data.pipe(stream);
+      });
     } catch (e) {
       return Promise.reject(e);
     }
