@@ -1,4 +1,4 @@
-/* eslint-disable sonarjs/no-hardcoded-credentials */
+/* eslint-disable sonarjs/no-hardcoded-passwords */
 import { assert } from 'chai';
 import mock from 'mock-fs';
 import { FileDisk } from 'typefs-registry';
