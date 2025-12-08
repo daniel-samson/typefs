@@ -45,7 +45,7 @@ export class FileDriver extends DiskDriver {
    * Opens file and read full contents of file.
    * @param {string} path relative to root of disk
    * @returns {Promise<Buffer>} contents of file
-   * @throws Error when path is outside root directory and
+   * @throws {Error} when path is outside root directory and
    * configuration.jail is set to true
    */
   read(path: string): Promise<Buffer> {
@@ -65,7 +65,7 @@ export class FileDriver extends DiskDriver {
    * Opens file and reads the contents of file in chunks.
    * @param {string} path relative to root of disk
    * @returns {Promise<Readable>} contents of file
-   * @throws Error when path is outside root directory and
+   * @throws {Error} when path is outside root directory and
    * configuration.jail is set to true
    */
   readStream(path: string): Promise<Readable> {
@@ -81,7 +81,7 @@ export class FileDriver extends DiskDriver {
    * @param {string} path relative to root of disk
    * @param {Buffer} data contents of file
    * @returns {Promise<void>}
-   * @throws Error when path is outside root directory and
+   * @throws {Error} when path is outside root directory and
    * configuration.jail is set to true
    */
   async write(path: string, data: Buffer): Promise<void> {
@@ -93,7 +93,7 @@ export class FileDriver extends DiskDriver {
    * @param {string} path relative to root of disk
    * @param {Readable} data contents of file
    * @returns {Promise<void>}
-   * @throws Error when path is outside root directory and
+   * @throws {Error} when path is outside root directory and
    * configuration.jail is set to true
    */
   async writeStream(path: string, data: Readable): Promise<void> {
@@ -118,7 +118,7 @@ export class FileDriver extends DiskDriver {
    * Deletes file.
    * @param {string} path relative to root of disk
    * @returns {Promise<void>}
-   * @throws Error when path is outside root directory and
+   * @throws {Error} when path is outside root directory and
    * configuration.jail is set to true
    */
   deleteFile(path: string): Promise<void> {
@@ -133,7 +133,7 @@ export class FileDriver extends DiskDriver {
    * Deletes directory.
    * @param {string} path relative to root of disk
    * @returns {Promise<void>}
-   * @throws Error when path is outside root directory and
+   * @throws {Error} when path is outside root directory and
    * configuration.jail is set to true
    */
   deleteDirectory(path: string): Promise<void> {
@@ -148,7 +148,7 @@ export class FileDriver extends DiskDriver {
    * Creates directory.
    * @param {string} path relative to root of disk
    * @returns {Promise<void>}
-   * @throws Error when path is outside root directory and
+   * @throws {Error} when path is outside root directory and
    * configuration.jail is set to true
    */
   createDirectory(path: string): Promise<void> {
@@ -167,7 +167,7 @@ export class FileDriver extends DiskDriver {
    * @param {string} path relative to root of disk
    * @param {ListDirectoryOptions} options eg. set recursive to true
    * @returns {Promise<void>}
-   * @throws Error when path is outside root directory and
+   * @throws {Error} when path is outside root directory and
    * configuration.jail is set to true
    */
   listContents(
@@ -196,7 +196,7 @@ export class FileDriver extends DiskDriver {
    * Checks if file or directory exists.
    * @param {string} path relative to root of disk
    * @returns {Promise<boolean>} true when path exists
-   * @throws Error when path is outside root directory and
+   * @throws {Error} when path is outside root directory and
    * configuration.jail is set to true
    */
   exists(path: string): Promise<boolean> {
@@ -218,7 +218,7 @@ export class FileDriver extends DiskDriver {
    * When was file last modified.
    * @param {string} path relative to root of disk
    * @returns {Promise<Date>} when file was last modified
-   * @throws Error when path is outside root directory and
+   * @throws {Error} when path is outside root directory and
    * configuration.jail is set to true
    */
   lastModified(path: string): Promise<Date> {
@@ -238,7 +238,7 @@ export class FileDriver extends DiskDriver {
    * Size of file
    * @param {string} path relative to root of disk
    * @returns {Promise<number>} The file size in bytes
-   * @throws Error when path is outside root directory and
+   * @throws {Error} when path is outside root directory and
    * configuration.jail is set to true
    */
   fileSize(path: string): Promise<number> {
@@ -259,7 +259,7 @@ export class FileDriver extends DiskDriver {
    * @param {string} source path relative to root of disk
    * @param {string} destination path relative to root of disk
    * @returns {Promise<void>}
-   * @throws Error when path is outside root directory and
+   * @throws {Error} when path is outside root directory and
    * configuration.jail is set to true
    */
   move(source: string, destination: string): Promise<void> {
@@ -278,7 +278,7 @@ export class FileDriver extends DiskDriver {
    * @param {string} source path relative to root of disk
    * @param {string} destination path relative to root of disk
    * @returns {Promise<void>}
-   * @throws Error when path is outside root directory and
+   * @throws {Error} when path is outside root directory and
    * configuration.jail is set to true
    */
   copy(source: string, destination: string): Promise<void> {
@@ -296,7 +296,7 @@ export class FileDriver extends DiskDriver {
    * Controls access to paths which are above/outside the root directory
    * @param {string} path relative path to disks root directory
    * @returns {string} absolute path
-   * @throws Error when path is outside root directory and
+   * @throws {Error} when path is outside root directory and
    * configuration.jail is set to true
    */
   protected jail(path: string): string {

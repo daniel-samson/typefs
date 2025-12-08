@@ -29,8 +29,7 @@ export class Storage {
   }
 
   /**
-   * Configure storage
-   *
+   * Configure storage.
    * @param {Configuration} c - config JSON
    */
   static set config(c: Configuration) {
@@ -39,8 +38,7 @@ export class Storage {
   }
 
   /**
-   * Access disk
-   *
+   * Access disk.
    * @param {string|undefined} disk to select. leaving undefined will result in
    * default disk being selected
    * @returns {DiskDriver} common interface for all drivers
@@ -65,9 +63,7 @@ export class Storage {
 
   /**
    * Registers a driver to the storage manager.
-   *
-   * Caution: this will override existing drivers
-   *
+   * Caution: this will override existing drivers.
    * @param {string} name of the driver eg, file, s3, http etc...
    * @param {CallableFunction} driver (DiskConfiguration) -> TDiskDriver
    *
